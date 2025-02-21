@@ -5,15 +5,67 @@ const path = require("path");
 const fs = require("fs");
 const authRoutes = require("./routes/auth");
 
+const sqlite3 = require("sqlite3").verbose();
+
+// Caminho do banco de dados
+const DB_PATH = "./database.sqlite";
+
+// Verifica se o banco de dados existe, se não, cria um novo
+if (!fs.existsSync(DB_PATH)) {
+    console.log("📂 Criando novo banco de dados...");
+    const db = new sqlite3.Database(DB_PATH, (err) => {
+        if (err) {
+            console.error("Erro ao criar banco de dados:", err.message);
+        } else {
+            console.log("✅ Banco de dados criado com sucesso!");
+
+            // Criando as tabelas necessárias
+            db.serialize(() => {
+                db.run(`
+                    CREATE TABLE IF NOT EXISTS users (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        username TEXT UNIQUE NOT NULL,
+                        password TEXT NOT NULL
+                    )
+                `);
+
+                db.run(`
+                    CREATE TABLE IF NOT EXISTS collections (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        name TEXT UNIQUE NOT NULL,
+                        image TEXT
+                    )
+                `);
+
+                db.run(`
+                    CREATE TABLE IF NOT EXISTS movies (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        title TEXT NOT NULL,
+                        collection_id INTEGER,
+                        url TEXT NOT NULL,
+                        cover_url TEXT NOT NULL,
+                        duration TEXT,
+                        FOREIGN KEY (collection_id) REFERENCES collections (id)
+                    )
+                `);
+
+                console.log("🎬 Tabelas criadas!");
+            });
+
+            db.close();
+        }
+    });
+} else {
+    console.log("✅ Banco de dados encontrado.");
+}
+
+module.exports = new sqlite3.Database(DB_PATH);
+
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-if (!fs.existsSync("./database.sqlite")) {
-    console.log("📂 Criando banco de dados...");
-    const initSQL = fs.readFileSync("./database.sql", "utf8");
-    db.exec(initSQL);
-}
 
 const collectionsRoutes = require('./routes/collections');
 const moviesRoutes = require('./routes/movies');
