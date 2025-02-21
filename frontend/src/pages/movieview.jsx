@@ -1,0 +1,66 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
+
+const MovieView = () => {
+    const { movieId } = useParams();
+    const [movie, setMovie] = useState(null);
+    const [videoUrl, setVideoUrl] = useState("");
+
+    useEffect(() => {
+        // Primeiro, buscar informações do filme
+        axios.get(`${API_URL}/api/movies/${movieId}`)
+            .then(response => {
+                setMovie(response.data);
+
+                // Depois, buscar a URL segura
+                return axios.get(`${API_URL}/api/movies/secure-video/${movieId}`);
+            })
+            .then(response => {
+                setVideoUrl(response.data.secureUrl);
+            })
+            .catch(error => {
+                console.error("Erro ao buscar informações do filme:", error);
+            });
+
+    }, [movieId]);
+
+    return (
+        <div className="p-10 bg-marvelDark min-h-screen text-white text-center">
+
+                <div className="fixed top-4 left-4">
+                    <button 
+                        onClick={() => window.history.back()} 
+                        className="bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-red-700 transition">
+                        ⬅ Voltar para a Coleção
+                    </button>
+                </div>
+
+            <h1 className="text-3xl font-bold text-red-600">
+                {movie ? `Assistindo: ${movie.title}` : "Carregando..."}
+            </h1>
+
+            {videoUrl ? (
+    <div className="flex justify-center mt-6">
+        <iframe
+            src={videoUrl}
+            className="w-[1280px] h-[720px] border-none rounded-lg shadow-lg"
+            allowFullScreen
+        />
+    </div>
+) : (
+    <p className="text-gray-400 mt-6 text-center">Carregando vídeo...</p>
+)}
+
+
+            {movie && (
+                <p className="mt-4 text-gray-300 text-lg">Duração: {movie.duration}</p>
+            )}
+        </div>
+    );
+};
+
+export default MovieView;
