@@ -43,13 +43,14 @@ const MovieView = () => {
             </h1>
 
             {videoUrl ? (
-    <div className="flex justify-center mt-6">
-        <iframe
-            src={videoUrl}
-            className="w-[1280px] h-[720px] border-none rounded-lg shadow-lg"
-            allowFullScreen
-        />
-    </div>
+<div className="flex justify-center mt-6">
+    <iframe
+        src={videoUrl}
+        className="w-full sm:w-[640px] sm:h-[360px] md:w-[800px] md:h-[450px] lg:w-[1280px] lg:h-[720px] border-none rounded-lg shadow-lg"
+        allowFullScreen
+    />
+</div>
+
 ) : (
     <p className="text-gray-400 mt-6 text-center">Carregando vídeo...</p>
 )}
