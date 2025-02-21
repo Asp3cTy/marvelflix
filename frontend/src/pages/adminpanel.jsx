@@ -37,8 +37,8 @@ const AdminPanel = () => {
         const config = { headers: { Authorization: `Bearer ${authToken}` } };
 
         Promise.all([
-            axios.get("${API_URL}/api/collections", config),
-            axios.get("${API_URL}/api/thumbnails", config)
+            axios.get(`${API_URL}/api/collections`, config),
+            axios.get(`${API_URL}/api/thumbnails`, config)
         ])
         .then(([collectionsResponse, thumbnailsResponse]) => {
             setCollections(collectionsResponse.data);
@@ -67,7 +67,7 @@ const AdminPanel = () => {
         formData.append("name", newCollection);
         formData.append("image", collectionImage);
 
-        axios.post("${API_URL}/api/collections/add", formData, {
+        axios.post(`${API_URL}/api/collections/add`, formData, {
             headers: { 
                 Authorization: `Bearer ${authToken}`,
                 "Content-Type": "multipart/form-data"
@@ -99,7 +99,7 @@ const AdminPanel = () => {
             cover_url: `${API_URL}/thumbnails/${movie.cover_url}`
         };
 
-        axios.post("${API_URL}/api/movies/add", movieData, {
+        axios.post(`${API_URL}/api/movies/add`, movieData, {
             headers: { Authorization: `Bearer ${authToken}` }
         })
         .then(() => {
@@ -168,16 +168,16 @@ const AdminPanel = () => {
                     />
 
                     {/* Seleção da Coleção */}
-                    <select 
-                        className="p-2 rounded bg-gray-700 text-white mt-2 w-full"
-                        value={movie.collection_id}
-                        onChange={(e) => setMovie({ ...movie, collection_id: e.target.value })}
-                    >
-                        <option value="">Selecione uma Coleção</option>
-                        {collections.map((col) => (
-                            <option key={col.id} value={col.id}>{col.name}</option>
-                        ))}
-                    </select>
+<select 
+    className="p-2 rounded bg-gray-700 text-white mt-2 w-full"
+    value={movie.collection_id}
+    onChange={(e) => setMovie({ ...movie, collection_id: e.target.value })}
+>
+    <option value="">Selecione uma Coleção</option>
+    {Array.isArray(collections) && collections.map((col) => (
+        <option key={col.id} value={col.id}>{col.name}</option>
+    ))}
+</select>
 
                     {/* Inserir ID do Vídeo */}
                     <input 
@@ -188,17 +188,17 @@ const AdminPanel = () => {
                         onChange={(e) => setMovie({ ...movie, url: e.target.value })}
                     />
 
-                    {/* Seleção de Thumbnail */}
-                    <select 
-                        className="p-2 rounded bg-gray-700 text-white mt-2 w-full"
-                        value={movie.cover_url}
-                        onChange={(e) => setMovie({ ...movie, cover_url: e.target.value })}
-                    >
-                        <option value="">Selecione uma Thumbnail</option>
-                        {thumbnails.map((thumb) => (
-                            <option key={thumb} value={thumb}>{thumb}</option>
-                        ))}
-                    </select>
+{/* Verifica se thumbnails é um array antes de usar map() */}
+<select 
+    className="p-2 rounded bg-gray-700 text-white mt-2 w-full"
+    value={movie.cover_url}
+    onChange={(e) => setMovie({ ...movie, cover_url: e.target.value })}
+>
+    <option value="">Selecione uma Thumbnail</option>
+    {Array.isArray(thumbnails) && thumbnails.map((thumb) => (
+        <option key={thumb} value={thumb}>{thumb}</option>
+    ))}
+</select>
 
                     {/* Inserir Duração */}
                     <input 
