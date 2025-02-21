@@ -56,15 +56,17 @@ const CollectionView = () => {
                           />
   
                           {/* Overlay no hover */}
-                          <div
-                              className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                              onClick={() => window.location.href = `/movie/${movie.id}`}
-                          >
-                              <button className="bg-red-600 text-red-600 p-4 rounded-full text-2xl font-bold transition-transform duration-300 hover:scale-110">
-                                  ▶
-                              </button>
-                          </div>
-                      </div>
+                            <div
+                                className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                onClick={() => window.location.href = `/movie/${movie.id}`}
+                            >
+                                <div className="w-16 h-16 flex items-center justify-center bg-red-600 rounded-full transition-transform duration-300 hover:scale-110">
+                                    <svg width="36" height="36" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8 5v14l11-7z" />
+                                    </svg>
+                                </div>
+                            </div>
+
   
                       {/* Título do Filme */}
                       <p className="mt-2 text-lg font-bold text-white text-center">
