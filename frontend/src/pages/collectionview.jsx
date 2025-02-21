@@ -44,7 +44,7 @@ const CollectionView = () => {
                 <h1 className="text-3xl font-bold text-red-600">
                     {collection?.name || "Carregando..."}
                 </h1>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-6">
               {movies.map(movie => (
                   <div key={movie.id} className="flex flex-col items-center">
                       {/* Card do Filme */}
