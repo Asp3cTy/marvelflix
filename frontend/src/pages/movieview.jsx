@@ -38,7 +38,7 @@ const MovieView = () => {
                     </button>
                 </div>
 
-            <h1 className="text-3xl font-bold text-red-600">
+            <h1 className="text-3xl font-bold text-red-600 mt-16">
                 {movie ? `Assistindo: ${movie.title}` : "Carregando..."}
             </h1>
 
