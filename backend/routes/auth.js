@@ -10,7 +10,7 @@ const router = express.Router();
 const SECRET_KEY = process.env.JWT_SECRET || "secreto_super_forte";
 
 
-// Criar usuário ADMIN (somente na primeira execução)
+// Criar usuário ADMIN
 router.post("/register", async (req, res) => {
     const { username, password } = req.body;
 
@@ -18,16 +18,13 @@ router.post("/register", async (req, res) => {
         return res.status(400).json({ message: "Preencha todos os campos" });
     }
 
-    // Verificar se o usuário já existe
     db.get("SELECT * FROM users WHERE username = ?", [username], async (err, user) => {
         if (user) {
             return res.status(400).json({ message: "Usuário já existe" });
         }
 
-        // Criptografar senha
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Inserir no banco de dados
         db.run("INSERT INTO users (username, password) VALUES (?, ?)", [username, hashedPassword], (err) => {
             if (err) return res.status(500).json({ message: "Erro ao criar usuário" });
             res.json({ message: "Usuário criado com sucesso!" });
