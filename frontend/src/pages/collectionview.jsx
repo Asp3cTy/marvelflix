@@ -27,12 +27,7 @@ const CollectionView = () => {
             });
     }, [collectionId]);
 
-    const collectionImageUrl = collection?.image 
-    ? (collection.image.startsWith("http") ? collection.image : `${API_URL}${collection.image}`)
-    : "";  
 
- 
-    
     return (
         <div className="p-10 text-white text-center bg-marvelDark min-h-screen">
             <div className="sticky top-2 left-0 flex justify-start z-50 mb-4">
@@ -47,16 +42,7 @@ const CollectionView = () => {
                 {collection ? collection.name : "Carregando..."}
             </h1>
 
-            {collection && (
-    <div className="flex justify-center my-4">
-        <img 
-            src={collectionImageUrl} 
-            alt={collection.name} 
-            className="w-[300px] h-auto rounded-lg shadow-lg"
-        />
-    </div>
-)}
-
+            
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-6">
                 {movies.map(movie => (
                     <div key={movie.id} className="flex flex-col items-center">
