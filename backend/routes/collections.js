@@ -35,23 +35,28 @@ router.get("/:id", (req, res) => {
 
 // 🚀 Rota para criar coleção (com ou sem imagem)
 router.post("/add", upload.single("image"), (req, res) => {
-    const { name } = req.body;
-    const imageUrl = req.file ? `/thumbnails/${req.file.filename}` : null; // Caminho da imagem no servidor
+    console.log("Recebendo requisição para adicionar coleção...");
+    console.log("Body recebido:", req.body);
+    console.log("Arquivo recebido:", req.file);
 
-    if (!name) {
-        return res.status(400).json({ message: "O nome da coleção é obrigatório!" });
+    const { name } = req.body;
+    const imageUrl = req.file ? `/thumbnails/${req.file.filename}` : null;
+
+    if (!name || !imageUrl) {
+        console.error("Erro: Nome ou imagem ausente.");
+        return res.status(400).json({ message: "Nome e imagem são obrigatórios" });
     }
 
-    db.run(
-        "INSERT INTO collections (name, image_url) VALUES (?, ?)",
-        [name, imageUrl],
-        function (err) {
-            if (err) return res.status(500).json({ message: "Erro ao adicionar coleção" });
-
-            res.json({ id: this.lastID, name, image_url: imageUrl });
+    db.run("INSERT INTO collections (name, image) VALUES (?, ?)", [name, imageUrl], function (err) {
+        if (err) {
+            console.error("Erro ao adicionar coleção no banco:", err);
+            return res.status(500).json({ message: "Erro ao adicionar coleção" });
         }
-    );
+        console.log("Coleção adicionada com sucesso!");
+        res.json({ id: this.lastID, name, imageUrl });
+    });
 });
+
 
 module.exports = router;
 
