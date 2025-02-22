@@ -2,7 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const router = express.Router();
-const db = require("../config/db");
+
 
 // 🗂️ Configuração do armazenamento para salvar as imagens das coleções
 const storage = multer.diskStorage({
