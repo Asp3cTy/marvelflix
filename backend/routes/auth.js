@@ -24,12 +24,16 @@ router.post("/register", async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        await queryD1("INSERT INTO users (email, password, created_at) VALUES (?, ?, datetime('now'))", 
-                      [email, hashedPassword]);
+        const result = await queryD1(
+            "INSERT INTO users (email, password) VALUES (?, ?)",
+            [email, hashedPassword]
+        );
 
+        console.log("✅ Usuário criado no banco:", result);
         res.status(201).json({ message: "Usuário criado com sucesso!" });
+
     } catch (error) {
-        console.error("Erro ao registrar usuário:", error);
+        console.error("❌ Erro ao registrar usuário:", error);
         res.status(500).json({ message: "Erro ao criar usuário" });
     }
 });
@@ -44,6 +48,8 @@ router.post("/login", async (req, res) => {
 
     try {
         const users = await queryD1("SELECT * FROM users WHERE email = ?", [email]);
+        console.log("🔎 Usuário retornado do banco:", users);
+
         if (!users.length) {
             return res.status(401).json({ message: "E-mail ou senha incorretos." });
         }
@@ -56,12 +62,14 @@ router.post("/login", async (req, res) => {
         }
 
         const token = jwt.sign({ id: user.id, email: user.email }, SECRET_KEY, { expiresIn: "1h" });
+
         res.json({ token, message: "Login realizado com sucesso!" });
 
     } catch (error) {
-        console.error("Erro ao autenticar usuário:", error);
+        console.error("❌ Erro ao autenticar usuário:", error);
         res.status(500).json({ message: "Erro ao autenticar usuário" });
     }
 });
+
 
 module.exports = router;

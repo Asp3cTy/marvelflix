@@ -26,29 +26,32 @@ if (!D1_DATABASE_URL || !CLOUDFLARE_API_KEY) {
 // Função para rodar queries no D1
 async function queryD1(sql, params = []) {
     try {
+        console.log("🔎 Executando Query:", sql, "com parâmetros:", params);
+        
         const response = await fetch(process.env.D1_DATABASE_URL, {
             method: "POST",
             headers: {
-                "X-Auth-Email": process.env.CLOUDFLARE_AUTH_EMAIL, // Seu email do Cloudflare
-                "X-Auth-Key": process.env.CLOUDFLARE_API_KEY, // Global API Key
+                "Authorization": `Bearer ${process.env.CLOUDFLARE_API_KEY}`,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({ sql, params }),
         });
 
         const data = await response.json();
+        console.log("📊 Resposta D1:", JSON.stringify(data, null, 2));
 
-        if (!response.ok) {
-            console.error("❌ Erro na consulta D1:", data);
-            throw new Error(`Erro D1: ${JSON.stringify(data.errors)}`);
+        if (!response.ok || !data.success) {
+            console.error("❌ Erro na consulta D1:", data.errors || "Resposta inesperada.");
+            throw new Error("Erro na consulta ao banco de dados.");
         }
 
-        return data.result;
+        return data.result; // Aqui garantimos que estamos pegando o `result`
     } catch (error) {
         console.error("❌ Erro ao consultar D1:", error.message);
         throw error;
     }
 }
+
 
 
 // 🏗️ Criar tabelas no banco ao iniciar
@@ -59,8 +62,9 @@ async function createTables() {
         await queryD1(`
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                username TEXT UNIQUE NOT NULL,
+                email TEXT UNIQUE NOT NULL,
                 password TEXT NOT NULL
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         `);
 
