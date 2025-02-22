@@ -16,23 +16,31 @@ app.use(express.json());
 const D1_DATABASE_URL = process.env.D1_DATABASE_URL; // Definido no .env
 
 // 🔹 Função genérica para executar queries no D1
-const queryD1 = async (sql, params = []) => {
+async function queryD1(sql, params = []) {
     try {
-        const response = await fetch(D1_DATABASE_URL, {
+        const response = await fetch(process.env.D1_DATABASE_URL, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Authorization": `Bearer ${process.env.CLOUDFLARE_API_KEY}`,
+                "Content-Type": "application/json",
+            },
             body: JSON.stringify({ sql, params }),
         });
 
-        if (!response.ok) throw new Error(`Erro D1: ${response.statusText}`);
-        
         const data = await response.json();
-        return data.results || [];
+
+        if (!response.ok) {
+            console.error("❌ Erro na consulta D1:", data);
+            throw new Error(`Erro D1: ${JSON.stringify(data.errors)}`);
+        }
+
+        return data.result;
     } catch (error) {
-        console.error("❌ Erro ao consultar D1:", error);
-        return [];
+        console.error("❌ Erro ao consultar D1:", error.message);
+        throw error;
     }
-};
+}
+
 
 // 🔹 Criar tabelas ao iniciar
 async function createTables() {
