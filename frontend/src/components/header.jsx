@@ -52,7 +52,7 @@ const Header = () => {
       )}
 
       {/* Adiciona um espaçamento para que o conteúdo não fique atrás do Header */}
-      <div className="pt-20"></div>
+      <div className="pt-10"></div>
     </>
   );
 };
