@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media screen and (max-width: 768px) {
+  .collection-card img {
+    min-width: 250px; /* Garante que a imagem não fique fina demais */
+    max-width: 100%; /* Mantém responsivo */
+    height: auto; /* Mantém proporção */
+  }
+}
