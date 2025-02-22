@@ -5,63 +5,50 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="bg-marvelDark text-white shadow-lg">
+    <header className="bg-marvelDark text-white shadow-md">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Botão Mobile */}
-        <div className="md:hidden">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="text-white focus:outline-none"
-          >
-            {isOpen ? (
-              <svg className="w-6 h-6" viewBox="0 0 24 24">
-                <path
-                  fill="currentColor"
-                  d="M18.3 5.71L12 12l-6.3-6.29L4.29 7.29 12 15l7.71-7.71z"
-                />
-              </svg>
-            ) : (
-              <svg className="w-6 h-6" viewBox="0 0 24 24">
-                <path
-                  fill="currentColor"
-                  d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"
-                />
-              </svg>
-            )}
-          </button>
-        </div>
+        
+        {/* Logo */}
+        <Link to="/" className="text-2xl font-bold text-red-600">
+          MarvelFlix
+        </Link>
 
-        {/* Logo Central */}
-        <div className="flex-1 flex justify-center">
-          <Link to="/" className="text-2xl font-bold text-marvelRed">
-            MarvelFlix
-          </Link>
-        </div>
-
-        {/* Navegação Desktop */}
-        <nav className="hidden md:flex space-x-6">
-          <Link to="/" className="hover:text-marvelRed">Home</Link>
-          <Link to="/collections" className="hover:text-marvelRed">Coleções</Link>
-          <Link to="/about" className="hover:text-marvelRed">Sobre</Link>
+        {/* Menu para telas grandes */}
+        <nav className="hidden md:flex space-x-6 text-lg">
+          <Link to="/" className="hover:text-red-400 transition">Home</Link>
+          <Link to="/collections" className="hover:text-red-400 transition">Coleções</Link>
+          <Link to="/about" className="hover:text-red-400 transition">Sobre</Link>
         </nav>
 
-        {/* Botão de Login */}
-        <div className="hidden md:flex">
-          <Link to="/login" className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
-            Entrar
-          </Link>
-        </div>
+        {/* Botão Login */}
+        <Link to="/login" className="hidden md:block bg-red-600 px-4 py-2 rounded-lg text-white hover:bg-red-700 transition">
+          Entrar
+        </Link>
+
+        {/* Menu Mobile */}
+        <button
+          className="md:hidden focus:outline-none"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? (
+            <span className="text-3xl">✖</span> // Ícone de fechar
+          ) : (
+            <span className="text-3xl">☰</span> // Ícone de menu
+          )}
+        </button>
       </div>
 
-      {/* Menu Mobile */}
+      {/* Dropdown para Mobile */}
       {isOpen && (
-        <div className="md:hidden bg-marvelDark text-white text-center py-4 space-y-4">
-          <Link to="/" className="block hover:text-marvelRed">Home</Link>
-          <Link to="/collections" className="block hover:text-marvelRed">Coleções</Link>
-          <Link to="/about" className="block hover:text-marvelRed">Sobre</Link>
-          <Link to="/login" className="block bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg w-32 mx-auto">
-            Entrar
-          </Link>
+        <div className="md:hidden bg-marvelDark text-white absolute top-16 left-0 w-full shadow-lg">
+          <nav className="flex flex-col items-center py-4 space-y-4 text-lg">
+            <Link to="/" className="hover:text-red-400 transition" onClick={() => setIsOpen(false)}>Home</Link>
+            <Link to="/collections" className="hover:text-red-400 transition" onClick={() => setIsOpen(false)}>Coleções</Link>
+            <Link to="/about" className="hover:text-red-400 transition" onClick={() => setIsOpen(false)}>Sobre</Link>
+            <Link to="/login" className="bg-red-600 px-4 py-2 rounded-lg text-white hover:bg-red-700 transition" onClick={() => setIsOpen(false)}>
+              Entrar
+            </Link>
+          </nav>
         </div>
       )}
     </header>
