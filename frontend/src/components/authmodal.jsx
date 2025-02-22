@@ -26,8 +26,7 @@ const AuthModal = ({ onClose }) => {
     return "A senha deve conter pelo menos 8 caracteres, 1 maiúscula, 1 número e 1 símbolo ⚠️";
   };
 
-  // Validação do formulário
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -41,22 +40,40 @@ const AuthModal = ({ onClose }) => {
       return;
     }
 
-    if (isRegistering) {
-      if (password !== confirmPassword) {
-        setError("As senhas não coincidem!");
-        return;
-      }
+    if (isRegistering && password !== confirmPassword) {
+      setError("As senhas não coincidem!");
+      return;
     }
 
-    alert(isRegistering ? "Conta criada com sucesso!" : "Login bem-sucedido!");
-    handleClose();
+    const endpoint = isRegistering ? "/api/auth/register" : "/api/auth/login";
+    const payload = { email, password };
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Erro ao processar a solicitação.");
+        return;
+      }
+
+      alert(data.message || "Sucesso!");
+      handleClose();
+    } catch (err) {
+      console.error("Erro ao comunicar com API:", err);
+      setError("Erro de conexão. Tente novamente.");
+    }
   };
 
   return (
     <div className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm z-50 transition-opacity duration-300 ${isVisible ? "opacity-100" : "opacity-0"}`}>
       <div className="bg-gradient-to-br from-marvelDark to-gray-900 p-8 rounded-xl shadow-2xl w-96 relative transform transition-transform duration-300 scale-95">
         
-        {/* Botão de Fechar */}
         <button 
           className="absolute top-3 right-3 text-white text-2xl hover:text-gray-400 transition"
           onClick={handleClose}
@@ -64,19 +81,12 @@ const AuthModal = ({ onClose }) => {
           ✖
         </button>
 
-        {/* Título */}
         <h2 className="text-3xl font-extrabold text-white mb-6 text-center">
-        <img 
-              src="https://i.imgur.com/GpB2cuj.png" 
-              alt="MarvelFlix" 
-              className="h-12 md:h-14 lg:h-16 w-auto mx-auto"
-            />
+          <img src="https://i.imgur.com/GpB2cuj.png" alt="MarvelFlix" className="h-12 md:h-14 lg:h-16 w-auto mx-auto"/>
         </h2>
 
-        {/* Exibição de Erros */}
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
-        {/* Formulário */}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="text-gray-300 text-sm">E-mail</label>
@@ -108,7 +118,6 @@ const AuthModal = ({ onClose }) => {
             )}
           </div>
 
-          {/* Campo extra para Registro */}
           {isRegistering && (
             <div className="mb-6">
               <label className="text-gray-300 text-sm">Confirmar Senha</label>
@@ -122,29 +131,10 @@ const AuthModal = ({ onClose }) => {
             </div>
           )}
 
-          {/* Botão Principal */}
-          <button type="submit" className="w-full bg-red-600 py-3 rounded-lg font-bold text-white text-lg hover:bg-red-700 transition-transform transform hover:scale-105 active:scale-95">
+          <button type="submit" className="w-full bg-red-600 py-3 rounded-lg font-bold text-white text-lg hover:bg-red-700 transition">
             {isRegistering ? "Registrar-se" : "Entrar"}
           </button>
         </form>
-
-        {/* Opções Adicionais */}
-        <div className="text-center mt-4">
-          {!isRegistering ? (
-            <>
-              <p className="text-gray-400 text-sm">
-                Esqueceu a senha? <a href="#" className="text-red-500 hover:underline">Recuperar</a>
-              </p>
-              <p className="text-gray-400 text-sm mt-2">
-                Novo por aqui? <button className="text-red-500 hover:underline" onClick={() => setIsRegistering(true)}>Criar Conta</button>
-              </p>
-            </>
-          ) : (
-            <p className="text-gray-400 text-sm">
-              Já tem uma conta? <button className="text-red-500 hover:underline" onClick={() => setIsRegistering(false)}>Fazer Login</button>
-            </p>
-          )}
-        </div>
       </div>
     </div>
   );
