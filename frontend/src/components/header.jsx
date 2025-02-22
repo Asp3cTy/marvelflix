@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import AuthModal from "./authmodal"; // Importação do Modal
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false); // Estado para abrir o modal
 
   return (
     <>
@@ -33,10 +35,13 @@ const Header = () => {
             />
           </Link>
 
-          {/* Botão de Login */}
-          <Link to="/login" className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition">
+          {/* BOTÃO ABRE O MODAL */}
+          <button
+            onClick={() => setIsAuthModalOpen(true)}
+            className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
+          >
             Entrar
-          </Link>
+          </button>
         </div>
       </header>
 
@@ -50,6 +55,9 @@ const Header = () => {
           </nav>
         </div>
       )}
+
+      {/* MODAL DE LOGIN */}
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
 
       {/* Ajuste fino no espaçamento para não cobrir o conteúdo */}
       <div className="pt-16 bg-marvelDark"></div>
