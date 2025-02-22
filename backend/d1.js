@@ -7,8 +7,10 @@ async function queryD1(query, params = []) {
       const response = await fetch(process.env.D1_DATABASE_URL, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
-          // Se for necessário, adicione outros headers (ex.: de autorização)
+            "X-Auth-Email": process.env.CLOUDFLARE_AUTH_EMAIL,
+            "X-Auth-Key": process.env.CLOUDFLARE_API_KEY,
+            "Authorization": `Bearer ${process.env.CLOUDFLARE_API_KEY}`,
+            "Content-Type": "application/json",
         },
         body: JSON.stringify({ query, params })
       });
@@ -29,3 +31,4 @@ async function queryD1(query, params = []) {
   }
   
   module.exports = { queryD1 };
+
