@@ -1,6 +1,6 @@
 // d1.js
 require("dotenv").config();
-const fetch = require("node-fetch");
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 async function queryD1(sql, params = []) {
   try {
