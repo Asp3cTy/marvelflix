@@ -21,28 +21,36 @@ const App = () => {
     <AuthProvider>
       <Router>
         <Header /> {/* 🔹 O Header ficará fixo no topo */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/collection/:collectionId" element={<CollectionView />} />
-          <Route path="/movie/:movieId" element={<MovieView />} />
-          <Route path="/login" element={<Login />} />
 
-          {/* 🔒 Rota protegida para Admin */}
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <AdminPanel />
-              </ProtectedRoute>
-            }
-          />
+        <div className="flex flex-col min-h-screen">
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/collection/:collectionId" element={<CollectionView />} />
+              <Route path="/movie/:movieId" element={<MovieView />} />
+              <Route path="/login" element={<Login />} />
 
-          {/* 🔄 Redirecionamento de rotas inválidas */}
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+              {/* 🔒 Rota protegida para Admin */}
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute>
+                    <AdminPanel />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* 🔄 Redirecionamento de rotas inválidas */}
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </main>
+
+          <Footer /> {/* 🔻 O Footer será fixado no final da página */}
+        </div>
       </Router>
     </AuthProvider>
   );
 };
+
 
 export default App;
