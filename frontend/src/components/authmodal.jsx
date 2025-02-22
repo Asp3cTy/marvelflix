@@ -25,13 +25,13 @@ const AuthModal = ({ onClose }) => {
         </button>
 
         {/* Título */}
-        <Link to="/" className="absolute left-1/2 transform -translate-x-1/2">
-            <img 
+        <h2 className="text-3xl font-extrabold text-white mb-6 text-center">
+        <img 
               src="https://i.imgur.com/GpB2cuj.png" 
               alt="MarvelFlix" 
               className="h-12 md:h-14 lg:h-16 w-auto mx-auto"
             />
-          </Link>
+        </h2>
 
         {/* Campos de Login */}
         <div className="mb-4">
