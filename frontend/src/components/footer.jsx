@@ -3,7 +3,7 @@ import { FaTelegram, FaWhatsapp } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-marvelDark text-white py-8 mt-10">
+    <footer className="bg-marvelDark text-white py-8">
       <div className="container mx-auto flex flex-col items-center text-center space-y-6">
 
         {/* Botão Voltar ao Topo */}
