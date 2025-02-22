@@ -2,7 +2,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { queryD1 } = require("../d1");  // Atualize a importação
+const { queryD1 } = require("../d1");
 require("dotenv").config();
 
 const router = express.Router();
@@ -22,7 +22,7 @@ router.post("/login", async (req, res) => {
             return res.status(401).json({ message: "Credenciais inválidas" });
         }
 
-        const isPasswordValid = await bcrypt.compare(password, user ? user.password : '');
+        const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             return res.status(401).json({ message: "Credenciais inválidas" });
         }
