@@ -7,6 +7,8 @@ const authRoutes = require("./routes/auth");
 
 const sqlite3 = require("sqlite3").verbose();
 
+// MEU GIT NO VSCODE TA FUNCIONANDO
+
 // Caminho do banco de dados
 const DB_PATH = "./database.sqlite";
 
