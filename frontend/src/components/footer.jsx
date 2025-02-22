@@ -1,9 +1,8 @@
 import { FaTelegramPlane, FaWhatsapp } from "react-icons/fa";
-import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white py-6 text-center relative">
+    <footer className="bg-gray-900 text-white py-6 text-center">
       {/* Linha divisória sutil */}
       <div className="border-t border-gray-700 w-full mb-4"></div>
 
