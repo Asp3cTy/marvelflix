@@ -18,22 +18,22 @@ async function queryD1(sql, params = []) {
     });
 
     const data = await response.json();
-    console.log("📊 Resposta D1 completa:", JSON.stringify(data, null, 2));
+    console.log("📊 Resposta D1:", JSON.stringify(data, null, 2));
 
     if (!response.ok || !data.success) {
       console.error("❌ Erro na consulta D1:", data.errors || "Resposta inesperada.");
       throw new Error("Erro na consulta ao banco de dados.");
     }
 
-    // Se a resposta tiver a propriedade "result"
+    // Se a resposta possuir a propriedade "result"
     if (data.hasOwnProperty("result")) {
-      const resArr = data.result;
-      // Se resArr é um array com pelo menos um elemento que possui a propriedade "results"
-      if (Array.isArray(resArr) && resArr.length > 0 && resArr[0] && "results" in resArr[0]) {
-        console.log("Desembrulhando resultado interno...");
-        return resArr[0].results;
+      const res = data.result;
+      // Se "res" for um array e seu primeiro elemento tiver a propriedade "results",
+      // retorna esse array de resultados
+      if (Array.isArray(res) && res.length > 0 && res[0].hasOwnProperty("results")) {
+        return res[0].results;
       }
-      return resArr;
+      return res;
     }
     return data;
   } catch (error) {
