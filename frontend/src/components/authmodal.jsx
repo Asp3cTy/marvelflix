@@ -45,7 +45,8 @@ const AuthModal = ({ onClose }) => {
       return;
     }
 
-    const endpoint = isRegistering ? "/api/auth/register" : "/api/auth/login";
+    // 🔹 Corrigido: URL completa do backend
+    const endpoint = `https://srv-marvelflix.onrender.com${isRegistering ? "/api/auth/register" : "/api/auth/login"}`;
     const payload = { email, password };
 
     try {
@@ -55,7 +56,13 @@ const AuthModal = ({ onClose }) => {
         body: JSON.stringify(payload),
       });
 
-      const data = await response.json();
+      // 🔹 Proteção: garantir que a resposta seja JSON antes de usar `response.json()`
+      let data;
+      try {
+        data = await response.json();
+      } catch (err) {
+        throw new Error("Resposta inválida do servidor.");
+      }
 
       if (!response.ok) {
         setError(data.message || "Erro ao processar a solicitação.");
@@ -66,7 +73,7 @@ const AuthModal = ({ onClose }) => {
       handleClose();
     } catch (err) {
       console.error("Erro ao comunicar com API:", err);
-      setError("Erro de conexão. Tente novamente.");
+      setError("Erro de conexão com o servidor.");
     }
   };
 
