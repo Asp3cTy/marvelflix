@@ -2,7 +2,7 @@ import { FaTelegramPlane, FaWhatsapp } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white py-6 text-center">
+    <footer className="bg-marvelDark text-white py-6 text-center">
       {/* Linha divisória fina e discreta */}
       <hr className="border-gray-700 w-full mb-4" />
 
