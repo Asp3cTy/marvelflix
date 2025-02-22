@@ -2,56 +2,51 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-marvelDark text-white shadow-md">
-      <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-        
-        {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-red-600">
-          MarvelFlix
-        </Link>
+    <>
+      {/* Header Principal */}
+      <header className="bg-marvelDark text-white p-4 shadow-md relative z-50">
+        <div className="container mx-auto flex items-center justify-between">
+          {/* Botão Mobile */}
+          <button 
+            className="text-2xl md:hidden" 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? "✖" : "☰"}
+          </button>
 
-        {/* Menu para telas grandes */}
-        <nav className="hidden md:flex space-x-6 text-lg">
-          <Link to="/" className="hover:text-red-400 transition">Home</Link>
-          <Link to="/collections" className="hover:text-red-400 transition">Coleções</Link>
-          <Link to="/about" className="hover:text-red-400 transition">Sobre</Link>
-        </nav>
+          {/* Opções de Navegação no Desktop */}
+          <nav className="hidden md:flex items-center space-x-6">
+            <Link to="/" className="hover:text-marvelRed transition">Home</Link>
+            <Link to="/collections" className="hover:text-marvelRed transition">Coleções</Link>
+            <Link to="/about" className="hover:text-marvelRed transition">Sobre</Link>
+          </nav>
 
-        {/* Botão Login */}
-        <Link to="/login" className="hidden md:block bg-red-600 px-4 py-2 rounded-lg text-white hover:bg-red-700 transition">
-          Entrar
-        </Link>
+          {/* Logo Centralizada no Desktop */}
+          <Link to="/" className="text-3xl font-bold text-marvelRed absolute left-1/2 transform -translate-x-1/2">
+            MarvelFlix
+          </Link>
 
-        {/* Menu Mobile */}
-        <button
-          className="md:hidden focus:outline-none"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? (
-            <span className="text-3xl">✖</span> // Ícone de fechar
-          ) : (
-            <span className="text-3xl">☰</span> // Ícone de menu
-          )}
-        </button>
-      </div>
+          {/* Botão de Login */}
+          <Link to="/login" className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition">
+            Entrar
+          </Link>
+        </div>
+      </header>
 
-      {/* Dropdown para Mobile */}
-      {isOpen && (
-        <div className="md:hidden bg-marvelDark text-white absolute top-16 left-0 w-full shadow-lg">
-          <nav className="flex flex-col items-center py-4 space-y-4 text-lg">
-            <Link to="/" className="hover:text-red-400 transition" onClick={() => setIsOpen(false)}>Home</Link>
-            <Link to="/collections" className="hover:text-red-400 transition" onClick={() => setIsOpen(false)}>Coleções</Link>
-            <Link to="/about" className="hover:text-red-400 transition" onClick={() => setIsOpen(false)}>Sobre</Link>
-            <Link to="/login" className="bg-red-600 px-4 py-2 rounded-lg text-white hover:bg-red-700 transition" onClick={() => setIsOpen(false)}>
-              Entrar
-            </Link>
+      {/* Menu Mobile (Dropdown) */}
+      {isMenuOpen && (
+        <div className="bg-marvelDark text-white py-4 shadow-md">
+          <nav className="flex flex-col items-center space-y-4">
+            <Link to="/" className="hover:text-marvelRed transition">Home</Link>
+            <Link to="/collections" className="hover:text-marvelRed transition">Coleções</Link>
+            <Link to="/about" className="hover:text-marvelRed transition">Sobre</Link>
           </nav>
         </div>
       )}
-    </header>
+    </>
   );
 };
 
