@@ -6,7 +6,8 @@ const authRoutes = require("./routes/auth");
 const collectionsRoutes = require("./routes/collections");
 const moviesRoutes = require("./routes/movies");
 const thumbnailsRoutes = require("./routes/thumbnails");
-const fetch = require("node-fetch"); // Para requisições HTTP ao Cloudflare D1
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+ // Para requisições HTTP ao Cloudflare D1
 
 const app = express();
 app.use(cors());
