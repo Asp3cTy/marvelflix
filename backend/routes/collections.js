@@ -1,5 +1,5 @@
 const express = require("express");
-const { queryD1 } = require("../server");
+const { queryD1 } = require("../d1");
 const multer = require("multer");
 const path = require("path");
 const router = express.Router();

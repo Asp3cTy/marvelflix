@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { queryD1 } = require("../server");
+const { queryD1 } = require("../d1");
 const bunnyApi = require("../config/bunnystream");
 const generateBunnyToken = require("../config/bunnytoken");
 
