@@ -1,8 +1,8 @@
 const express = require("express");
+const { queryD1 } = require("../server");
 const multer = require("multer");
 const path = require("path");
 const router = express.Router();
-
 
 // 🗂️ Configuração do armazenamento para salvar as imagens das coleções
 const storage = multer.diskStorage({
@@ -16,25 +16,34 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // 🚀 Rota para listar todas as coleções
-router.get("/", (req, res) => {
-    db.all("SELECT * FROM collections", [], (err, rows) => {
-        if (err) return res.status(500).json({ message: "Erro ao buscar coleções" });
-        res.json(rows);
-    });
+router.get("/", async (req, res) => {
+    try {
+        const collections = await queryD1("SELECT * FROM collections");
+        res.json(collections);
+    } catch (error) {
+        console.error("Erro ao buscar coleções:", error);
+        res.status(500).json({ message: "Erro ao buscar coleções" });
+    }
 });
 
 // 🚀 Rota para buscar uma coleção específica por ID
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
     const { id } = req.params;
-    db.get("SELECT * FROM collections WHERE id = ?", [id], (err, row) => {
-        if (err) return res.status(500).json({ message: "Erro ao buscar coleção" });
-        if (!row) return res.status(404).json({ message: "Coleção não encontrada" });
-        res.json(row);
-    });
+    
+    try {
+        const result = await queryD1("SELECT * FROM collections WHERE id = ?", [id]);
+        if (result.length === 0) {
+            return res.status(404).json({ message: "Coleção não encontrada" });
+        }
+        res.json(result[0]);
+    } catch (error) {
+        console.error("Erro ao buscar coleção:", error);
+        res.status(500).json({ message: "Erro ao buscar coleção" });
+    }
 });
 
 // 🚀 Rota para criar coleção (com ou sem imagem)
-router.post("/add", upload.single("image"), (req, res) => {
+router.post("/add", upload.single("image"), async (req, res) => {
     console.log("Recebendo requisição para adicionar coleção...");
     console.log("Body recebido:", req.body);
     console.log("Arquivo recebido:", req.file);
@@ -47,16 +56,14 @@ router.post("/add", upload.single("image"), (req, res) => {
         return res.status(400).json({ message: "Nome e imagem são obrigatórios" });
     }
 
-    db.run("INSERT INTO collections (name, image) VALUES (?, ?)", [name, imageUrl], function (err) {
-        if (err) {
-            console.error("Erro ao adicionar coleção no banco:", err);
-            return res.status(500).json({ message: "Erro ao adicionar coleção" });
-        }
+    try {
+        const result = await queryD1("INSERT INTO collections (name, image) VALUES (?, ?)", [name, imageUrl]);
         console.log("Coleção adicionada com sucesso!");
-        res.json({ id: this.lastID, name, imageUrl });
-    });
+        res.json({ id: result.lastInsertRowid, name, imageUrl });
+    } catch (error) {
+        console.error("Erro ao adicionar coleção no banco:", error);
+        res.status(500).json({ message: "Erro ao adicionar coleção" });
+    }
 });
 
-
 module.exports = router;
-
