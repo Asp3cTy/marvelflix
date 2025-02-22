@@ -1,6 +1,5 @@
 // auth.js
 const express = require("express");
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { queryD1 } = require("../d1");
 require("dotenv").config();
@@ -22,8 +21,8 @@ router.post("/login", async (req, res) => {
             return res.status(401).json({ message: "Credenciais inválidas" });
         }
 
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) {
+        // Comparação simples sem hashing
+        if (password !== user.password) {
             return res.status(401).json({ message: "Credenciais inválidas" });
         }
 
@@ -50,9 +49,8 @@ router.post("/register", async (req, res) => {
             return res.status(400).json({ message: "Usuário já existe" });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        await queryD1("INSERT INTO users (email, password, created_at) VALUES (?, ?, CURRENT_TIMESTAMP)", [email, hashedPassword]);
+        // Armazena a senha em texto plano (não recomendado para produção)
+        await queryD1("INSERT INTO users (email, password, created_at) VALUES (?, ?, CURRENT_TIMESTAMP)", [email, password]);
 
         res.json({ message: "Usuário criado com sucesso!" });
     } catch (error) {
