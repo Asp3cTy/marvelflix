@@ -1,29 +1,29 @@
 import React from "react";
-import { FaTelegramPlane, FaWhatsapp } from "react-icons/fa";
+import { FaTelegram, FaWhatsapp } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-marvelDark text-white py-6 mt-10 border-t border-gray-700">
-      <div className="container mx-auto flex flex-col items-center text-center space-y-4">
-
-        {/* Texto de direitos autorais */}
-        <p className="text-sm">© 2025 MarvelFlix. Todos os direitos reservados.</p>
+    <footer className="bg-marvelDark text-white py-8 mt-10">
+      <div className="container mx-auto flex flex-col items-center text-center space-y-6">
 
         {/* Botão Voltar ao Topo */}
         <button 
-          className="bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-lg shadow-lg transition"
+          className="bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-lg shadow-md transition-transform transform hover:scale-105"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
-          Voltar ao Topo ↑
+          ↑ Voltar ao Topo
         </button>
 
-        {/* Ícones de Redes Sociais (Alinhados corretamente) */}
-        <div className="flex flex-col items-center space-y-3 mt-4">
+        {/* Texto de direitos autorais */}
+        <p className="text-sm font-light">© 2025 MarvelFlix. Todos os direitos reservados.</p>
+
+        {/* Ícones de Redes Sociais (Telegram e WhatsApp) */}
+        <div className="flex flex-col items-center space-y-3">
           <a href="https://t.me/seuTelegram" target="_blank" rel="noopener noreferrer">
-            <FaTelegramPlane className="text-blue-400 text-4xl hover:text-blue-500 transition" />
+            <FaTelegram className="text-blue-400 text-3xl hover:text-blue-500 transition-transform transform hover:scale-110" />
           </a>
           <a href="https://wa.me/seuNumero" target="_blank" rel="noopener noreferrer">
-            <FaWhatsapp className="text-green-400 text-4xl hover:text-green-500 transition" />
+            <FaWhatsapp className="text-green-400 text-3xl hover:text-green-500 transition-transform transform hover:scale-110" />
           </a>
         </div>
 
