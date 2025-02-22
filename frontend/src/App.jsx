@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, AuthContext } from "./context/authcontext";
 import Header from "./components/header";
+import Footer from "./components/footer";
 import Home from "./pages/home";
 import CollectionView from "./pages/collectionview";
 import MovieView from "./pages/movieview";
