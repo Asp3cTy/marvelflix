@@ -51,8 +51,8 @@ const Header = () => {
         </div>
       )}
 
-      {/* Adiciona um espaçamento para que o conteúdo não fique atrás do Header */}
-      <div className="pt-10"></div>
+      {/* Ajuste fino no espaçamento para não cobrir o conteúdo */}
+      <div className="pt-16 bg-marvelDark"></div>
     </>
   );
 };
