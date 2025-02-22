@@ -12,7 +12,7 @@ const LandingPage = () => {
   return (
     <div 
       className="relative flex flex-col items-center justify-center h-screen bg-cover bg-center text-white"
-      style={{ backgroundImage: "url('https://wallpapercave.com/wp/wp4056410.jpg')" }}
+      style={{ backgroundImage: "url('https://i.imgur.com/cVmpyDI.jpeg')" }}
     > 
       {/* Overlay escuro */}
       <div className="absolute inset-0 bg-black bg-opacity-70"></div>

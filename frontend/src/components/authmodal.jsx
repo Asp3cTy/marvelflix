@@ -3,6 +3,11 @@ import { useState, useEffect } from "react";
 const AuthModal = ({ onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [passwordStrength, setPasswordStrength] = useState("");
 
   useEffect(() => {
     setIsVisible(true);
@@ -11,6 +16,40 @@ const AuthModal = ({ onClose }) => {
   const handleClose = () => {
     setIsVisible(false);
     setTimeout(onClose, 300);
+  };
+
+  // Validação da senha
+  const validatePassword = (pwd) => {
+    const strongRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+    if (!pwd) return "";
+    if (strongRegex.test(pwd)) return "Senha forte ✅";
+    return "A senha deve conter pelo menos 8 caracteres, 1 maiúscula, 1 número e 1 símbolo ⚠️";
+  };
+
+  // Validação do formulário
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (!email.includes("@")) {
+      setError("Insira um e-mail válido.");
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("A senha deve ter pelo menos 8 caracteres.");
+      return;
+    }
+
+    if (isRegistering) {
+      if (password !== confirmPassword) {
+        setError("As senhas não coincidem!");
+        return;
+      }
+    }
+
+    alert(isRegistering ? "Conta criada com sucesso!" : "Login bem-sucedido!");
+    handleClose();
   };
 
   return (
@@ -25,7 +64,6 @@ const AuthModal = ({ onClose }) => {
           ✖
         </button>
 
-        {/* Alternar entre Login e Registro */}
         {/* Título */}
         <h2 className="text-3xl font-extrabold text-white mb-6 text-center">
         <img 
@@ -35,41 +73,60 @@ const AuthModal = ({ onClose }) => {
             />
         </h2>
 
-        {/* Campos de Formulário */}
-        <div className="mb-4">
-          <label className="text-gray-300 text-sm">E-mail</label>
-          <input 
-            type="email"
-            placeholder="Digite seu e-mail"
-            className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-red-500 focus:ring focus:ring-red-400 transition"
-          />
-        </div>
+        {/* Exibição de Erros */}
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
-        <div className="mb-4">
-          <label className="text-gray-300 text-sm">Senha</label>
-          <input 
-            type="password"
-            placeholder="Digite sua senha"
-            className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-red-500 focus:ring focus:ring-red-400 transition"
-          />
-        </div>
-
-        {/* Campo extra para Registro */}
-        {isRegistering && (
-          <div className="mb-6">
-            <label className="text-gray-300 text-sm">Confirmar Senha</label>
+        {/* Formulário */}
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="text-gray-300 text-sm">E-mail</label>
             <input 
-              type="password"
-              placeholder="Confirme sua senha"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Digite seu e-mail"
               className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-red-500 focus:ring focus:ring-red-400 transition"
             />
           </div>
-        )}
 
-        {/* Botão Principal */}
-        <button className="w-full bg-red-600 py-3 rounded-lg font-bold text-white text-lg hover:bg-red-700 transition-transform transform hover:scale-105 active:scale-95">
-          {isRegistering ? "Registrar-se" : "Entrar"}
-        </button>
+          <div className="mb-4">
+            <label className="text-gray-300 text-sm">Senha</label>
+            <input 
+              type="password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setPasswordStrength(validatePassword(e.target.value));
+              }}
+              placeholder="Digite sua senha"
+              className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-red-500 focus:ring focus:ring-red-400 transition"
+            />
+            {password && (
+              <p className={`text-xs mt-1 ${passwordStrength.includes("forte") ? "text-green-400" : "text-yellow-400"}`}>
+                {passwordStrength}
+              </p>
+            )}
+          </div>
+
+          {/* Campo extra para Registro */}
+          {isRegistering && (
+            <div className="mb-6">
+              <label className="text-gray-300 text-sm">Confirmar Senha</label>
+              <input 
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirme sua senha"
+                className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-red-500 focus:ring focus:ring-red-400 transition"
+              />
+            </div>
+          )}
+
+          {/* Botão Principal */}
+          <button type="submit" className="w-full bg-red-600 py-3 rounded-lg font-bold text-white text-lg hover:bg-red-700 transition-transform transform hover:scale-105 active:scale-95">
+            {isRegistering ? "Registrar-se" : "Entrar"}
+          </button>
+        </form>
 
         {/* Opções Adicionais */}
         <div className="text-center mt-4">
