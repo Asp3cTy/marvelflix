@@ -1,12 +1,12 @@
+// auth.js
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { queryD1 } = require("../server"); // Certifique-se de que esta importação está correta
+const { queryD1 } = require("../d1");  // Atualize a importação
 require("dotenv").config();
 
 const router = express.Router();
 
-// 🔹 Login do ADMIN
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
@@ -27,7 +27,6 @@ router.post("/login", async (req, res) => {
             return res.status(401).json({ message: "Credenciais inválidas" });
         }
 
-        // Gerar token JWT
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
         res.json({ token });
@@ -37,7 +36,6 @@ router.post("/login", async (req, res) => {
     }
 });
 
-// 🔹 Registro de usuário
 router.post("/register", async (req, res) => {
     const { email, password } = req.body;
 
