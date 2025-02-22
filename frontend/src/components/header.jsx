@@ -29,7 +29,7 @@ const Header = () => {
                 <img 
                   src="https://i.imgur.com/QHZg4Wu.png" 
                   alt="MarvelFlix" 
-                  className="h-10 w-auto md:h-12 md:w-32 lg:h-14 lg:w-40"
+                 className="h-12 md:h-14 lg:h-16 w-auto mx-auto"
                 />
               </Link>
 
