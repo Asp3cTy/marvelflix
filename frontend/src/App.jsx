@@ -18,6 +18,7 @@ const App = () => {
   return (
     <AuthProvider>
       <Router>
+        <Header /> {/* 🔹 O Header ficará fixo no topo */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/collection/:collectionId" element={<CollectionView />} />
