@@ -23,30 +23,33 @@ if (!D1_DATABASE_URL || !CLOUDFLARE_API_KEY) {
 }
 
 // 🔹 Função para executar queries no D1
-async function queryD1(query, params = []) {
+// Função para rodar queries no D1
+async function queryD1(sql, params = []) {
     try {
-        const response = await fetch(D1_DATABASE_URL, {
+        const response = await fetch(process.env.D1_DATABASE_URL, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${CLOUDFLARE_API_KEY}`,
+                "X-Auth-Email": process.env.CLOUDFLARE_AUTH_EMAIL, // Seu email do Cloudflare
+                "X-Auth-Key": process.env.CLOUDFLARE_API_KEY, // Global API Key
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ query, params }), // 🔹 Alterado de "sql" para "query"
+            body: JSON.stringify({ sql, params }),
         });
 
+        const data = await response.json();
+
         if (!response.ok) {
-            const errorText = await response.text(); // 🔹 Captura resposta de erro
-            console.error("❌ Erro na consulta D1:", errorText);
-            throw new Error(`Erro D1: ${errorText}`);
+            console.error("❌ Erro na consulta D1:", data);
+            throw new Error(`Erro D1: ${JSON.stringify(data.errors)}`);
         }
 
-        const data = await response.json();
         return data.result;
     } catch (error) {
         console.error("❌ Erro ao consultar D1:", error.message);
         throw error;
     }
 }
+
 
 // 🏗️ Criar tabelas no banco ao iniciar
 async function createTables() {
