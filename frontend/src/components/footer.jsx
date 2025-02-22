@@ -17,8 +17,8 @@ const Footer = () => {
         {/* Texto de direitos autorais */}
         <p className="text-sm font-light">© 2025 MarvelFlix. Todos os direitos reservados.</p>
 
-        {/* Ícones de Redes Sociais (Telegram e WhatsApp) */}
-        <div className="flex flex-col items-center space-y-3">
+        {/* Ícones de Redes Sociais (Telegram e WhatsApp lado a lado) */}
+        <div className="flex items-center space-x-5">
           <a href="https://t.me/seuTelegram" target="_blank" rel="noopener noreferrer">
             <FaTelegram className="text-blue-400 text-3xl hover:text-blue-500 transition-transform transform hover:scale-110" />
           </a>
