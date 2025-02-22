@@ -6,34 +6,41 @@ const authRoutes = require("./routes/auth");
 const collectionsRoutes = require("./routes/collections");
 const moviesRoutes = require("./routes/movies");
 const thumbnailsRoutes = require("./routes/thumbnails");
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
- // Para requisições HTTP ao Cloudflare D1
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
+// 🚀 Express App
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const D1_DATABASE_URL = process.env.D1_DATABASE_URL; // Definido no .env
+// 🔹 Credenciais do D1 (do seu `.env`)
+const D1_DATABASE_URL = process.env.D1_DATABASE_URL;
+const CLOUDFLARE_API_KEY = process.env.CLOUDFLARE_API_KEY;
 
-// 🔹 Função genérica para executar queries no D1
-async function queryD1(sql, params = []) {
+if (!D1_DATABASE_URL || !CLOUDFLARE_API_KEY) {
+    console.error("❌ Erro: Variáveis de ambiente D1_DATABASE_URL ou CLOUDFLARE_API_KEY não definidas.");
+    process.exit(1);
+}
+
+// 🔹 Função para executar queries no D1
+async function queryD1(query, params = []) {
     try {
-        const response = await fetch(process.env.D1_DATABASE_URL, {
+        const response = await fetch(D1_DATABASE_URL, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${process.env.CLOUDFLARE_API_KEY}`,
+                "Authorization": `Bearer ${CLOUDFLARE_API_KEY}`,
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ sql, params }),
+            body: JSON.stringify({ query, params }), // 🔹 Alterado de "sql" para "query"
         });
 
-        const data = await response.json();
-
         if (!response.ok) {
-            console.error("❌ Erro na consulta D1:", data);
-            throw new Error(`Erro D1: ${JSON.stringify(data.errors)}`);
+            const errorText = await response.text(); // 🔹 Captura resposta de erro
+            console.error("❌ Erro na consulta D1:", errorText);
+            throw new Error(`Erro D1: ${errorText}`);
         }
 
+        const data = await response.json();
         return data.result;
     } catch (error) {
         console.error("❌ Erro ao consultar D1:", error.message);
@@ -41,8 +48,7 @@ async function queryD1(sql, params = []) {
     }
 }
 
-
-// 🔹 Criar tabelas ao iniciar
+// 🏗️ Criar tabelas no banco ao iniciar
 async function createTables() {
     try {
         console.log("📂 Criando/verificando tabelas...");
@@ -81,7 +87,7 @@ async function createTables() {
     }
 }
 
-// 🏗️ Criar tabelas ao iniciar
+// 📌 Executa a criação das tabelas ao iniciar
 createTables();
 
 // 🔹 Rotas da API
