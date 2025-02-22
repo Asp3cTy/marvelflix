@@ -17,21 +17,14 @@ app.get('/', (req, res) => {
     res.send('API do MarvelFlix está funcionando!');
 });
 
-const D1_DATABASE_URL = process.env.D1_DATABASE_URL;
-const CLOUDFLARE_API_KEY = process.env.CLOUDFLARE_API_KEY;
-
-if (!D1_DATABASE_URL || !CLOUDFLARE_API_KEY) {
-    console.error("❌ Erro: Variáveis de ambiente D1_DATABASE_URL ou CLOUDFLARE_API_KEY não definidas.");
-    process.exit(1);
-}
-
 async function createTables() {
     try {
         console.log("📂 Criando/verificando tabelas...");
 
+        // Removemos AUTOINCREMENT, pois a coluna INTEGER PRIMARY KEY já auto-incrementa no SQLite/D1
         await queryD1(`
             CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id INTEGER PRIMARY KEY,
                 email TEXT UNIQUE NOT NULL,
                 password TEXT NOT NULL,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -40,7 +33,7 @@ async function createTables() {
 
         await queryD1(`
             CREATE TABLE IF NOT EXISTS collections (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id INTEGER PRIMARY KEY,
                 name TEXT UNIQUE NOT NULL,
                 image TEXT
             )
@@ -48,7 +41,7 @@ async function createTables() {
 
         await queryD1(`
             CREATE TABLE IF NOT EXISTS movies (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id INTEGER PRIMARY KEY,
                 title TEXT NOT NULL,
                 collection_id INTEGER,
                 url TEXT NOT NULL,
@@ -77,5 +70,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`🔥 Servidor rodando na porta ${PORT}`);
 });
-
-module.exports = { queryD1 };
