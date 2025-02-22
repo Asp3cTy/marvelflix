@@ -8,7 +8,8 @@ const moviesRoutes = require('./routes/movies');
 const thumbnailsRoutes = require("./routes/thumbnails");
 
 // Cloudflare D1 (Banco de Dados)
-const { D1Database } = require("@cloudflare/d1");
+import { D1Database } from '@cloudflare/d1';
+
 
 // Conectar ao Cloudflare D1
 const db = new D1Database({
