@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 const AuthModal = ({ onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
@@ -24,6 +25,7 @@ const AuthModal = ({ onClose }) => {
           ✖
         </button>
 
+        {/* Alternar entre Login e Registro */}
         {/* Título */}
         <h2 className="text-3xl font-extrabold text-white mb-6 text-center">
         <img 
@@ -33,7 +35,7 @@ const AuthModal = ({ onClose }) => {
             />
         </h2>
 
-        {/* Campos de Login */}
+        {/* Campos de Formulário */}
         <div className="mb-4">
           <label className="text-gray-300 text-sm">E-mail</label>
           <input 
@@ -43,7 +45,7 @@ const AuthModal = ({ onClose }) => {
           />
         </div>
 
-        <div className="mb-6">
+        <div className="mb-4">
           <label className="text-gray-300 text-sm">Senha</label>
           <input 
             type="password"
@@ -52,19 +54,39 @@ const AuthModal = ({ onClose }) => {
           />
         </div>
 
-        {/* Botão de Login */}
+        {/* Campo extra para Registro */}
+        {isRegistering && (
+          <div className="mb-6">
+            <label className="text-gray-300 text-sm">Confirmar Senha</label>
+            <input 
+              type="password"
+              placeholder="Confirme sua senha"
+              className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-red-500 focus:ring focus:ring-red-400 transition"
+            />
+          </div>
+        )}
+
+        {/* Botão Principal */}
         <button className="w-full bg-red-600 py-3 rounded-lg font-bold text-white text-lg hover:bg-red-700 transition-transform transform hover:scale-105 active:scale-95">
-          Entrar
+          {isRegistering ? "Registrar-se" : "Entrar"}
         </button>
 
-        {/* Opções adicionais */}
+        {/* Opções Adicionais */}
         <div className="text-center mt-4">
-          <p className="text-gray-400 text-sm">
-            Esqueceu a senha? <a href="#" className="text-red-500 hover:underline">Recuperar</a>
-          </p>
-          <p className="text-gray-400 text-sm mt-2">
-            Novo por aqui? <a href="#" className="text-red-500 hover:underline">Criar conta</a>
-          </p>
+          {!isRegistering ? (
+            <>
+              <p className="text-gray-400 text-sm">
+                Esqueceu a senha? <a href="#" className="text-red-500 hover:underline">Recuperar</a>
+              </p>
+              <p className="text-gray-400 text-sm mt-2">
+                Novo por aqui? <button className="text-red-500 hover:underline" onClick={() => setIsRegistering(true)}>Criar Conta</button>
+              </p>
+            </>
+          ) : (
+            <p className="text-gray-400 text-sm">
+              Já tem uma conta? <button className="text-red-500 hover:underline" onClick={() => setIsRegistering(false)}>Fazer Login</button>
+            </p>
+          )}
         </div>
       </div>
     </div>
