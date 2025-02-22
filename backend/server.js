@@ -21,13 +21,13 @@ async function createTables() {
     try {
         console.log("📂 Criando/verificando tabelas...");
 
-        // Removemos AUTOINCREMENT, pois a coluna INTEGER PRIMARY KEY já auto-incrementa no SQLite/D1
+        // Tabela de usuários sem DEFAULT CURRENT_TIMESTAMP
         await queryD1(`
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY,
                 email TEXT UNIQUE NOT NULL,
                 password TEXT NOT NULL,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                created_at TEXT
             )
         `);
 
@@ -39,6 +39,7 @@ async function createTables() {
             )
         `);
 
+        // Tabela de filmes sem FOREIGN KEY para simplificar
         await queryD1(`
             CREATE TABLE IF NOT EXISTS movies (
                 id INTEGER PRIMARY KEY,
@@ -46,8 +47,7 @@ async function createTables() {
                 collection_id INTEGER,
                 url TEXT NOT NULL,
                 cover_url TEXT NOT NULL,
-                duration TEXT,
-                FOREIGN KEY (collection_id) REFERENCES collections (id)
+                duration TEXT
             )
         `);
 
