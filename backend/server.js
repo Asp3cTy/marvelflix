@@ -13,6 +13,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Adicione esta linha
+app.get('/', (req, res) => {
+    res.send('API do MarvelFlix está funcionando!');
+});
+
 // 🔹 Credenciais do D1 (do seu `.env`)
 const D1_DATABASE_URL = process.env.D1_DATABASE_URL;
 const CLOUDFLARE_API_KEY = process.env.CLOUDFLARE_API_KEY;
