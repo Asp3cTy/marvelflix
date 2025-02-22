@@ -1,32 +1,33 @@
+import React from "react";
 import { FaTelegramPlane, FaWhatsapp } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-marvelDark text-white py-6 text-center">
-      {/* Linha divisória fina e discreta */}
-      <hr className="border-gray-700 w-full mb-4" />
-
-      <div className="flex justify-between items-center px-6">
+    <footer className="bg-marvelDark text-white py-6 mt-10">
+      <div className="container mx-auto flex flex-col items-center justify-center text-center space-y-4">
+        
+        {/* Texto de direitos autorais */}
         <p className="text-sm">© 2025 MarvelFlix. Todos os direitos reservados.</p>
 
-        {/* Ícones de redes sociais */}
-        <div className="flex space-x-4">
-          <a href="https://t.me/seu-telegram" target="_blank" rel="noopener noreferrer">
+        {/* Botão Voltar ao Topo */}
+        <button 
+          className="bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-lg shadow-lg transition"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
+          Voltar ao Topo ↑
+        </button>
+
+        {/* Ícones de Redes Sociais */}
+        <div className="flex flex-col items-center space-y-2 md:space-y-0 md:flex-col md:items-end w-full md:w-auto">
+          <a href="https://t.me/seuTelegram" target="_blank" rel="noopener noreferrer">
             <FaTelegramPlane className="text-blue-400 text-2xl hover:text-blue-500 transition" />
           </a>
-          <a href="https://wa.me/seu-whatsapp" target="_blank" rel="noopener noreferrer">
+          <a href="https://wa.me/seuNumero" target="_blank" rel="noopener noreferrer">
             <FaWhatsapp className="text-green-400 text-2xl hover:text-green-500 transition" />
           </a>
         </div>
-      </div>
 
-      {/* Botão de voltar ao topo */}
-      <button
-        className="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-700 transition"
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      >
-        Voltar ao Topo ↑
-      </button>
+      </div>
     </footer>
   );
 };
