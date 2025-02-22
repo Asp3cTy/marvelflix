@@ -18,12 +18,12 @@ const Footer = () => {
         </button>
 
         {/* Ícones de Redes Sociais (Alinhados corretamente) */}
-        <div className="flex flex-col items-center mt-4 space-y-3">
+        <div className="flex flex-col items-center space-y-3 mt-4">
           <a href="https://t.me/seuTelegram" target="_blank" rel="noopener noreferrer">
-            <FaTelegramPlane className="text-white-400 text-4xl hover:text-white-500 transition" />
+            <FaTelegramPlane className="text-blue-400 text-4xl hover:text-blue-500 transition" />
           </a>
           <a href="https://wa.me/seuNumero" target="_blank" rel="noopener noreferrer">
-            <FaWhatsapp className="text-white-400 text-4xl hover:text-white-500 transition" />
+            <FaWhatsapp className="text-green-400 text-4xl hover:text-green-500 transition" />
           </a>
         </div>
 
