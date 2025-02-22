@@ -9,3 +9,20 @@
     height: auto; /* Mantém proporção */
   }
 }
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+p, span {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+}
