@@ -3,8 +3,8 @@ import { FaTelegramPlane, FaWhatsapp } from "react-icons/fa";
 const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white py-6 text-center">
-      {/* Linha divisória sutil */}
-      <div className="border-t border-gray-700 w-full mb-4"></div>
+      {/* Linha divisória fina e discreta */}
+      <hr className="border-gray-700 w-full mb-4" />
 
       <div className="flex justify-between items-center px-6">
         <p className="text-sm">© 2025 MarvelFlix. Todos os direitos reservados.</p>
