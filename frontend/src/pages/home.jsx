@@ -15,7 +15,6 @@ const Home = () => {
 
   return (
     <div className="bg-marvelDark min-h-screen text-white p-6">
-      <h1 className="text-marvelRed text-4xl font-bold text-center">MarvelFlix</h1>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 p-6">
         {collections.map((collection) => {
           const collectionImageUrl = collection?.image?.startsWith("http")
