@@ -28,10 +28,12 @@ async function queryD1(sql, params = []) {
     try {
         console.log("🔎 Executando Query:", sql, "com parâmetros:", params);
         
-        const response = await fetch(process.env.D1_DATABASE_URL, {
+        const response = await fetch(D1_DATABASE_URL, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${process.env.CLOUDFLARE_API_KEY}`,
+                "X-Auth-Email": process.env.CLOUDFLARE_AUTH_EMAIL,  // Adiciona o email
+                "X-Auth-Key": process.env.CLOUDFLARE_API_KEY,  // API Key do Cloudflare
+                "Authorization": `Bearer ${process.env.CLOUDFLARE_API_KEY}`, // Bearer token
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({ sql, params }),
@@ -45,12 +47,13 @@ async function queryD1(sql, params = []) {
             throw new Error("Erro na consulta ao banco de dados.");
         }
 
-        return data.result; // Aqui garantimos que estamos pegando o `result`
+        return data.result;
     } catch (error) {
         console.error("❌ Erro ao consultar D1:", error.message);
         throw error;
     }
 }
+
 
 
 
