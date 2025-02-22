@@ -26,6 +26,7 @@ const AuthModal = ({ onClose }) => {
     return "A senha deve conter pelo menos 8 caracteres, 1 maiúscula, 1 número e 1 símbolo ⚠️";
   };
 
+  // Envio dos dados para API
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -45,8 +46,7 @@ const AuthModal = ({ onClose }) => {
       return;
     }
 
-    // 🔹 Corrigido: URL completa do backend
-    const endpoint = `https://srv-marvelflix.onrender.com${isRegistering ? "/api/auth/register" : "/api/auth/login"}`;
+    const endpoint = isRegistering ? "/api/auth/register" : "/api/auth/login";
     const payload = { email, password };
 
     try {
@@ -56,13 +56,7 @@ const AuthModal = ({ onClose }) => {
         body: JSON.stringify(payload),
       });
 
-      // 🔹 Proteção: garantir que a resposta seja JSON antes de usar `response.json()`
-      let data;
-      try {
-        data = await response.json();
-      } catch (err) {
-        throw new Error("Resposta inválida do servidor.");
-      }
+      const data = await response.json();
 
       if (!response.ok) {
         setError(data.message || "Erro ao processar a solicitação.");
@@ -73,7 +67,7 @@ const AuthModal = ({ onClose }) => {
       handleClose();
     } catch (err) {
       console.error("Erro ao comunicar com API:", err);
-      setError("Erro de conexão com o servidor.");
+      setError("Erro de conexão. Tente novamente.");
     }
   };
 
@@ -142,6 +136,24 @@ const AuthModal = ({ onClose }) => {
             {isRegistering ? "Registrar-se" : "Entrar"}
           </button>
         </form>
+
+        {/* Alternar entre Login e Registro */}
+        <div className="text-center mt-4">
+          {!isRegistering ? (
+            <>
+              <p className="text-gray-400 text-sm">
+                Esqueceu a senha? <a href="#" className="text-red-500 hover:underline">Recuperar</a>
+              </p>
+              <p className="text-gray-400 text-sm mt-2">
+                Novo por aqui? <button className="text-red-500 hover:underline" onClick={() => setIsRegistering(true)}>Criar Conta</button>
+              </p>
+            </>
+          ) : (
+            <p className="text-gray-400 text-sm">
+              Já tem uma conta? <button className="text-red-500 hover:underline" onClick={() => setIsRegistering(false)}>Fazer Login</button>
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
