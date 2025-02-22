@@ -20,10 +20,10 @@ const Footer = () => {
         {/* Ícones de Redes Sociais */}
         <div className="flex flex-col items-center space-y-2 md:space-y-0 md:flex-col md:items-end w-full md:w-auto">
           <a href="https://t.me/seuTelegram" target="_blank" rel="noopener noreferrer">
-            <FaTelegramPlane className="text-blue-400 text-2xl hover:text-blue-500 transition" />
+            <FaTelegramPlane className="text-white-400 text-2xl hover:text-white-500 transition" />
           </a>
           <a href="https://wa.me/seuNumero" target="_blank" rel="noopener noreferrer">
-            <FaWhatsapp className="text-green-400 text-2xl hover:text-green-500 transition" />
+            <FaWhatsapp className="text-white-400 text-2xl hover:text-white-500 transition" />
           </a>
         </div>
 
