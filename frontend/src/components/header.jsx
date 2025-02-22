@@ -27,7 +27,7 @@ const Header = () => {
           {/* Logo Centralizada no Desktop */}
               <Link to="/" className="absolute left-1/2 transform -translate-x-1/2">
                 <img 
-                  src="https://imgur.com/QHZg4Wu" 
+                  src="https://i.imgur.com/QHZg4Wu.png" 
                   alt="MarvelFlix" 
                   className="h-12 md:h-14 lg:h-16 w-auto"
                 />
