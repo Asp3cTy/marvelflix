@@ -18,12 +18,12 @@ const Footer = () => {
         <p className="text-sm font-light">© 2025 MarvelFlix. Todos os direitos reservados.</p>
 
         {/* Ícones de Redes Sociais (Telegram e WhatsApp lado a lado) */}
-        <div className="flex items-center space-x-5">
+        <div className="flex items-center gap-4">
           <a href="https://t.me/seuTelegram" target="_blank" rel="noopener noreferrer">
-            <FaTelegram className="text-blue-400 text-3xl hover:text-blue-500 transition-transform transform hover:scale-110" />
+            <FaTelegram className="text-white-400 text-3xl hover:text-white-500 transition-transform transform hover:scale-110" />
           </a>
           <a href="https://wa.me/seuNumero" target="_blank" rel="noopener noreferrer">
-            <FaWhatsapp className="text-green-400 text-3xl hover:text-green-500 transition-transform transform hover:scale-110" />
+            <FaWhatsapp className="text-white-400 text-3xl hover:text-white-500 transition-transform transform hover:scale-110" />
           </a>
         </div>
 
