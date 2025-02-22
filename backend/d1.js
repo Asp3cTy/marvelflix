@@ -12,18 +12,20 @@ async function queryD1(sql, params = []) {
         "Authorization": `Bearer ${process.env.CLOUDFLARE_API_KEY}`,
         "Content-Type": "application/json",
     },
-      // Envia a query na propriedade "sql" em uma única linha
       body: JSON.stringify({ sql, params })
     });
-
+    
     const data = await response.json();
 
-    if (!data.success) {
-      console.error("D1 Query Error:", data.errors);
-      throw new Error("Erro na consulta ao D1");
+    // Se a API retornar um array com um objeto que possui a propriedade "results",
+    // vamos retornar essa propriedade.
+    if (Array.isArray(data) && data[0] && data[0].hasOwnProperty("results")) {
+      // Se a query for um SELECT, retornamos o array de resultados
+      return data[0].results;
     }
 
-    return data.result;
+    // Caso contrário, retornamos o objeto completo
+    return data;
   } catch (error) {
     console.error("Erro ao executar queryD1:", error);
     throw error;
