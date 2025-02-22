@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "./context/authcontext"; // Ajustado para usar `useAuth()`
+import { AuthProvider, useAuth } from "./context/authcontext";
 import LandingPage from "./pages/landingpage";
 import Header from "./components/header";
 import Footer from "./components/footer";
@@ -11,7 +11,7 @@ import AdminPanel from "./pages/adminpanel";
 import Login from "./pages/login";
 
 const ProtectedRoute = ({ children }) => {
-  const { authToken } = useAuth(); // Agora chamamos `useAuth()` dentro do `AuthProvider`
+  const { authToken } = useAuth();
   return authToken ? children : <Navigate to="/" />;
 };
 
@@ -26,17 +26,16 @@ const App = () => {
 };
 
 const AppContent = () => {
-  const { authToken } = useAuth(); // Agora o contexto será acessado corretamente
+  const { authToken } = useAuth();
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* 🔹 Se o usuário estiver autenticado, exibe o Header normalmente */}
+      {/* Mostra o Header apenas se estiver logado */}
       {authToken && <Header />}
 
-      {/* 🔹 Conteúdo principal cresce para ocupar o espaço disponível */}
       <div className="flex-grow">
         <Routes>
-          {/* Se não estiver autenticado, redireciona para a LandingPage */}
+          {/* Se não estiver logado, mostra a LandingPage */}
           <Route path="/" element={authToken ? <Home /> : <LandingPage />} />
           <Route path="/collection/:collectionId" element={<ProtectedRoute><CollectionView /></ProtectedRoute>} />
           <Route path="/movie/:movieId" element={<ProtectedRoute><MovieView /></ProtectedRoute>} />
@@ -46,7 +45,7 @@ const AppContent = () => {
         </Routes>
       </div>
 
-      {/* 🔹 O Footer só aparece se o usuário estiver autenticado */}
+      {/* Mostra o Footer apenas se estiver logado */}
       {authToken && <Footer />}
     </div>
   );
