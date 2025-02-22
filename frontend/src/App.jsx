@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, AuthContext } from "./context/authcontext";
+import LandingPage from "./pages/landingpage";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import Home from "./pages/home";
@@ -8,42 +9,37 @@ import CollectionView from "./pages/collectionview";
 import MovieView from "./pages/movieview";
 import AdminPanel from "./pages/adminpanel";
 import Login from "./pages/login";
-import { useContext } from "react";
 
 const ProtectedRoute = ({ children }) => {
   const { authToken } = useContext(AuthContext);
-  return authToken ? children : <Navigate to="/login" />;
+  return authToken ? children : <Navigate to="/" />;
 };
 
 const App = () => {
+  const { authToken } = useContext(AuthContext);
+
   return (
     <AuthProvider>
       <Router>
         <div className="flex flex-col min-h-screen">
-          {/* 🔹 Header fixo no topo */}
-          <Header />
+          {/* 🔹 Se o usuário estiver autenticado, exibe o Header normalmente */}
+          {authToken && <Header />}
 
           {/* 🔹 Conteúdo principal cresce para ocupar o espaço disponível */}
           <div className="flex-grow">
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/collection/:collectionId" element={<CollectionView />} />
-              <Route path="/movie/:movieId" element={<MovieView />} />
+              {/* Se não estiver autenticado, redireciona para a LandingPage */}
+              <Route path="/" element={authToken ? <Home /> : <LandingPage />} />
+              <Route path="/collection/:collectionId" element={<ProtectedRoute><CollectionView /></ProtectedRoute>} />
+              <Route path="/movie/:movieId" element={<ProtectedRoute><MovieView /></ProtectedRoute>} />
               <Route path="/login" element={<Login />} />
-              <Route
-                path="/admin"
-                element={
-                  <ProtectedRoute>
-                    <AdminPanel />
-                  </ProtectedRoute>
-                }
-              />
+              <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </div>
 
-          {/* 🔹 Footer fixo na parte inferior */}
-          <Footer />
+          {/* 🔹 O Footer só aparece se o usuário estiver autenticado */}
+          {authToken && <Footer />}
         </div>
       </Router>
     </AuthProvider>
