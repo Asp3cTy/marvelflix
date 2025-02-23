@@ -1,8 +1,8 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/authcontext";
 import { useNavigate } from "react-router-dom";
-import API_URL from "../config";
 import axios from "axios";
+import { API_URL } from "../config";
 import AuthModal from "../components/authmodal";
 
 const Login = () => {
@@ -17,7 +17,7 @@ const Login = () => {
             const response = await axios.post(`${API_URL}/api/auth/login`, credentials);
             const { token, user } = response.data;
 
-            if (user.username !== "admin") {
+            if (!user.isAdmin) {
                 setErrorMessage("Acesso negado. Usuário sem permissão.");
                 return;
             }

@@ -1,9 +1,10 @@
-// server.js
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const jwt = require("jsonwebtoken");
 const { queryD1 } = require("./d1");
+const { encrypt, decrypt } = require("./cryptoUtils");
 const authRoutes = require("./routes/auth");
 const collectionsRoutes = require("./routes/collections");
 const moviesRoutes = require("./routes/movies");
@@ -15,6 +16,28 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("API do MarvelFlix está funcionando!");
+});
+
+// Middleware de autenticação
+const authenticateToken = (req, res, next) => {
+  const token = req.headers["authorization"] && req.headers["authorization"].split(" ")[1];
+  if (!token) return res.sendStatus(401);
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+};
+
+// Endpoint de verificação de administrador
+app.get("/api/auth/check-admin", authenticateToken, (req, res) => {
+  const decryptedId = decrypt(req.user.id);
+  if (decryptedId === "38177418728391") {
+    res.json({ isAdmin: true });
+  } else {
+    res.json({ isAdmin: false });
+  }
 });
 
 async function createTables() {

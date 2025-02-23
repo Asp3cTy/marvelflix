@@ -1,47 +1,46 @@
-import { createContext, useContext, useState, useEffect } from "react";
+// src/context/authcontext.js
+import React, { createContext, useState, useEffect } from 'react';
+import axios from 'axios';
+import API_URL from '../config';
 
-// Cria o contexto de autenticação
 export const AuthContext = createContext();
 
-// Hook personalizado para usar a autenticação
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
-
-// Provedor de Autenticação
 export const AuthProvider = ({ children }) => {
-  const [authToken, setAuthToken] = useState(null);
-  const [userEmail, setUserEmail] = useState(null);
+    const [authToken, setAuthToken] = useState(localStorage.getItem('token') || null);
+    const [user, setUser] = useState(null);
 
-  // Função de login que armazena o token e o salva no localStorage
-  const login = (token, email) => {
-    setAuthToken(token);
-    setUserEmail(email);
-    localStorage.setItem("authToken", token);
-    localStorage.setItem("userEmail", email);
-  };
+    useEffect(() => {
+        if (authToken) {
+            axios.get(`${API_URL}/api/auth/me`, {
+                headers: { Authorization: `Bearer ${authToken}` }
+            })
+            .then(response => {
+                setUser(response.data);
+            })
+            .catch(() => {
+                setAuthToken(null);
+                setUser(null);
+                localStorage.removeItem('token');
+            });
+        }
+    }, [authToken]);
 
-  // Função de logout que remove o token
-  const logout = () => {
-    setAuthToken(null);
-    setUserEmail(null);
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("userEmail");
-  };
+    const login = (token) => {
+        setAuthToken(token);
+        localStorage.setItem('token', token);
+    };
 
-  // Verifica se há um token salvo no localStorage ao carregar o app
-  useEffect(() => {
-    const savedToken = localStorage.getItem("authToken");
-    const savedEmail = localStorage.getItem("userEmail");
-    if (savedToken) {
-      setAuthToken(savedToken);
-      setUserEmail(savedEmail);
-    }
-  }, []);
+    const logout = () => {
+        setAuthToken(null);
+        setUser(null);
+        localStorage.removeItem('token');
+    };
 
-  return (
-    <AuthContext.Provider value={{ authToken, userEmail, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+    const isAdmin = user?.username === 'admin';
+
+    return (
+        <AuthContext.Provider value={{ authToken, login, logout, user, isAdmin }}>
+            {children}
+        </AuthContext.Provider>
+    );
 };

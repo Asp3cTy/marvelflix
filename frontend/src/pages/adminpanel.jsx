@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/authcontext";
 import { useNavigate } from "react-router-dom";
-import API_URL from "../config"; 
+import { API_URL } from "../config";
 
 const AdminPanel = () => {
     const { authToken } = useContext(AuthContext);
@@ -11,6 +11,18 @@ const AdminPanel = () => {
     useEffect(() => {
         if (!authToken) {
             navigate("/login");
+        } else {
+            axios.get(`${API_URL}/api/auth/check-admin`, {
+                headers: { Authorization: `Bearer ${authToken}` }
+            })
+            .then(response => {
+                if (!response.data.isAdmin) {
+                    navigate("/home");
+                }
+            })
+            .catch(() => {
+                navigate("/home");
+            });
         }
     }, [authToken, navigate]);
 
