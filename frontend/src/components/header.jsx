@@ -1,11 +1,13 @@
-// header.jsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import AuthModal from "./authmodal"; // Importação do Modal
+import { useAuth } from "../context/authcontext"; // Importação do contexto de autenticação
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false); // Estado para abrir o modal
+  const { authToken, logout } = useAuth(); // Obtém token de autenticação e função de logout
+  const userName = "Usuário"; // Substitua com o nome do usuário real, se disponível
 
   return (
     <>
@@ -29,12 +31,24 @@ const Header = () => {
               className="h-12 md:h-14 lg:h-16 w-auto mx-auto"
             />
           </Link>
-          <button
-            onClick={() => setIsAuthModalOpen(true)}
-            className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
-          >
-            Entrar
-          </button>
+          {authToken ? (
+            <div className="flex items-center space-x-4">
+              <span>Olá, {userName}</span>
+              <button
+                onClick={logout}
+                className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setIsAuthModalOpen(true)}
+              className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
+            >
+              Entrar
+            </button>
+          )}
         </div>
       </header>
 
