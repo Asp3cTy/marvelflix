@@ -32,7 +32,7 @@ const Header = () => {
           </Link>
           {authToken ? (
             <div className="flex items-center space-x-4">
-              <span>Olá, {userEmail}</span>
+              <span className="hidden md:inline">Olá, {userEmail}</span>
               <button
                 onClick={logout}
                 className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
