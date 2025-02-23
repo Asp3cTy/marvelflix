@@ -1,4 +1,3 @@
-// src/components/authmodal.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authcontext";
@@ -11,7 +10,7 @@ const AuthModal = ({ onClose }) => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const { login } = useAuth(); // pegamos a função login do context
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,7 +29,6 @@ const AuthModal = ({ onClose }) => {
 
       const data = await response.json();
 
-      // Se não for OK ou se não vier success
       if (!response.ok || data.success === false) {
         setError(data.message || "Erro ao processar");
         return;
@@ -40,16 +38,19 @@ const AuthModal = ({ onClose }) => {
         alert(data.message || "Registrado com sucesso!");
         setIsRegistering(false);
       } else {
-        // LOGIN
+        // Supondo que o back retorne algo como:
+        // { success: true, user: { id, email, role, ... }, message: "Login ok" }
         if (data.user) {
-          // data.user vem do backend (sem token)
+          // Seta no contexto
           login(data.user);
 
-          // Redireciona para Home
+          // Redireciona para /home
           navigate("/home");
 
           // Fecha o modal
           onClose();
+        } else {
+          setError("Dados de usuário não retornados do backend.");
         }
       }
     } catch (err) {
@@ -59,38 +60,31 @@ const AuthModal = ({ onClose }) => {
   };
 
   return (
-    <div className="modal-bg">
-      <div className="modal-content">
+    <div className="fixed inset-0 bg-black/60 z-50">
+      <div className="bg-white p-4 m-8">
         {error && <p>{error}</p>}
-
         <form onSubmit={handleSubmit}>
           <h2>{isRegistering ? "Registrar" : "Login"}</h2>
           <input
-            type="text"
-            placeholder="E-mail"
+            placeholder="Seu email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
+            placeholder="Sua senha"
             type="password"
-            placeholder="Senha"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
-
-          <button type="submit">{isRegistering ? "Registrar" : "Entrar"}</button>
+          <button type="submit">
+            {isRegistering ? "Criar Conta" : "Entrar"}
+          </button>
         </form>
 
         {isRegistering ? (
-          <p>
-            Já tem conta?
-            <button onClick={() => setIsRegistering(false)}>Login</button>
-          </p>
+          <p>Já tem conta? <button onClick={() => setIsRegistering(false)}>Login</button></p>
         ) : (
-          <p>
-            Novo?
-            <button onClick={() => setIsRegistering(true)}>Registrar</button>
-          </p>
+          <p>Novo? <button onClick={() => setIsRegistering(true)}>Registrar</button></p>
         )}
       </div>
     </div>
