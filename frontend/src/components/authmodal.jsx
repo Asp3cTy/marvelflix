@@ -1,3 +1,4 @@
+// authmodal.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authcontext";
@@ -13,7 +14,7 @@ const AuthModal = ({ onClose }) => {
 
   const baseURL = import.meta.env.VITE_API_URL || "";
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, authToken } = useAuth();
 
   useEffect(() => {
     setIsVisible(true);
@@ -67,16 +68,12 @@ const AuthModal = ({ onClose }) => {
       }
 
       if (isRegistering) {
-        // Registro bem-sucedido
         alert(data.message || "Usuário registrado com sucesso!");
       } else {
-        // Login bem-sucedido
         if (data.token) {
           login(data.token);
         }
-        // **Fechamos o modal** antes de navegar
         handleClose();
-        // Agora redireciona
         navigate("/home");
       }
     } catch (err) {
@@ -85,11 +82,15 @@ const AuthModal = ({ onClose }) => {
     }
   };
 
+  useEffect(() => {
+    if (authToken) {
+      handleClose();
+    }
+  }, [authToken]);
+
   return (
     <div
-      className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm z-50 transition-opacity duration-300 ${
-        isVisible ? "opacity-100" : "opacity-0"
-      }`}
+      className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm z-50 transition-opacity duration-300 ${isVisible ? "opacity-100" : "opacity-0"}`}
     >
       <div className="bg-gradient-to-br from-marvelDark to-gray-900 p-8 rounded-xl shadow-2xl w-96 relative transform transition-transform duration-300 scale-95">
         <button
@@ -134,13 +135,7 @@ const AuthModal = ({ onClose }) => {
               className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-600 focus:border-red-500 focus:ring focus:ring-red-400 transition"
             />
             {password && (
-              <p
-                className={`text-xs mt-1 ${
-                  passwordStrength.includes("forte")
-                    ? "text-green-400"
-                    : "text-yellow-400"
-                }`}
-              >
+              <p className={`text-xs mt-1 ${passwordStrength.includes("forte") ? "text-green-400" : "text-yellow-400"}`}>
                 {passwordStrength}
               </p>
             )}
@@ -167,7 +162,6 @@ const AuthModal = ({ onClose }) => {
           </button>
         </form>
 
-        {/* Alternar entre Login e Registro */}
         <div className="text-center mt-4">
           {!isRegistering ? (
             <>
