@@ -1,3 +1,4 @@
+// src/components/authmodal.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authcontext";
@@ -16,7 +17,6 @@ const AuthModal = ({ onClose }) => {
     e.preventDefault();
     setError("");
 
-    // Endpoint /api/auth/login ou /api/auth/register
     const endpoint = isRegistering
       ? `${API_URL}/api/auth/register`
       : `${API_URL}/api/auth/login`;
@@ -30,22 +30,26 @@ const AuthModal = ({ onClose }) => {
 
       const data = await response.json();
 
-      if (!response.ok || !data.success) {
+      // Se não for OK ou se não vier success
+      if (!response.ok || data.success === false) {
         setError(data.message || "Erro ao processar");
         return;
       }
 
       if (isRegistering) {
-        // Registro criado, podemos exibir algo e limpar form
         alert(data.message || "Registrado com sucesso!");
         setIsRegistering(false);
       } else {
         // LOGIN
-        // data.user é o objeto do usuário do back
         if (data.user) {
+          // data.user vem do backend (sem token)
           login(data.user);
-          onClose();      // fecha modal
-          navigate("/");  // ou para /home
+
+          // Redireciona para Home
+          navigate("/home");
+
+          // Fecha o modal
+          onClose();
         }
       }
     } catch (err) {
@@ -58,6 +62,7 @@ const AuthModal = ({ onClose }) => {
     <div className="modal-bg">
       <div className="modal-content">
         {error && <p>{error}</p>}
+
         <form onSubmit={handleSubmit}>
           <h2>{isRegistering ? "Registrar" : "Login"}</h2>
           <input
