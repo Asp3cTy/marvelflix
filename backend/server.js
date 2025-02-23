@@ -30,22 +30,13 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-// Endpoint de verificação de administrador
-app.get("/api/auth/check-admin", authenticateToken, (req, res) => {
-  const decryptedId = decrypt(req.user.id);
-  if (decryptedId === "5") {
-    res.json({ isAdmin: true });
-  } else {
-    res.json({ isAdmin: false });
-  }
-});
 
 async function createTables() {
   try {
     console.log("📂 Criando/verificando tabelas...");
 
     await queryD1(
-      "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, created_at TEXT)"
+      "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, role TEXT DEFAULT 'user', created_at TEXT)"
     );
 
     await queryD1(
