@@ -5,6 +5,13 @@ import { useAuth } from "../context/authcontext";
 import axios from "axios";
 import { API_URL } from "../config";
 
+
+axios.get(`${API_URL}/api/auth/check-admin`, {
+  headers: {
+    Authorization: `Bearer ${authToken}`,
+  },
+})
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
