@@ -63,29 +63,32 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Rota para criar e testar um usuário
-router.post("/create-and-test", async (req, res) => {
-  const { username, password } = req.body;
+// Chama a função para criar e testar um usuário se o arquivo for executado diretamente
+if (require.main === module) {
+  (async () => {
+    const username = 'zulinn';
+    const password = 'reallytest25';
 
-  // Cria o usuário
-  await createUser(username, password);
+    // Cria o usuário
+    await createUser(username, password);
 
-  // Tenta fazer login com o usuário criado
-  const loginResponse = await fetch(`${req.protocol}://${req.get('host')}/api/panel/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ username, password })
-  });
+    // Tenta fazer login com o usuário criado
+    const loginResponse = await fetch(`http://localhost:3000/api/panel/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username, password })
+    });
 
-  const loginResult = await loginResponse.json();
+    const loginResult = await loginResponse.json();
 
-  if (loginResponse.ok) {
-    res.json({ message: "Usuário criado e login realizado com sucesso.", token: loginResult.token });
-  } else {
-    res.status(401).json({ message: "Usuário criado, mas login falhou.", error: loginResult.message });
-  }
-});
+    if (loginResponse.ok) {
+      console.log("Login realizado com sucesso:", loginResult.token);
+    } else {
+      console.error("Login falhou:", loginResult.message);
+    }
+  })();
+}
 
 module.exports = router;
