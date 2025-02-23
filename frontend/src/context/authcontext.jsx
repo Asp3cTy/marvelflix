@@ -9,21 +9,7 @@ export const AuthProvider = ({ children }) => {
     const [authToken, setAuthToken] = useState(localStorage.getItem('token') || null);
     const [user, setUser] = useState(null);
 
-    useEffect(() => {
-        if (authToken) {
-            axios.get(`${API_URL}/api/auth/me`, {
-                headers: { Authorization: `Bearer ${authToken}` }
-            })
-            .then(response => {
-                setUser(response.data);
-            })
-            .catch(() => {
-                setAuthToken(null);
-                setUser(null);
-                localStorage.removeItem('token');
-            });
-        }
-    }, [authToken]);
+
 
     const login = (token) => {
         setAuthToken(token);
