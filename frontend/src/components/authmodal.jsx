@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";        // Para redirecionar
+import { useAuth } from "../context/authcontext";      // Para acessar authToken, login, logout
 
 const AuthModal = ({ onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -9,8 +11,14 @@ const AuthModal = ({ onClose }) => {
   const [error, setError] = useState("");
   const [passwordStrength, setPasswordStrength] = useState("");
 
-  // Base URL da API definida na variável de ambiente
+  // Variável de ambiente do Vite para a baseURL do back-end
   const baseURL = import.meta.env.VITE_API_URL || "";
+
+  // Para redirecionar após login
+  const navigate = useNavigate();
+
+  // Importa o AuthContext
+  const { login } = useAuth();
 
   useEffect(() => {
     setIsVisible(true);
@@ -21,7 +29,7 @@ const AuthModal = ({ onClose }) => {
     setTimeout(onClose, 300);
   };
 
-  // Validação da senha: exige pelo menos 8 caracteres, 1 maiúscula, 1 número e 1 símbolo
+  // Validação de senha
   const validatePassword = (pwd) => {
     const strongRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
     if (!pwd) return "";
@@ -29,11 +37,12 @@ const AuthModal = ({ onClose }) => {
     return "A senha deve conter pelo menos 8 caracteres, 1 maiúscula, 1 número e 1 símbolo ⚠️";
   };
 
-  // Envio dos dados para API
+  // Envio dos dados para a API
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
+    // Validações simples
     if (!email.includes("@")) {
       setError("Insira um e-mail válido.");
       return;
@@ -49,9 +58,9 @@ const AuthModal = ({ onClose }) => {
       return;
     }
 
-    // Monta o endpoint completo usando baseURL
-    const endpoint = isRegistering 
-      ? `${baseURL}/api/auth/register` 
+    // Monta o endpoint (login ou registro)
+    const endpoint = isRegistering
+      ? `${baseURL}/api/auth/register`
       : `${baseURL}/api/auth/login`;
 
     try {
@@ -68,7 +77,20 @@ const AuthModal = ({ onClose }) => {
         return;
       }
 
-      alert(data.message || "Sucesso!");
+      // Se for registro
+      if (isRegistering) {
+        alert(data.message || "Usuário registrado com sucesso!");
+      } else {
+        // Se for login, assumimos que data.token existe
+        if (data.token) {
+          // Chama a função login do AuthContext para salvar o token no localStorage
+          login(data.token);
+          // Redireciona para Home
+          navigate("/");
+        }
+      }
+
+      // Fecha o modal
       handleClose();
     } catch (err) {
       console.error("Erro ao comunicar com API:", err);
@@ -158,6 +180,7 @@ const AuthModal = ({ onClose }) => {
           </button>
         </form>
 
+        {/* Alternar entre Login e Registro */}
         <div className="text-center mt-4">
           {!isRegistering ? (
             <>
