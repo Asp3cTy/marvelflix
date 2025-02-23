@@ -30,6 +30,7 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign({ id: encryptedId }, process.env.JWT_SECRET, { expiresIn: "1h" });
     res.json({ token });
   } catch (error) {
+    console.error("Erro ao autenticar usuário:", error);
     res.status(500).json({ message: "Erro ao autenticar usuário" });
   }
 });
@@ -56,6 +57,7 @@ router.post("/register", async (req, res) => {
 
     res.json({ message: "Usuário criado com sucesso!" });
   } catch (error) {
+    console.error("Erro ao criar usuário:", error);
     res.status(500).json({ message: "Erro ao criar usuário" });
   }
 });
@@ -67,6 +69,7 @@ router.get("/check-admin", async (req, res) => {
     const decryptedId = decrypt(decoded.id);
     res.json({ isAdmin: decryptedId === "5" });
   } catch (error) {
+    console.error("Erro ao verificar administrador:", error);
     res.status(500).json({ message: "Erro ao verificar administrador" });
   }
 });

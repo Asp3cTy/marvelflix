@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import AuthModal from "./authmodal"; // Importação do Modal
-import { useAuth } from "../context/authcontext"; // Importação do contexto de autenticação
-import axios from "axios"; // Importação do axios para fazer chamadas HTTP
+import AuthModal from "./authmodal";
+import { useAuth } from "../context/authcontext";
+import axios from "axios";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false); // Estado para abrir o modal
-  const [isAdmin, setIsAdmin] = useState(false); // Estado para verificar se o usuário é administrador
-  const { authToken, userEmail, logout } = useAuth(); // Obtém token de autenticação, e-mail e função de logout
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const { authToken, userEmail, logout } = useAuth();
 
   useEffect(() => {
     if (authToken) {
