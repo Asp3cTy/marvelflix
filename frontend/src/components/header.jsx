@@ -13,7 +13,7 @@ const Header = () => {
         <nav className="flex space-x-4">
           <Link to="/home">Home</Link>
           {/* Exemplo: se isAdmin, mostra link Admin */}
-          {isAdmin && <Link to="/admin">Painel</Link>}
+          {isAdmin && <Link to="/adminpanel">Painel</Link>}
         </nav>
 
         {user ? (

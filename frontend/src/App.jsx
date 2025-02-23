@@ -62,7 +62,7 @@ const AppContent = () => {
 
           {/* Rota admin */}
           <Route
-            path="/admin"
+            path="/adminpanel"
             element={
               <ProtectedRoute adminOnly={true}>
                 <AdminPanel />
