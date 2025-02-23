@@ -1,42 +1,21 @@
-// src/pages/Home.jsx
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import API_URL from "../config"; 
+// src/pages/home.jsx
+import React from "react";
 
 const Home = () => {
-  const [collections, setCollections] = useState([]);
-
-  useEffect(() => {
-    axios.get(`${API_URL}/api/collections`)
-      .then((response) => setCollections(response.data))
-      .catch((error) => console.error("Erro ao buscar coleções:", error));
-  }, []);
-
   return (
-    <div className="bg-marvelDark min-h-screen text-white p-6">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 p-6">
-        {collections.map((collection) => {
-          const collectionImageUrl = collection?.image?.startsWith("http")
-            ? collection.image  
-            : `${API_URL}${collection.image}`;
-
-          return (
-            <Link to={`/collection/${collection.id}`} key={collection.id}>
-              <div className="relative group overflow-hidden rounded-lg shadow-lg">
-                <img
-                  src={collectionImageUrl}
-                  alt={collection.name}
-                className="w-full h-auto object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  
-                </div>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
+    <div className="bg-marvelDark min-h-screen text-white p-6 flex flex-col items-center justify-center">
+      <h1 className="text-4xl md:text-6xl font-bold mb-4">Bem-vindo ao MarvelFlix!</h1>
+      <p className="text-lg md:text-2xl max-w-2xl text-center mb-8">
+        Descubra e assista a uma vasta coleção de filmes e séries do universo Marvel. Explore nossas coleções e encontre seus favoritos!
+      </p>
+      <img
+        src="https://i.imgur.com/GpB2cuj.png"
+        alt="MarvelFlix"
+        className="h-24 md:h-32 lg:h-40 w-auto mx-auto mb-8"
+      />
+      <button className="bg-red-600 px-6 py-3 rounded-lg text-lg md:text-xl font-semibold hover:bg-red-700 transition">
+        Explorar Coleções
+      </button>
     </div>
   );
 };
