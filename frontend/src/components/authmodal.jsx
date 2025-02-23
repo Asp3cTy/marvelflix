@@ -22,7 +22,10 @@ const AuthModal = ({ onClose }) => {
 
   const handleClose = () => {
     setIsVisible(false);
-    setTimeout(onClose, 300);
+    setTimeout(() => {
+      onClose();
+      document.getElementById('auth-modal').remove();
+    }, 300);
   };
 
   const validatePassword = (pwd) => {
@@ -88,8 +91,11 @@ const AuthModal = ({ onClose }) => {
     }
   }, [authToken]);
 
+  if (!isVisible) return null; // Adiciona esta linha para remover o modal do DOM se não for visível
+
   return (
     <div
+      id="auth-modal"
       className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm z-50 transition-opacity duration-300 ${isVisible ? "opacity-100" : "opacity-0"}`}
     >
       <div className="bg-gradient-to-br from-marvelDark to-gray-900 p-8 rounded-xl shadow-2xl w-96 relative transform transition-transform duration-300 scale-95">
