@@ -1,32 +1,73 @@
+// src/components/header.jsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/authcontext";
 import AuthModal from "./authmodal";
+import { useAuth } from "../context/authcontext";
 
 const Header = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-  const { user, isAdmin, logout } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  const { authToken, logout } = useAuth();
 
   return (
     <>
-      <header className="bg-marvelDark text-white p-4">
-        <nav className="flex space-x-4">
-          <Link to="/home">Home</Link>
-          {/* Exemplo: se isAdmin, mostra link Admin */}
-          {isAdmin && <Link to="/adminpanel">Painel</Link>}
-        </nav>
+      <header className="fixed top-0 left-0 w-full bg-marvelDark text-white p-4 shadow-md z-50">
+        <div className="container mx-auto flex items-center justify-between">
+          <button 
+            className="text-2xl md:hidden"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? "✖" : "☰"}
+          </button>
 
-        {user ? (
-          <div>
-            <span>Logado como: {user.email}</span>
-            <button onClick={logout}>Logout</button>
-          </div>
-        ) : (
-          <button onClick={() => setModalOpen(true)}>Login</button>
-        )}
+          <nav className="hidden md:flex items-center space-x-6">
+            <Link to="/home">Home</Link>
+            <Link to="/collections">Coleções</Link>
+            {/* Sem admin, sem checagem */}
+            <Link to="/about">Sobre</Link>
+            {/* Se quiser remover /admin, remova aqui também */}
+          </nav>
+
+          <Link to="/home" className="absolute left-1/2 transform -translate-x-1/2">
+            <img 
+              src="https://i.imgur.com/GpB2cuj.png"
+              alt="MarvelFlix"
+              className="h-12 md:h-14 lg:h-16 w-auto mx-auto"
+            />
+          </Link>
+
+          {authToken ? (
+            <button
+              onClick={logout}
+              className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
+            >
+              Logout
+            </button>
+          ) : (
+            <button
+              onClick={() => setIsAuthModalOpen(true)}
+              className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
+            >
+              Entrar
+            </button>
+          )}
+        </div>
       </header>
 
-      {modalOpen && <AuthModal onClose={() => setModalOpen(false)} />}
+      {isMenuOpen && (
+        <div className="bg-marvelDark text-white py-4 shadow-md mt-16">
+          <nav className="flex flex-col items-center space-y-4">
+            <Link to="/home">Home</Link>
+            <Link to="/collections">Coleções</Link>
+            <Link to="/about">Sobre</Link>
+            {/* sem nada de admin */}
+          </nav>
+        </div>
+      )}
+
+      {isAuthModalOpen && <AuthModal onClose={() => setIsAuthModalOpen(false)} />}
+      <div className="pt-16 bg-marvelDark"></div>
     </>
   );
 };

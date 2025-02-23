@@ -1,30 +1,27 @@
 // src/context/authcontext.jsx
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import axios from "axios";
+import API_URL from "../config";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Em vez de authToken, guardamos todo o objeto user
-  const [user, setUser] = useState(
-    // tenta persistir no localStorage se quiser
-    JSON.parse(localStorage.getItem("user")) || null
-  );
+  const [authToken, setAuthToken] = useState(localStorage.getItem("token") || null);
 
-  // Se quiser uma flag de admin
-  const isAdmin = (user?.role === "admin");
-
-  const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
+  // Quando faz login, salva token
+  const login = (token) => {
+    setAuthToken(token);
+    localStorage.setItem("token", token);
   };
 
+  // Logout
   const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
+    setAuthToken(null);
+    localStorage.removeItem("token");
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAdmin, login, logout }}>
+    <AuthContext.Provider value={{ authToken, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

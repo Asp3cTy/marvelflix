@@ -1,3 +1,4 @@
+// src/components/authmodal.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authcontext";
@@ -9,8 +10,8 @@ const AuthModal = ({ onClose }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const navigate = useNavigate();
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,62 +30,66 @@ const AuthModal = ({ onClose }) => {
 
       const data = await response.json();
 
-      if (!response.ok || data.success === false) {
-        setError(data.message || "Erro ao processar");
+      if (!response.ok) {
+        setError(data.message || "Erro ao processar a solicitação.");
         return;
       }
 
       if (isRegistering) {
-        alert(data.message || "Registrado com sucesso!");
-        setIsRegistering(false);
+        alert(data.message || "Usuário registrado com sucesso!");
       } else {
-        // Supondo que o back retorne algo como:
-        // { success: true, user: { id, email, role, ... }, message: "Login ok" }
-        if (data.user) {
-          // Seta no contexto
-          login(data.user);
-
-          // Redireciona para /home
+        // Espera do backend: { token }
+        if (data.token) {
+          login(data.token);
           navigate("/home");
-
-          // Fecha o modal
-          onClose();
-        } else {
-          setError("Dados de usuário não retornados do backend.");
         }
       }
+      onClose();
     } catch (err) {
-      console.error("Erro de conexão:", err);
-      setError("Erro de conexão com o servidor");
+      console.error("Erro ao comunicar com API:", err);
+      setError("Erro de conexão. Tente novamente.");
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 z-50">
-      <div className="bg-white p-4 m-8">
+    <div className="fixed inset-0 bg-black/60 z-50 flex justify-center items-center">
+      <div className="bg-white p-6 w-96 rounded">
         {error && <p>{error}</p>}
         <form onSubmit={handleSubmit}>
-          <h2>{isRegistering ? "Registrar" : "Login"}</h2>
+          <h2 className="mb-2">{isRegistering ? "Registrar" : "Login"}</h2>
           <input
-            placeholder="Seu email"
+            type="email"
+            placeholder="E-mail"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
+            className="border p-2 w-full mb-2"
           />
           <input
-            placeholder="Sua senha"
             type="password"
+            placeholder="Senha"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
+            className="border p-2 w-full mb-2"
           />
-          <button type="submit">
+          <button type="submit" className="bg-blue-600 text-white py-2 px-4">
             {isRegistering ? "Criar Conta" : "Entrar"}
           </button>
         </form>
 
         {isRegistering ? (
-          <p>Já tem conta? <button onClick={() => setIsRegistering(false)}>Login</button></p>
+          <p className="mt-2">
+            Já tem uma conta?{" "}
+            <button onClick={() => setIsRegistering(false)} className="text-blue-600 underline">
+              Faça Login
+            </button>
+          </p>
         ) : (
-          <p>Novo? <button onClick={() => setIsRegistering(true)}>Registrar</button></p>
+          <p className="mt-2">
+            Novo aqui?{" "}
+            <button onClick={() => setIsRegistering(true)} className="text-blue-600 underline">
+              Registre-se
+            </button>
+          </p>
         )}
       </div>
     </div>

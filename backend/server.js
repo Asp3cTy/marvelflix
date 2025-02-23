@@ -1,33 +1,36 @@
+// backend/server.js
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const jwt = require("jsonwebtoken");
 const { queryD1 } = require("./d1");
+const { encrypt, decrypt } = require("./cryptoUtils");
 const authRoutes = require("./routes/auth");
 const collectionsRoutes = require("./routes/collections");
 const moviesRoutes = require("./routes/movies");
 const thumbnailsRoutes = require("./routes/thumbnails");
 
 const app = express();
-app.use(cors()); // Permite acesso de qualquer origem
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("API do MarvelFlix está funcionando!");
 });
 
-// Middleware de autenticação (exemplo, caso use em rotas específicas):
-const authenticateToken = (req, res, next) => {
-  const token = req.headers["authorization"] && req.headers["authorization"].split(" ")[1];
-  if (!token) return res.sendStatus(401);
+// Exemplo se quiser middleware de autenticação global
+// mas não é obrigatório remover. Você pode manter se precisar em rotas específicas
+// const authenticateToken = (req, res, next) => {
+//   const token = req.headers["authorization"] && req.headers["authorization"].split(" ")[1];
+//   if (!token) return res.sendStatus(401);
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
-};
+//   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+//     if (err) return res.sendStatus(403);
+//     req.user = user;
+//     next();
+//   });
+// };
 
 async function createTables() {
   try {
@@ -58,7 +61,6 @@ app.use("/api/collections", collectionsRoutes);
 app.use("/api/movies", moviesRoutes);
 app.use("/api/thumbnails", thumbnailsRoutes);
 
-// Servindo localmente as thumbnails (se existirem)
 app.use("/thumbnails", express.static(path.join(__dirname, "assets/thumbnails")));
 
 const PORT = process.env.PORT || 5000;
