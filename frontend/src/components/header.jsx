@@ -1,4 +1,4 @@
-// src/components/header.jsx
+// src/components/Header.jsx
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/authcontext";
@@ -6,6 +6,18 @@ import { AuthContext } from "../context/authcontext";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { authToken, logout } = useContext(AuthContext);
+
+  // Você pode, se quiser, no login do backend retornar também o email do usuário.
+  // Porém, no exemplo atual, só temos "token".
+  // Se quiser exibir "Olá, userEmail", precisamos ter "userEmail" no contexto.
+  // Vou presumir que seu back agora retorna: { token, email }, e no "login(token, email)" salvamos no context.
+
+  // Exemplo: vamos supor que no AuthContext exista "userEmail"
+  // const { authToken, userEmail, logout } = useContext(AuthContext);
+
+  const userEmail = localStorage.getItem("userEmail"); 
+  // <-- gambiarra: caso você queira salvar userEmail no localStorage
+  // Ideal seria um state no context. Ajuste conforme sua lógica real.
 
   return (
     <>
@@ -19,9 +31,24 @@ const Header = () => {
           </button>
 
           <nav className="hidden md:flex items-center space-x-6">
-            <Link to="/home">Home</Link>
-            <Link to="/collections">Coleções</Link>
-            <Link to="/about">Sobre</Link>
+            <Link
+              to="/home"
+              className="hover:text-red-500 transition-colors"
+            >
+              Home
+            </Link>
+            <Link
+              to="/collections"
+              className="hover:text-red-500 transition-colors"
+            >
+              Coleções
+            </Link>
+            <Link
+              to="/about"
+              className="hover:text-red-500 transition-colors"
+            >
+              Sobre
+            </Link>
           </nav>
 
           <Link to="/home" className="absolute left-1/2 transform -translate-x-1/2">
@@ -32,24 +59,28 @@ const Header = () => {
             />
           </Link>
 
-          {/* Se tem token, mostra logout */}
-          {authToken && (
-            <button
-              onClick={logout}
-              className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
-            >
-              Logout
-            </button>
-          )}
+          {authToken ? (
+            <div className="flex items-center space-x-4">
+              {userEmail && (
+                <span className="text-gray-200">Olá, {userEmail}</span>
+              )}
+              <button
+                onClick={logout}
+                className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
+              >
+                Logout
+              </button>
+            </div>
+          ) : null}
         </div>
       </header>
 
       {isMenuOpen && (
         <div className="bg-marvelDark text-white py-4 shadow-md mt-16">
           <nav className="flex flex-col items-center space-y-4">
-            <Link to="/home">Home</Link>
-            <Link to="/collections">Coleções</Link>
-            <Link to="/about">Sobre</Link>
+            <Link to="/home" className="hover:text-red-500">Home</Link>
+            <Link to="/collections" className="hover:text-red-500">Coleções</Link>
+            <Link to="/about" className="hover:text-red-500">Sobre</Link>
           </nav>
         </div>
       )}
