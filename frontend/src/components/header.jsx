@@ -48,7 +48,7 @@ const Header = () => {
             <Link to="/collections" className="hover:text-marvelRed transition">Coleções</Link>
             <Link to="/about" className="hover:text-marvelRed transition">Sobre</Link>
             {isAdmin && (
-  <Link to="/adminpanel" className="hover:text-marvelRed transition">Painel</Link>
+  <Link to="/admin" className="hover:text-marvelRed transition">Painel</Link>
 )}
           </nav>
           <Link to="/" className="absolute left-1/2 transform -translate-x-1/2">
@@ -86,7 +86,7 @@ const Header = () => {
             <Link to="/collections" className="hover:text-marvelRed transition">Coleções</Link>
             <Link to="/about" className="hover:text-marvelRed transition">Sobre</Link>
             {isAdmin && (
-  <Link to="/adminpanel" className="hover:text-marvelRed transition">Painel</Link>
+  <Link to="/admin" className="hover:text-marvelRed transition">Painel</Link>
 )}
           </nav>
         </div>
