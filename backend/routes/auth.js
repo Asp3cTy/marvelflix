@@ -30,7 +30,7 @@ router.post('/login', async (req, res) => {
     const encryptedId = encrypt(user.id.toString());
     const token = jwt.sign({ id: encryptedId }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    // Retorna apenas o token. (Você poderia retornar role ou email também, mas ok.)
+    // Aqui só retorna o token, sem role ou user:
     res.json({ token });
   } catch (error) {
     console.error('Erro ao autenticar usuário:', error);
@@ -78,7 +78,7 @@ router.get('/check-admin', async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const decryptedId = decrypt(decoded.id);
 
-    // Busca o usuário
+    // Busca o usuário pelo ID
     const users = await queryD1('SELECT role FROM users WHERE id = ?', [decryptedId]);
     const user = Array.isArray(users) && users.length > 0 ? users[0] : null;
     console.log("Usuário verificado:", user);

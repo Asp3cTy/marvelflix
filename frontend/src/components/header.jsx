@@ -1,4 +1,3 @@
-// src/components/header.jsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import AuthModal from "./authmodal";
@@ -8,7 +7,6 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
-  // Pegamos o token e isAdmin DIRETO do contexto
   const { authToken, isAdmin, logout } = useAuth();
 
   return (
@@ -29,7 +27,6 @@ const Header = () => {
             <Link to="/collections" className="hover:text-marvelRed transition">Coleções</Link>
             <Link to="/about" className="hover:text-marvelRed transition">Sobre</Link>
             
-            {/* Só mostra Painel se isAdmin for true */}
             {isAdmin && (
               <Link to="/admin" className="hover:text-marvelRed transition">Painel</Link>
             )}

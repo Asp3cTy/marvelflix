@@ -1,4 +1,3 @@
-// src/context/authcontext.jsx
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import API_URL from "../config";
@@ -27,8 +26,6 @@ export const AuthProvider = ({ children }) => {
     }
   }, [authToken]);
   
-  
-
   // Salva o token no state + localStorage
   const login = (token) => {
     setAuthToken(token);
