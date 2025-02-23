@@ -12,12 +12,14 @@ const Header = () => {
 
   useEffect(() => {
     if (authToken) {
+      console.log("Verificando se o usuário é admin...");
       axios.get("/api/auth/check-admin", {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
       })
       .then(response => {
+        console.log("Resposta da API /check-admin:", response.data);
         setIsAdmin(response.data.isAdmin);
       })
       .catch(error => {

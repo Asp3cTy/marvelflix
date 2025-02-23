@@ -69,6 +69,7 @@ router.get('/check-admin', async (req, res) => {
     const decryptedId = decrypt(decoded.id);
     const users = await queryD1('SELECT role FROM users WHERE id = ?', [decryptedId]);
     const user = Array.isArray(users) && users.length > 0 ? users[0] : null;
+    console.log("Usuário verificado:", user);
     res.json({ isAdmin: user && user.role === 'admin' });
   } catch (error) {
     console.error('Erro ao verificar administrador:', error);
