@@ -31,31 +31,18 @@ const AppContent = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Mostra o Header apenas se estiver logado */}
       {authToken && <Header />}
-
       <div className="flex-grow">
         <Routes>
-          {/* Rota de LandingPage para usuários não logados */}
           <Route path="/" element={!authToken ? <LandingPage /> : <Navigate to="/home" />} />
-
-          {/* Agora criamos a rota /home para exibir a Home */}
           <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-
-          {/* Demais rotas protegidas */}
           <Route path="/collection/:collectionId" element={<ProtectedRoute><CollectionView /></ProtectedRoute>} />
           <Route path="/movie/:movieId" element={<ProtectedRoute><MovieView /></ProtectedRoute>} />
           <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
-
-          {/* Exemplo de rota de login (se precisar de uma página de login separada) */}
           <Route path="/login" element={<Login />} />
-
-          {/* Qualquer outra rota, redireciona para / */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
-
-      {/* Mostra o Footer apenas se estiver logado */}
       {authToken && <Footer />}
     </div>
   );
