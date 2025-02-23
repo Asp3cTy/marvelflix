@@ -73,7 +73,7 @@ if (require.main === module) {
     await createUser(username, password);
 
     // Tenta fazer login com o usuário criado
-    const loginResponse = await fetch(`http://localhost:3000/api/panel/login`, {
+    const loginResponse = await fetch(`https://srv-marvelflix.onrender.com/api/panel/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
