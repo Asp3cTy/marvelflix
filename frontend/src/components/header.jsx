@@ -6,8 +6,7 @@ import { useAuth } from "../context/authcontext"; // Importação do contexto de
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false); // Estado para abrir o modal
-  const { authToken, logout } = useAuth(); // Obtém token de autenticação e função de logout
-  const userName = "Usuário"; // Substitua com o nome do usuário real, se disponível
+  const { authToken, userEmail, logout } = useAuth(); // Obtém token de autenticação, e-mail e função de logout
 
   return (
     <>
@@ -33,7 +32,7 @@ const Header = () => {
           </Link>
           {authToken ? (
             <div className="flex items-center space-x-4">
-              <span>Olá, {userName}</span>
+              <span>Olá, {userEmail}</span>
               <button
                 onClick={logout}
                 className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"

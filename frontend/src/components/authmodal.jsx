@@ -1,4 +1,3 @@
-// authmodal.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authcontext";
@@ -74,7 +73,7 @@ const AuthModal = ({ onClose }) => {
         alert(data.message || "Usuário registrado com sucesso!");
       } else {
         if (data.token) {
-          login(data.token);
+          login(data.token, email);
         }
         handleClose();
         navigate("/home");
