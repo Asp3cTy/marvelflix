@@ -1,12 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AuthModal from "./authmodal"; // Importação do Modal
 import { useAuth } from "../context/authcontext"; // Importação do contexto de autenticação
+import axios from "axios"; // Importação do axios para fazer chamadas HTTP
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false); // Estado para abrir o modal
+  const [isAdmin, setIsAdmin] = useState(false); // Estado para verificar se o usuário é administrador
   const { authToken, userEmail, logout } = useAuth(); // Obtém token de autenticação, e-mail e função de logout
+
+  useEffect(() => {
+    if (authToken) {
+      axios.get("/api/auth/check-admin", {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then(response => {
+        setIsAdmin(response.data.isAdmin);
+      })
+      .catch(error => {
+        console.error("Erro ao verificar administrador:", error);
+      });
+    }
+  }, [authToken]);
 
   return (
     <>
@@ -22,6 +40,9 @@ const Header = () => {
             <Link to="/" className="hover:text-marvelRed transition">Home</Link>
             <Link to="/collections" className="hover:text-marvelRed transition">Coleções</Link>
             <Link to="/about" className="hover:text-marvelRed transition">Sobre</Link>
+            {isAdmin && (
+              <Link to="/adminpanel" className="hover:text-marvelRed transition">Painel</Link>
+            )}
           </nav>
           <Link to="/" className="absolute left-1/2 transform -translate-x-1/2">
             <img 
@@ -57,6 +78,9 @@ const Header = () => {
             <Link to="/" className="hover:text-marvelRed transition">Home</Link>
             <Link to="/collections" className="hover:text-marvelRed transition">Coleções</Link>
             <Link to="/about" className="hover:text-marvelRed transition">Sobre</Link>
+            {isAdmin && (
+              <Link to="/adminpanel" className="hover:text-marvelRed transition">Painel</Link>
+            )}
           </nav>
         </div>
       )}
