@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import AuthModal from "./authmodal";
 import { useAuth } from "../context/authcontext";
 import axios from "axios";
+import { API_URL } from "../config";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,7 +14,7 @@ const Header = () => {
   useEffect(() => {
     if (authToken) {
       console.log("Verificando se o usuário é admin...");
-      axios.get("/api/auth/check-admin", {
+      axios.get(`${API_URL}/api/auth/check-admin`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
