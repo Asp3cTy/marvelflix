@@ -1,3 +1,4 @@
+// authcontext.jsx
 import { createContext, useContext, useState, useEffect } from "react";
 
 // Cria o contexto de autenticação

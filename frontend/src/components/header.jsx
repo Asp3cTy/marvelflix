@@ -1,3 +1,4 @@
+// header.jsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import AuthModal from "./authmodal"; // Importação do Modal

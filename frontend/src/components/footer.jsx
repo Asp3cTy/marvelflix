@@ -1,3 +1,4 @@
+// footer.jsx
 import React from "react";
 import { FaTelegram, FaWhatsapp } from "react-icons/fa";
 
