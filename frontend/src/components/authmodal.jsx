@@ -77,7 +77,7 @@ const AuthModal = ({ onClose }) => {
         // **Fechamos o modal** antes de navegar
         handleClose();
         // Agora redireciona
-        navigate("/");
+        navigate("/home");
       }
     } catch (err) {
       console.error("Erro ao comunicar com API:", err);

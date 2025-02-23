@@ -12,7 +12,6 @@ const LandingPage = () => {
   }
 
   const handleOpenModal = () => {
-    console.log("Abrindo modal...");
     setIsAuthModalOpen(true);
   };
 

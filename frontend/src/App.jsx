@@ -35,12 +35,21 @@ const AppContent = () => {
 
       <div className="flex-grow">
         <Routes>
-          {/* Se não estiver logado, mostra a LandingPage */}
-          <Route path="/" element={authToken ? <Home /> : <LandingPage />} />
+          {/* Rota de LandingPage para usuários não logados */}
+          <Route path="/" element={!authToken ? <LandingPage /> : <Navigate to="/home" />} />
+
+          {/* Agora criamos a rota /home para exibir a Home */}
+          <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+
+          {/* Demais rotas protegidas */}
           <Route path="/collection/:collectionId" element={<ProtectedRoute><CollectionView /></ProtectedRoute>} />
           <Route path="/movie/:movieId" element={<ProtectedRoute><MovieView /></ProtectedRoute>} />
-          <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
+
+          {/* Exemplo de rota de login (se precisar de uma página de login separada) */}
+          <Route path="/login" element={<Login />} />
+
+          {/* Qualquer outra rota, redireciona para / */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
