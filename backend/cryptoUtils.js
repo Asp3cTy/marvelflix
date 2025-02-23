@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const algorithm = 'aes-256-cbc';
-const key = Buffer.from('SUA_CHAVE_BASE64', 'base64'); // Substitua 'SUA_CHAVE_BASE64' pela chave gerada
+const key = Buffer.from(process.env.CRYPTO_KEY, 'base64'); // Decodifique a chave Base64
 const iv = crypto.randomBytes(16);
 
 if (key.length !== 32) {
