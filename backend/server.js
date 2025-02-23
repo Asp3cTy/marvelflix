@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const jwt = require("jsonwebtoken");
+const panelRoutes = require("./routes/panel");
 const { queryD1 } = require("./d1");
 const { encrypt, decrypt } = require("./cryptoUtils");
 const authRoutes = require("./routes/auth");
@@ -60,6 +61,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/collections", collectionsRoutes);
 app.use("/api/movies", moviesRoutes);
 app.use("/api/thumbnails", thumbnailsRoutes);
+app.use("/api/panel", panelRoutes);
 
 app.use("/thumbnails", express.static(path.join(__dirname, "assets/thumbnails")));
 

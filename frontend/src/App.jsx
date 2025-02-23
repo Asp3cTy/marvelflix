@@ -51,12 +51,10 @@ const AppContent = () => {
           <Route path="/collections" element={<ProtectedRoute><Collections /></ProtectedRoute>} />
           <Route path="/collection/:collectionId" element={<ProtectedRoute><CollectionView /></ProtectedRoute>} />
           <Route path="/movie/:movieId" element={<ProtectedRoute><MovieView /></ProtectedRoute>} />
-
-          {/* Se quiser manter "AdminPanel" como rota, mas não há distinção de admin */}
-          <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
-
           <Route path="/login" element={<Login />} />
-          <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/admin" element={<AdminPanel />} />
+        <Route path="*" element={<h1>Página não encontrada</h1>} />
+
         </Routes>
       </div>
 
