@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";        // Para redirecionar
-import { useAuth } from "../context/authcontext";      // Para acessar authToken, login, logout
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/authcontext";
 
 const AuthModal = ({ onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -11,13 +11,8 @@ const AuthModal = ({ onClose }) => {
   const [error, setError] = useState("");
   const [passwordStrength, setPasswordStrength] = useState("");
 
-  // Variável de ambiente do Vite para a baseURL do back-end
   const baseURL = import.meta.env.VITE_API_URL || "";
-
-  // Para redirecionar após login
   const navigate = useNavigate();
-
-  // Importa o AuthContext
   const { login } = useAuth();
 
   useEffect(() => {
@@ -29,7 +24,6 @@ const AuthModal = ({ onClose }) => {
     setTimeout(onClose, 300);
   };
 
-  // Validação de senha
   const validatePassword = (pwd) => {
     const strongRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
     if (!pwd) return "";
@@ -37,28 +31,23 @@ const AuthModal = ({ onClose }) => {
     return "A senha deve conter pelo menos 8 caracteres, 1 maiúscula, 1 número e 1 símbolo ⚠️";
   };
 
-  // Envio dos dados para a API
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    // Validações simples
     if (!email.includes("@")) {
       setError("Insira um e-mail válido.");
       return;
     }
-
     if (password.length < 8) {
       setError("A senha deve ter pelo menos 8 caracteres.");
       return;
     }
-
     if (isRegistering && password !== confirmPassword) {
       setError("As senhas não coincidem!");
       return;
     }
 
-    // Monta o endpoint (login ou registro)
     const endpoint = isRegistering
       ? `${baseURL}/api/auth/register`
       : `${baseURL}/api/auth/login`;
@@ -77,21 +66,19 @@ const AuthModal = ({ onClose }) => {
         return;
       }
 
-      // Se for registro
       if (isRegistering) {
+        // Registro bem-sucedido
         alert(data.message || "Usuário registrado com sucesso!");
       } else {
-        // Se for login, assumimos que data.token existe
+        // Login bem-sucedido
         if (data.token) {
-          // Chama a função login do AuthContext para salvar o token no localStorage
           login(data.token);
-          // Redireciona para Home
-          navigate("/");
         }
+        // **Fechamos o modal** antes de navegar
+        handleClose();
+        // Agora redireciona
+        navigate("/");
       }
-
-      // Fecha o modal
-      handleClose();
     } catch (err) {
       console.error("Erro ao comunicar com API:", err);
       setError("Erro de conexão. Tente novamente.");
