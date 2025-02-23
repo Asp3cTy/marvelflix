@@ -27,6 +27,8 @@ const Header = () => {
       });
     }
   }, [authToken]);
+  
+  console.log("Estado isAdmin:", isAdmin);
 
   return (
     <>
