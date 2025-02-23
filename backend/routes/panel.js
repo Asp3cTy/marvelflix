@@ -8,7 +8,7 @@ require("dotenv").config();
 const router = express.Router();
 
 // POST /api/panel/login
-rrouter.post("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
     const { username, password } = req.body;
     
     // Validação básica
