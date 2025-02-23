@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [authToken]);
   
+  
 
   // Salva o token no state + localStorage
   const login = (token) => {

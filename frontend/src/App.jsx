@@ -12,18 +12,19 @@ import AdminPanel from "./pages/adminpanel";
 import Login from "./pages/login";
 
 const ProtectedRoute = ({ children, adminOnly }) => {
-    const { authToken, isAdmin } = useAuth();
+  const { authToken, isAdmin } = useAuth();
 
-    if (!authToken) {
-        return <Navigate to="/" />;
-    }
+  if (!authToken) {
+    return <Navigate to="/" />;
+  }
 
-    if (adminOnly && !isAdmin) {
-        return <Navigate to="/home" />;
-    }
+  if (adminOnly && !isAdmin) {
+    return <Navigate to="/home" />;
+  }
 
-    return children;
+  return children;
 };
+
 
 const App = () => {
     return (

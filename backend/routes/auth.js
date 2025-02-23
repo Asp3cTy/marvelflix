@@ -1,12 +1,13 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { queryD1 } = require('../d1'); // Supondo que queryD1 execute consultas no banco de dados D1
+const { queryD1 } = require('../d1');
 const { encrypt, decrypt } = require('../cryptoUtils');
 require('dotenv').config();
 
 const router = express.Router();
 
+// =========== LOGIN ===========
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -28,6 +29,8 @@ router.post('/login', async (req, res) => {
 
     const encryptedId = encrypt(user.id.toString());
     const token = jwt.sign({ id: encryptedId }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    // Retorna apenas o token. (Você poderia retornar role ou email também, mas ok.)
     res.json({ token });
   } catch (error) {
     console.error('Erro ao autenticar usuário:', error);
@@ -35,6 +38,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// =========== REGISTER ===========
 router.post('/register', async (req, res) => {
   const { email, password, role = 'user' } = req.body;
 
@@ -50,6 +54,7 @@ router.post('/register', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const createdAt = new Date().toISOString();
+
     await queryD1(
       'INSERT INTO users (email, password, role, created_at) VALUES (?, ?, ?, ?)',
       [email, hashedPassword, role, createdAt]
@@ -62,14 +67,22 @@ router.post('/register', async (req, res) => {
   }
 });
 
+// =========== CHECK ADMIN ===========
 router.get('/check-admin', async (req, res) => {
-  const token = req.headers.authorization.split(' ')[1];
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ message: 'Token não fornecido' });
+  }
+
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const decryptedId = decrypt(decoded.id);
+
+    // Busca o usuário
     const users = await queryD1('SELECT role FROM users WHERE id = ?', [decryptedId]);
     const user = Array.isArray(users) && users.length > 0 ? users[0] : null;
     console.log("Usuário verificado:", user);
+
     res.json({ isAdmin: user && user.role === 'admin' });
   } catch (error) {
     console.error('Erro ao verificar administrador:', error);

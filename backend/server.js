@@ -11,20 +11,14 @@ const moviesRoutes = require("./routes/movies");
 const thumbnailsRoutes = require("./routes/thumbnails");
 
 const app = express();
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: false
-}));
-
+app.use(cors()); // <== CORS deve autorizar requisições do seu front
 app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("API do MarvelFlix está funcionando!");
 });
 
-// Middleware de autenticação
+// Middleware de autenticação (se fosse usar em rotas protegidas)
 const authenticateToken = (req, res, next) => {
   const token = req.headers["authorization"] && req.headers["authorization"].split(" ")[1];
   if (!token) return res.sendStatus(401);
@@ -36,19 +30,21 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-
 async function createTables() {
   try {
     console.log("📂 Criando/verificando tabelas...");
 
+    // Confere/cria tabela de usuários
     await queryD1(
       "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, role TEXT DEFAULT 'user', created_at TEXT)"
     );
 
+    // Confere/cria tabela de coleções
     await queryD1(
       "CREATE TABLE IF NOT EXISTS collections (id INTEGER PRIMARY KEY, name TEXT UNIQUE NOT NULL, image TEXT)"
     );
 
+    // Confere/cria tabela de filmes
     await queryD1(
       "CREATE TABLE IF NOT EXISTS movies (id INTEGER PRIMARY KEY, title TEXT NOT NULL, collection_id INTEGER, url TEXT NOT NULL, cover_url TEXT NOT NULL, duration TEXT)"
     );
@@ -58,14 +54,15 @@ async function createTables() {
     console.error("❌ Erro ao criar tabelas:", error);
   }
 }
-
 createTables();
 
+// Rotas
 app.use("/api/auth", authRoutes);
 app.use("/api/collections", collectionsRoutes);
 app.use("/api/movies", moviesRoutes);
 app.use("/api/thumbnails", thumbnailsRoutes);
 
+// Serve a pasta local de thumbnails
 app.use("/thumbnails", express.static(path.join(__dirname, "assets/thumbnails")));
 
 const PORT = process.env.PORT || 5000;
