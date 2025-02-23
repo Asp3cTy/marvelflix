@@ -73,7 +73,8 @@ const AuthModal = ({ onClose }) => {
         alert(data.message || "Usuário registrado com sucesso!");
       } else {
         if (data.token) {
-          login(data.token, email);
+          // Adicionamos role e email
+          login(data.token, data.role, data.email);
         }
         handleClose();
         navigate("/home");

@@ -1,46 +1,41 @@
-import React, { createContext, useState, useEffect } from "react";
-import axios from "axios";
-import API_URL from "../config";
+// src/context/authcontext.jsx
+import React, { createContext, useState } from "react";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  // Em vez de guardar só o token, vamos armazenar também o role e o email
   const [authToken, setAuthToken] = useState(localStorage.getItem("token") || null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [role, setRole] = useState(localStorage.getItem("role") || "user");
+  const [email, setEmail] = useState(localStorage.getItem("email") || "");
 
-  // Toda vez que o token mudar, verificar se o usuário é admin
-  useEffect(() => {
-    console.log("useEffect de verificação de admin disparou. Token=", authToken);
-    if (authToken) {
-      axios
-        .get(`${API_URL}/api/auth/check-admin`, { headers: { Authorization: `Bearer ${authToken}` } })
-        .then(response => {
-          console.log("Resposta da API /check-admin:", response.data);
-          setIsAdmin(response.data.isAdmin);
-        })
-        .catch(err => {
-          console.error("Erro ao verificar administrador:", err);
-        });
-    } else {
-      setIsAdmin(false);
-    }
-  }, [authToken]);
-  
-  // Salva o token no state + localStorage
-  const login = (token) => {
+  // Checamos se é admin
+  const isAdmin = (role === "admin");
+
+  // Quando o usuário faz login, salvamos token, role e email
+  const login = (token, userRole, userEmail) => {
     setAuthToken(token);
+    setRole(userRole);
+    setEmail(userEmail);
+
+    // Salva no localStorage se desejar
     localStorage.setItem("token", token);
+    localStorage.setItem("role", userRole);
+    localStorage.setItem("email", userEmail);
   };
 
-  // Limpa o token do state + localStorage
+  // Quando faz logout, limpamos tudo
   const logout = () => {
     setAuthToken(null);
-    setIsAdmin(false);
+    setRole("user");
+    setEmail("");
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("email");
   };
 
   return (
-    <AuthContext.Provider value={{ authToken, isAdmin, login, logout }}>
+    <AuthContext.Provider value={{ authToken, role, email, isAdmin, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
