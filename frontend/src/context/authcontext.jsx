@@ -11,22 +11,22 @@ export const AuthProvider = ({ children }) => {
 
   // Toda vez que o token mudar, verificar se o usuário é admin
   useEffect(() => {
+    console.log("useEffect de verificação de admin disparou. Token=", authToken);
     if (authToken) {
       axios
-        .get(`${API_URL}/api/auth/check-admin`, {
-          headers: { Authorization: `Bearer ${authToken}` },
-        })
-        .then((response) => {
+        .get(`${API_URL}/api/auth/check-admin`, { headers: { Authorization: `Bearer ${authToken}` } })
+        .then(response => {
+          console.log("Resposta da API /check-admin:", response.data);
           setIsAdmin(response.data.isAdmin);
         })
-        .catch((error) => {
-          console.error("Erro ao verificar administrador:", error);
-          setIsAdmin(false);
+        .catch(err => {
+          console.error("Erro ao verificar administrador:", err);
         });
     } else {
       setIsAdmin(false);
     }
   }, [authToken]);
+  
 
   // Salva o token no state + localStorage
   const login = (token) => {
