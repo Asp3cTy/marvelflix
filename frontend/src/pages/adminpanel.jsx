@@ -4,13 +4,10 @@ import { AuthContext } from "../context/authcontext";
 import { useNavigate } from "react-router-dom";
 import API_URL from "../config"; 
 
-
-
 const AdminPanel = () => {
     const { authToken } = useContext(AuthContext);
     const navigate = useNavigate();
-    
-    // 🚨 Redireciona para login se não estiver autenticado
+
     useEffect(() => {
         if (!authToken) {
             navigate("/login");
@@ -49,14 +46,12 @@ const AdminPanel = () => {
         });
     }, [authToken]);
 
-    // 🖼️ Capturar a imagem e gerar preview
     const handleCollectionImage = (e) => {
         const file = e.target.files[0];
         setCollectionImage(file);
-        setPreviewImage(URL.createObjectURL(file)); // Exibir pré-visualização da imagem
+        setPreviewImage(URL.createObjectURL(file));
     };
 
-    // 🔹 Adicionar Nova Coleção
     const addCollection = () => {
         if (!newCollection.trim() || !collectionImage) {
             setError("Preencha todos os campos para criar uma coleção!");
@@ -87,7 +82,6 @@ const AdminPanel = () => {
         });
     };
 
-    // 🔹 Adicionar Novo Filme
     const addMovie = () => {
         if (!movie.title || !movie.collection_id || !movie.url || !movie.cover_url || !movie.duration) {
             setError("Preencha todos os campos para adicionar um filme!");
@@ -121,7 +115,6 @@ const AdminPanel = () => {
                 {message && <p className="text-green-500 text-center mb-3">{message}</p>}
                 {error && <p className="text-red-500 text-center mb-3">{error}</p>}
 
-                {/* Adicionar Nova Coleção */}
                 <div className="mb-6">
                     <h2 className="text-xl font-bold">Adicionar Nova Coleção</h2>
                     <input
@@ -132,7 +125,6 @@ const AdminPanel = () => {
                         onChange={(e) => setNewCollection(e.target.value)}
                     />
 
-                    {/* Exibir imagem selecionada */}
                     {previewImage && (
                         <img 
                             src={previewImage} 
@@ -156,7 +148,6 @@ const AdminPanel = () => {
                     </button>
                 </div>
 
-                {/* Formulário para Adicionar Filme */}
                 <div className="mb-6">
                     <h2 className="text-xl font-bold">Adicionar Novo Filme</h2>
                     <input 
@@ -167,19 +158,17 @@ const AdminPanel = () => {
                         onChange={(e) => setMovie({ ...movie, title: e.target.value })}
                     />
 
-                    {/* Seleção da Coleção */}
-<select 
-    className="p-2 rounded bg-gray-700 text-white mt-2 w-full"
-    value={movie.collection_id}
-    onChange={(e) => setMovie({ ...movie, collection_id: e.target.value })}
->
-    <option value="">Selecione uma Coleção</option>
-    {Array.isArray(collections) && collections.map((col) => (
-        <option key={col.id} value={col.id}>{col.name}</option>
-    ))}
-</select>
+                    <select 
+                        className="p-2 rounded bg-gray-700 text-white mt-2 w-full"
+                        value={movie.collection_id}
+                        onChange={(e) => setMovie({ ...movie, collection_id: e.target.value })}
+                    >
+                        <option value="">Selecione uma Coleção</option>
+                        {Array.isArray(collections) && collections.map((col) => (
+                            <option key={col.id} value={col.id}>{col.name}</option>
+                        ))}
+                    </select>
 
-                    {/* Inserir ID do Vídeo */}
                     <input 
                         type="text" 
                         className="p-2 rounded bg-gray-700 text-white mt-2 w-full" 
@@ -188,19 +177,17 @@ const AdminPanel = () => {
                         onChange={(e) => setMovie({ ...movie, url: e.target.value })}
                     />
 
-{/* Verifica se thumbnails é um array antes de usar map() */}
-<select 
-    className="p-2 rounded bg-gray-700 text-white mt-2 w-full"
-    value={movie.cover_url}
-    onChange={(e) => setMovie({ ...movie, cover_url: e.target.value })}
->
-    <option value="">Selecione uma Thumbnail</option>
-    {Array.isArray(thumbnails) && thumbnails.map((thumb) => (
-        <option key={thumb} value={thumb}>{thumb}</option>
-    ))}
-</select>
+                    <select 
+                        className="p-2 rounded bg-gray-700 text-white mt-2 w-full"
+                        value={movie.cover_url}
+                        onChange={(e) => setMovie({ ...movie, cover_url: e.target.value })}
+                    >
+                        <option value="">Selecione uma Thumbnail</option>
+                        {Array.isArray(thumbnails) && thumbnails.map((thumb) => (
+                            <option key={thumb} value={thumb}>{thumb}</option>
+                        ))}
+                    </select>
 
-                    {/* Inserir Duração */}
                     <input 
                         type="text" 
                         className="p-2 rounded bg-gray-700 text-white mt-2 w-full" 

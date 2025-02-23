@@ -69,7 +69,6 @@ const Login = () => {
                 </div>
             </div>
 
-            {/* Modal de Autenticação (caso precise recuperar senha) */}
             {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
         </div>
     );
