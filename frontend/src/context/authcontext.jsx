@@ -1,41 +1,35 @@
-// src/context/authcontext.jsx
 import React, { createContext, useState } from "react";
+
+// Aqui não precisamos de axios, pois o login será feito no AuthModal
+// Mas você pode manter se quiser chamá-lo daqui
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Em vez de guardar só o token, vamos armazenar também o role e o email
-  const [authToken, setAuthToken] = useState(localStorage.getItem("token") || null);
-  const [role, setRole] = useState(localStorage.getItem("role") || "user");
-  const [email, setEmail] = useState(localStorage.getItem("email") || "");
+  // Armazenamos o "user" inteiro
+  // user: { id, email, role, ... }
+  const [user, setUser] = useState(
+    // Tenta ler do localStorage para manter login entre reloads
+    JSON.parse(localStorage.getItem("user")) || null
+  );
 
-  // Checamos se é admin
-  const isAdmin = (role === "admin");
+  // isAdmin simples
+  const isAdmin = user?.role === "admin";
 
-  // Quando o usuário faz login, salvamos token, role e email
-  const login = (token, userRole, userEmail) => {
-    setAuthToken(token);
-    setRole(userRole);
-    setEmail(userEmail);
-
-    // Salva no localStorage se desejar
-    localStorage.setItem("token", token);
-    localStorage.setItem("role", userRole);
-    localStorage.setItem("email", userEmail);
+  // Função login: recebe "user" do back e salva no state
+  const login = (userData) => {
+    setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData));
   };
 
-  // Quando faz logout, limpamos tudo
+  // Função logout
   const logout = () => {
-    setAuthToken(null);
-    setRole("user");
-    setEmail("");
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    localStorage.removeItem("email");
+    setUser(null);
+    localStorage.removeItem("user");
   };
 
   return (
-    <AuthContext.Provider value={{ authToken, role, email, isAdmin, login, logout }}>
+    <AuthContext.Provider value={{ user, isAdmin, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

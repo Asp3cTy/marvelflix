@@ -4,7 +4,6 @@ const cors = require("cors");
 const path = require("path");
 const jwt = require("jsonwebtoken");
 const { queryD1 } = require("./d1");
-const { encrypt, decrypt } = require("./cryptoUtils");
 const authRoutes = require("./routes/auth");
 const collectionsRoutes = require("./routes/collections");
 const moviesRoutes = require("./routes/movies");
