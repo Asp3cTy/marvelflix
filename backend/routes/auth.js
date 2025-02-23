@@ -65,7 +65,7 @@ router.get("/check-admin", async (req, res) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const decryptedId = decrypt(decoded.id);
-    res.json({ isAdmin: decryptedId === "38177418728391" });
+    res.json({ isAdmin: decryptedId === "5" });
   } catch (error) {
     res.status(500).json({ message: "Erro ao verificar administrador" });
   }

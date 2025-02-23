@@ -33,7 +33,7 @@ const authenticateToken = (req, res, next) => {
 // Endpoint de verificação de administrador
 app.get("/api/auth/check-admin", authenticateToken, (req, res) => {
   const decryptedId = decrypt(req.user.id);
-  if (decryptedId === "38177418728391") {
+  if (decryptedId === "5") {
     res.json({ isAdmin: true });
   } else {
     res.json({ isAdmin: false });
