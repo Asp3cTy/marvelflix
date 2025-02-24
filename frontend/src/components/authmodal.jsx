@@ -1,7 +1,7 @@
 // src/components/authmodal.jsx
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/authcontext"; 
+import { AuthContext } from "../context/authcontext";
 import API_URL from "../config";
 
 const AuthModal = ({ onClose }) => {
@@ -12,8 +12,6 @@ const AuthModal = ({ onClose }) => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-
-  // Em vez de useAuth, usamos useContext
   const { login } = useContext(AuthContext);
 
   const handleClose = () => {
@@ -49,7 +47,7 @@ const AuthModal = ({ onClose }) => {
 
       const data = await response.json();
       if (!response.ok) {
-        setError(data.message || "Erro ao processar solicitação.");
+        setError(data.message || "Erro ao processar a solicitação.");
         return;
       }
 
@@ -57,7 +55,6 @@ const AuthModal = ({ onClose }) => {
         alert(data.message || "Usuário registrado com sucesso!");
       } else {
         if (data.token) {
-          // Chamamos login do contexto
           login(data.token);
           navigate("/home");
         }
@@ -72,9 +69,14 @@ const AuthModal = ({ onClose }) => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
       <div className="bg-gray-900 p-6 rounded-lg max-w-sm w-full relative">
-        <button onClick={handleClose} className="absolute top-2 right-2 text-white">✖</button>
+        <button
+          className="absolute top-2 right-2 text-white"
+          onClick={handleClose}
+        >
+          ✖
+        </button>
         <h2 className="text-2xl font-bold text-white mb-4 text-center">
           {isRegistering ? "Registrar" : "Login"}
         </h2>
@@ -96,7 +98,10 @@ const AuthModal = ({ onClose }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit" className="bg-red-600 text-white p-2 rounded">
+          <button
+            type="submit"
+            className="bg-red-600 text-white p-2 rounded"
+          >
             {isRegistering ? "Registrar" : "Entrar"}
           </button>
         </form>
@@ -105,14 +110,20 @@ const AuthModal = ({ onClose }) => {
           {isRegistering ? (
             <>
               <p>Já tem conta?</p>
-              <button className="text-red-400 underline" onClick={() => setIsRegistering(false)}>
+              <button
+                className="text-red-400 underline"
+                onClick={() => setIsRegistering(false)}
+              >
                 Fazer Login
               </button>
             </>
           ) : (
             <>
               <p>Novo por aqui?</p>
-              <button className="text-red-400 underline" onClick={() => setIsRegistering(true)}>
+              <button
+                className="text-red-400 underline"
+                onClick={() => setIsRegistering(true)}
+              >
                 Criar conta
               </button>
             </>
