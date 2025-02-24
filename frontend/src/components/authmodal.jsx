@@ -1,6 +1,7 @@
+// src/components/authmodal.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/authcontext";
+import { useAuth } from "../context/authcontext"; // Agora existe no authcontext
 import API_URL from "../config";
 
 const AuthModal = ({ onClose }) => {
@@ -9,9 +10,9 @@ const AuthModal = ({ onClose }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
+  
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login } = useAuth(); // <== Consumindo o hook
 
   const handleClose = () => {
     setIsVisible(false);
@@ -24,12 +25,15 @@ const AuthModal = ({ onClose }) => {
     e.preventDefault();
     setError("");
 
-    if (!email.includes("@") || password.length < 4) {
-      setError("Credenciais inválidas.");
+    if (!email.includes("@")) {
+      setError("Email inválido");
+      return;
+    }
+    if (password.length < 4) {
+      setError("Senha muito curta");
       return;
     }
 
-    // Decide rota
     const endpoint = isRegistering
       ? `${API_URL}/api/auth/register`
       : `${API_URL}/api/auth/login`;
@@ -38,12 +42,12 @@ const AuthModal = ({ onClose }) => {
       const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password })
       });
 
       const data = await response.json();
       if (!response.ok) {
-        setError(data.message || "Erro ao processar a solicitação.");
+        setError(data.message || "Erro ao processar solicitação");
         return;
       }
 
@@ -51,69 +55,60 @@ const AuthModal = ({ onClose }) => {
         alert(data.message || "Usuário registrado com sucesso!");
       } else {
         if (data.token) {
-          login(data.token);
+          login(data.token); // <== Chama login
           navigate("/home");
         }
       }
       handleClose();
     } catch (err) {
       console.error("Erro ao comunicar com API:", err);
-      setError("Erro de conexão. Tente novamente.");
+      setError("Erro de conexão");
     }
   };
 
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center">
       <div className="bg-gray-900 p-6 rounded-lg max-w-sm w-full relative">
-        <button className="absolute top-2 right-2 text-white" onClick={handleClose}>✖</button>
+        <button onClick={handleClose} className="absolute top-2 right-2 text-white">✖</button>
         <h2 className="text-2xl font-bold text-white mb-4 text-center">
-          {isRegistering ? "Crie sua conta" : "Login"}
+          {isRegistering ? "Registrar" : "Login"}
         </h2>
 
-        {error && <p className="text-red-500 text-center mb-3">{error}</p>}
+        {error && <p className="text-red-500 text-center mb-2">{error}</p>}
 
         <form onSubmit={handleSubmit} className="flex flex-col space-y-3">
           <input
             type="email"
-            className="p-2 rounded bg-gray-800 text-white border border-gray-600"
-            placeholder="Seu e-mail"
+            placeholder="E-mail"
+            className="p-2 rounded bg-gray-800 text-white"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-
           <input
             type="password"
-            className="p-2 rounded bg-gray-800 text-white border border-gray-600"
-            placeholder="Sua senha"
+            placeholder="Senha"
+            className="p-2 rounded bg-gray-800 text-white"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-
-          <button
-            type="submit"
-            className="bg-red-600 hover:bg-red-700 text-white p-2 rounded"
-          >
+          <button type="submit" className="bg-red-600 text-white p-2 rounded">
             {isRegistering ? "Registrar" : "Entrar"}
           </button>
         </form>
 
-        <div className="text-center mt-4">
+        <div className="text-center mt-2 text-sm text-gray-300">
           {isRegistering ? (
-            <p className="text-gray-300 text-sm">
-              Já tem conta?{" "}
-              <button onClick={() => setIsRegistering(false)} className="text-red-400 underline">
-                Fazer Login
-              </button>
-            </p>
+            <>
+              <p>Já tem conta?</p>
+              <button className="text-red-400 underline" onClick={() => setIsRegistering(false)}>Fazer Login</button>
+            </>
           ) : (
-            <p className="text-gray-300 text-sm">
-              Novo por aqui?{" "}
-              <button onClick={() => setIsRegistering(true)} className="text-red-400 underline">
-                Criar Conta
-              </button>
-            </p>
+            <>
+              <p>Novo por aqui?</p>
+              <button className="text-red-400 underline" onClick={() => setIsRegistering(true)}>Criar conta</button>
+            </>
           )}
         </div>
       </div>
