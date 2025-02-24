@@ -1,4 +1,3 @@
-// backend/routes/auth.js
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -28,11 +27,10 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Credenciais inválidas' });
     }
 
-    // Encripta ID e gera token JWT
     const encryptedId = encrypt(user.id.toString());
     const token = jwt.sign({ id: encryptedId }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    // Agora retornamos só o token (sem checagem de admin)
+    // Aqui só retorna o token, sem role ou user:
     res.json({ token });
   } catch (error) {
     console.error('Erro ao autenticar usuário:', error);
@@ -69,6 +67,27 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Não existe mais rota /check-admin ou qualquer referência a admin
+// =========== CHECK ADMIN ===========
+router.get('/check-admin', async (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ message: 'Token não fornecido' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decryptedId = decrypt(decoded.id);
+
+    // Busca o usuário pelo ID
+    const users = await queryD1('SELECT role FROM users WHERE id = ?', [decryptedId]);
+    const user = Array.isArray(users) && users.length > 0 ? users[0] : null;
+    console.log("Usuário verificado:", user);
+
+    res.json({ isAdmin: user && user.role === 'admin' });
+  } catch (error) {
+    console.error('Erro ao verificar administrador:', error);
+    res.status(500).json({ message: 'Erro ao verificar administrador' });
+  }
+});
 
 module.exports = router;
