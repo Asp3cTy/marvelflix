@@ -13,8 +13,8 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Adicionar nova coleção
-router.post("/", async (req, res) => {
+// Adicionar nova coleção (suporta /api/collections e /api/collections/add)
+router.post(["/", "/add"], async (req, res) => { 
   const { name, image } = req.body;
 
   if (!name || !image) {
