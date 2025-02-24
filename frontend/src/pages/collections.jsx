@@ -18,7 +18,6 @@ const Collections = () => {
     <div className="bg-marvelDark min-h-screen text-white p-6">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 p-6">
         {collections.map((collection) => {
-          // Se 'collection.image' não for link absoluto, prefixa com API_URL
           const collectionImageUrl = collection?.image?.startsWith("http")
             ? collection.image
             : `${API_URL}${collection.image}`;
