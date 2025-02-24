@@ -1,5 +1,5 @@
 // src/pages/collectionview.jsx
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import API_URL from "../config";
@@ -10,25 +10,13 @@ const CollectionView = () => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    // Busca detalhes da coleção
-    axios
-      .get(`${API_URL}/api/collections/${collectionId}`)
-      .then((response) => {
-        setCollection(response.data);
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar coleção:", error);
-      });
+    axios.get(`${API_URL}/api/collections/${collectionId}`)
+      .then(response => setCollection(response.data))
+      .catch(error => console.error("Erro ao buscar coleção:", error));
 
-    // Busca filmes da coleção
-    axios
-      .get(`${API_URL}/api/movies?collection_id=${collectionId}`)
-      .then((response) => {
-        setMovies(response.data);
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar filmes:", error);
-      });
+    axios.get(`${API_URL}/api/movies?collection_id=${collectionId}`)
+      .then(response => setMovies(response.data))
+      .catch(error => console.error("Erro ao buscar filmes:", error));
   }, [collectionId]);
 
   return (
