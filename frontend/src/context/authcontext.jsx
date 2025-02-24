@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
 import API_URL from "../config";
 
@@ -44,4 +44,9 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
+};
+
+// Hook personalizado para usar o AuthContext
+export const useAuth = () => {
+  return useContext(AuthContext);
 };
