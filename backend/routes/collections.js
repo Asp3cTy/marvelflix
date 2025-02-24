@@ -13,6 +13,22 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+// Buscar UMA coleção específica por ID
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const rows = await queryD1("SELECT * FROM collections WHERE id = ?", [id]);
+    if (!rows || rows.length === 0) {
+      return res.status(404).json({ message: "Coleção não encontrada" });
+    }
+    res.json(rows[0]);
+  } catch (error) {
+    console.error("Erro ao buscar coleção:", error);
+    res.status(500).json({ message: "Erro ao buscar coleção." });
+  }
+});
+
 // Adicionar nova coleção (suporta /api/collections e /api/collections/add)
 router.post(["/", "/add"], async (req, res) => { 
   const { name, image } = req.body;

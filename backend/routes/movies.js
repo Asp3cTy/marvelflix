@@ -45,6 +45,23 @@ router.get("/", async (req, res) => {
   }
 });
 
+// ========================
+// ROTA PARA BUSCAR UM FILME PELO ID
+// ========================
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const rows = await queryD1("SELECT * FROM movies WHERE id = ?", [id]);
+    if (!rows || rows.length === 0) {
+      return res.status(404).json({ message: "Filme não encontrado" });
+    }
+    res.json(rows[0]);
+  } catch (error) {
+    console.error("Erro ao buscar filme por ID:", error);
+    res.status(500).json({ message: "Erro ao buscar filme." });
+  }
+});
+
 // Rota para EDITAR filme
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
