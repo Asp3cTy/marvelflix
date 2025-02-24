@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { useAuth } from "../context/authcontext";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../context/authcontext";
 import AuthModal from "../components/authmodal";
 
 const LandingPage = () => {
-  const { authToken } = useAuth();
+  // Pegamos authToken direto do contexto, sem usar useAuth
+  const { authToken } = useContext(AuthContext);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
+  // Se já estiver logado, não exibimos a LandingPage (ou redirecionamos, se quiser)
   if (authToken) {
-    // Se estiver logado e cair na "/", pode redirecionar para /home
-    // ou simplesmente exibir algo
     return null;
   }
 
