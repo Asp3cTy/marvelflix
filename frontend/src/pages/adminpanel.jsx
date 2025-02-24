@@ -137,6 +137,12 @@ const AdminPanel = () => {
             <option value="">Selecione uma Coleção</option>
             {collections.map((col) => <option key={col.id} value={col.id}>{col.name}</option>)}
           </select>
+          <input type="text" placeholder="URL do Filme" className="w-full p-2 mb-2 bg-gray-700 text-white rounded" value={newMovie.url} onChange={(e) => setNewMovie({ ...newMovie, url: e.target.value })} />
+          <select className="w-full p-2 mb-2 bg-gray-700 text-white rounded" value={newMovie.cover_url} onChange={(e) => setNewMovie({ ...newMovie, cover_url: e.target.value })}>
+            <option value="">Selecione uma imagem de capa</option>
+            {thumbnails.map((thumb) => <option key={thumb} value={thumb}>{thumb}</option>)}
+          </select>
+          <input type="text" placeholder="Duração" className="w-full p-2 mb-2 bg-gray-700 text-white rounded" value={newMovie.duration} onChange={(e) => setNewMovie({ ...newMovie, duration: e.target.value })} />
           <button onClick={handleMovieSubmit} className="bg-green-600 px-4 py-2 rounded">Adicionar Filme</button>
         </div>
       )}
@@ -151,6 +157,15 @@ const AdminPanel = () => {
               <button onClick={() => handleDeleteUser(user.id)} className="bg-red-500 px-2 py-1 rounded">Excluir</button>
             </div>
           ))}
+          {editingUser && (
+            <div className="bg-gray-800 p-4 rounded mt-4">
+              <h3 className="text-xl mb-2">Editar Usuário</h3>
+              <input type="email" placeholder="Email" className="w-full p-2 mb-2 bg-gray-700 text-white rounded" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} />
+              <input type="password" placeholder="Senha" className="w-full p-2 mb-2 bg-gray-700 text-white rounded" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} />
+              <button onClick={handleSaveUser} className="bg-green-600 px-4 py-2 rounded">Salvar</button>
+              <button onClick={() => setEditingUser(null)} className="bg-red-600 px-4 py-2 rounded ml-2">Cancelar</button>
+            </div>
+          )}
         </div>
       )}
     </div>
