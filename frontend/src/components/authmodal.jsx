@@ -1,7 +1,7 @@
 // src/components/authmodal.jsx
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/authcontext"; // Agora existe no authcontext
+import { AuthContext } from "../context/authcontext"; 
 import API_URL from "../config";
 
 const AuthModal = ({ onClose }) => {
@@ -10,9 +10,11 @@ const AuthModal = ({ onClose }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  
+
   const navigate = useNavigate();
-  const { login } = useAuth(); // <== Consumindo o hook
+
+  // Em vez de useAuth, usamos useContext
+  const { login } = useContext(AuthContext);
 
   const handleClose = () => {
     setIsVisible(false);
@@ -26,11 +28,11 @@ const AuthModal = ({ onClose }) => {
     setError("");
 
     if (!email.includes("@")) {
-      setError("Email inválido");
+      setError("Email inválido.");
       return;
     }
     if (password.length < 4) {
-      setError("Senha muito curta");
+      setError("Senha muito curta.");
       return;
     }
 
@@ -42,12 +44,12 @@ const AuthModal = ({ onClose }) => {
       const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
       if (!response.ok) {
-        setError(data.message || "Erro ao processar solicitação");
+        setError(data.message || "Erro ao processar solicitação.");
         return;
       }
 
@@ -55,14 +57,15 @@ const AuthModal = ({ onClose }) => {
         alert(data.message || "Usuário registrado com sucesso!");
       } else {
         if (data.token) {
-          login(data.token); // <== Chama login
+          // Chamamos login do contexto
+          login(data.token);
           navigate("/home");
         }
       }
       handleClose();
     } catch (err) {
       console.error("Erro ao comunicar com API:", err);
-      setError("Erro de conexão");
+      setError("Erro de conexão. Tente novamente.");
     }
   };
 
@@ -82,14 +85,14 @@ const AuthModal = ({ onClose }) => {
           <input
             type="email"
             placeholder="E-mail"
-            className="p-2 rounded bg-gray-800 text-white"
+            className="p-2 rounded bg-gray-800 text-white border border-gray-600"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="password"
             placeholder="Senha"
-            className="p-2 rounded bg-gray-800 text-white"
+            className="p-2 rounded bg-gray-800 text-white border border-gray-600"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -102,12 +105,16 @@ const AuthModal = ({ onClose }) => {
           {isRegistering ? (
             <>
               <p>Já tem conta?</p>
-              <button className="text-red-400 underline" onClick={() => setIsRegistering(false)}>Fazer Login</button>
+              <button className="text-red-400 underline" onClick={() => setIsRegistering(false)}>
+                Fazer Login
+              </button>
             </>
           ) : (
             <>
               <p>Novo por aqui?</p>
-              <button className="text-red-400 underline" onClick={() => setIsRegistering(true)}>Criar conta</button>
+              <button className="text-red-400 underline" onClick={() => setIsRegistering(true)}>
+                Criar conta
+              </button>
             </>
           )}
         </div>
