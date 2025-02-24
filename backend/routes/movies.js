@@ -23,7 +23,7 @@ router.post("/add", async (req, res) => {
   }
 });
 
-// Buscar filmes (TODOS ou por coleção)
+// Buscar TODOS os filmes ou filtrados por coleção
 router.get("/", async (req, res) => {
   const { collection_id } = req.query;
 
@@ -31,18 +31,14 @@ router.get("/", async (req, res) => {
     let sql = "SELECT * FROM movies";
     let params = [];
 
-    if (collection_id) {
+    if (collection_id && collection_id !== "ALL") {
       sql += " WHERE collection_id = ?";
       params.push(collection_id);
     }
 
     const movies = await queryD1(sql, params);
 
-    if (!movies || movies.length === 0) {
-      return res.status(200).json([]); // Retorna array vazio ao invés de erro
-    }
-
-    res.json(movies);
+    res.json(movies.length > 0 ? movies : []);
   } catch (error) {
     console.error("Erro ao buscar filmes:", error);
     res.status(500).json({ message: "Erro ao buscar filmes no banco de dados." });
