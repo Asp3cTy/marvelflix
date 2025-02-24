@@ -33,36 +33,44 @@ const AdminPanel = () => {
   const fetchUsers = () => axios.get(`${API_URL}/api/users`).then(res => setUsers(res.data)).catch(() => setUsers([]));
   const fetchThumbnails = () => axios.get(`${API_URL}/api/thumbnails`).then(res => setThumbnails(res.data)).catch(err => console.error("Erro ao buscar thumbnails:", err));
 
-  // Criar nova coleção
+  // Criar ou editar coleção
   const handleCollectionSubmit = () => {
     if (!newCollection.name || !newCollection.image) {
       alert("Nome e imagem são obrigatórios.");
       return;
     }
 
-    axios.post(`${API_URL}/api/collections`, newCollection)
-      .then(() => {
-        fetchCollections();
-        setNewCollection({ name: "", image: "" });
-        alert("Coleção adicionada com sucesso!");
-      })
-      .catch(err => console.error("Erro ao adicionar coleção:", err));
+    const request = newCollection.id 
+      ? axios.put(`${API_URL}/api/collections/${newCollection.id}`, newCollection)
+      : axios.post(`${API_URL}/api/collections`, newCollection);
+
+    request.then(() => {
+      fetchCollections();
+      setNewCollection({ name: "", image: "" });
+      alert("Coleção salva com sucesso!");
+      document.getElementById('collection-submit-button').innerText = 'Criar Coleção';
+    })
+    .catch(err => console.error("Erro ao salvar coleção:", err));
   };
 
-  // Criar novo filme
+  // Criar ou editar filme
   const handleMovieSubmit = () => {
     if (!newMovie.title || !newMovie.collection_id || !newMovie.url || !newMovie.cover_url || !newMovie.duration) {
       alert("Todos os campos são obrigatórios.");
       return;
     }
 
-    axios.post(`${API_URL}/api/movies/add`, newMovie)
-      .then(() => {
-        fetchMovies();
-        setNewMovie({ title: "", collection_id: "", url: "", cover_url: "", duration: "" });
-        alert("Filme adicionado com sucesso!");
-      })
-      .catch(err => console.error("Erro ao adicionar filme:", err));
+    const request = newMovie.id 
+      ? axios.put(`${API_URL}/api/movies/${newMovie.id}`, newMovie)
+      : axios.post(`${API_URL}/api/movies/add`, newMovie);
+
+    request.then(() => {
+      fetchMovies();
+      setNewMovie({ title: "", collection_id: "", url: "", cover_url: "", duration: "" });
+      alert("Filme salvo com sucesso!");
+      document.getElementById('movie-submit-button').innerText = 'Adicionar Filme';
+    })
+    .catch(err => console.error("Erro ao salvar filme:", err));
   };
 
   // Excluir coleção
@@ -78,6 +86,7 @@ const AdminPanel = () => {
   // Editar coleção
   const handleEditCollection = (collection) => {
     setNewCollection(collection);
+    document.getElementById('collection-submit-button').innerText = 'Editar Coleção';
   };
 
   // Excluir filme
@@ -93,6 +102,7 @@ const AdminPanel = () => {
   // Editar filme
   const handleEditMovie = (movie) => {
     setNewMovie(movie);
+    document.getElementById('movie-submit-button').innerText = 'Editar Filme';
   };
 
   // Excluir usuário
@@ -163,7 +173,7 @@ const AdminPanel = () => {
             <option value="">Selecione uma imagem</option>
             {thumbnails.map((thumb) => <option key={thumb} value={thumb}>{thumb}</option>)}
           </select>
-          <button onClick={handleCollectionSubmit} className="bg-green-600 px-4 py-2 rounded">Criar Coleção</button>
+          <button id="collection-submit-button" onClick={handleCollectionSubmit} className="bg-green-600 px-4 py-2 rounded">Criar Coleção</button>
         </div>
       )}
 
@@ -192,7 +202,7 @@ const AdminPanel = () => {
             {thumbnails.map((thumb) => <option key={thumb} value={thumb}>{thumb}</option>)}
           </select>
           <input type="text" placeholder="Duração" className="w-full p-2 mb-2 bg-gray-700 text-white rounded" value={newMovie.duration} onChange={(e) => setNewMovie({ ...newMovie, duration: e.target.value })} />
-          <button onClick={handleMovieSubmit} className="bg-green-600 px-4 py-2 rounded">Adicionar Filme</button>
+          <button id="movie-submit-button" onClick={handleMovieSubmit} className="bg-green-600 px-4 py-2 rounded">Adicionar Filme</button>
         </div>
       )}
 
