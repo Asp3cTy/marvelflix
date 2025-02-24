@@ -2,13 +2,12 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const jwt = require("jsonwebtoken");
 const { queryD1 } = require("./d1");
-const { encrypt, decrypt } = require("./cryptoUtils");
 const authRoutes = require("./routes/auth");
 const collectionsRoutes = require("./routes/collections");
 const moviesRoutes = require("./routes/movies");
 const thumbnailsRoutes = require("./routes/thumbnails");
+const usersRoutes = require("./routes/users");
 
 const app = express();
 app.use(cors());
@@ -18,6 +17,7 @@ app.get("/", (req, res) => {
   res.send("API do MarvelFlix está funcionando!");
 });
 
+// Criar tabelas automaticamente
 async function createTables() {
   try {
     console.log("📂 Criando/verificando tabelas...");
@@ -41,13 +41,15 @@ async function createTables() {
 }
 createTables();
 
-// Rotas
+// Rotas da API
 app.use("/api/auth", authRoutes);
 app.use("/api/collections", collectionsRoutes);
 app.use("/api/movies", moviesRoutes);
 app.use("/api/thumbnails", thumbnailsRoutes);
+app.use("/api/users", usersRoutes);
 
-app.use("/thumbnails", express.static(path.join(__dirname, "assets/thumbnails")));
+// Servir thumbnails corretamente
+app.use("/thumbnails", express.static(path.join(__dirname, "../frontend/public/thumbnails")));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
