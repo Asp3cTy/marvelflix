@@ -1,4 +1,5 @@
 // src/pages/adminpanel.jsx
+import React from 'react';
 import { useEffect, useContext } from "react";
 import { PanelContext } from "../context/panelcontext"; 
 import { useNavigate } from "react-router-dom";
