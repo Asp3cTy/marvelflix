@@ -1,14 +1,12 @@
+// src/context/authcontext.jsx
 import React, { createContext, useState, useEffect } from "react";
-import axios from "axios";
-import API_URL from "../config";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState(localStorage.getItem("token") || null);
 
-  // Quando o token mudar, podemos opcionalmente buscar infos do usuário
-  // ou apenas mantemos token
+  // Sempre que mudar o token, salvamos/limpamos no localStorage
   useEffect(() => {
     if (authToken) {
       localStorage.setItem("token", authToken);
