@@ -63,31 +63,15 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Chama a função para criar e testar um usuário se o arquivo for executado diretamente
+// Chama a função para criar um usuário admin se o arquivo for executado diretamente
 if (require.main === module) {
   (async () => {
-    const username = 'zulinn';
-    const password = 'reallytest25';
+    const username = 'admin';
+    const password = 'password';
 
-    // Cria o usuário
+    // Cria o usuário admin
     await createUser(username, password);
-
-    // Tenta fazer login com o usuário criado
-    const loginResponse = await fetch(`https://srv-marvelflix.onrender.com/api/panel/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ username, password })
-    });
-
-    const loginResult = await loginResponse.json();
-
-    if (loginResponse.ok) {
-      console.log("Login realizado com sucesso:", loginResult.token);
-    } else {
-      console.error("Login falhou:", loginResult.message);
-    }
+    console.log(`Usuário admin criado com sucesso: ${username}`);
   })();
 }
 
