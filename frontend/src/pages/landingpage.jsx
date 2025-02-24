@@ -6,8 +6,9 @@ const LandingPage = () => {
   const { authToken } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
-  // Se, por algum motivo, a rota ainda estiver em "/", mas o usuário tem token, não mostramos nada
   if (authToken) {
+    // Se estiver logado e cair na "/", pode redirecionar para /home
+    // ou simplesmente exibir algo
     return null;
   }
 
@@ -26,7 +27,9 @@ const LandingPage = () => {
         <h1 className="text-4xl md:text-6xl font-bold mb-4">
           Unlimited movies, TV shows, and more
         </h1>
-        <p className="text-lg md:text-xl mb-6">Sign up now and start your journey!</p>
+        <p className="text-lg md:text-xl mb-6">
+          Sign up now and start your journey!
+        </p>
 
         <button
           onClick={handleOpenModal}
@@ -36,7 +39,6 @@ const LandingPage = () => {
         </button>
       </div>
 
-      {/* Modal de Autenticação */}
       {isAuthModalOpen && <AuthModal onClose={() => setIsAuthModalOpen(false)} />}
     </div>
   );
