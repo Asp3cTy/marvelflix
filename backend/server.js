@@ -50,8 +50,9 @@ app.use("/api/movies", moviesRoutes);
 app.use("/api/thumbnails", thumbnailsRoutes);
 app.use("/api/users", usersRoutes);
 
-// Servir thumbnails corretamente
-app.use("/thumbnails", express.static(path.join(__dirname, "../frontend/public/thumbnails")));
+// Em vez de "../frontend/public/thumbnails", aponte para "assets/thumbnails"
+app.use("/thumbnails", express.static(path.join(__dirname, "assets/thumbnails")));
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
