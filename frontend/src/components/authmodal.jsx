@@ -1,22 +1,35 @@
-// src/components/authmodal.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authcontext";
 import API_URL from "../config";
 
 const AuthModal = ({ onClose }) => {
+  const [isVisible, setIsVisible] = useState(true);
   const [isRegistering, setIsRegistering] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { login } = useAuth();
   const navigate = useNavigate();
+  const { login } = useAuth();
+
+  const handleClose = () => {
+    setIsVisible(false);
+    setTimeout(() => {
+      onClose();
+    }, 300);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
+    if (!email.includes("@") || password.length < 4) {
+      setError("Credenciais inválidas.");
+      return;
+    }
+
+    // Decide rota
     const endpoint = isRegistering
       ? `${API_URL}/api/auth/register`
       : `${API_URL}/api/auth/login`;
@@ -25,11 +38,10 @@ const AuthModal = ({ onClose }) => {
       const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
-
       if (!response.ok) {
         setError(data.message || "Erro ao processar a solicitação.");
         return;
@@ -38,59 +50,72 @@ const AuthModal = ({ onClose }) => {
       if (isRegistering) {
         alert(data.message || "Usuário registrado com sucesso!");
       } else {
-        // Espera do backend: { token }
         if (data.token) {
           login(data.token);
           navigate("/home");
         }
       }
-      onClose();
+      handleClose();
     } catch (err) {
       console.error("Erro ao comunicar com API:", err);
       setError("Erro de conexão. Tente novamente.");
     }
   };
 
+  if (!isVisible) return null;
+
   return (
-    <div className="fixed inset-0 bg-black/60 z-50 flex justify-center items-center">
-      <div className="bg-white p-6 w-96 rounded">
-        {error && <p>{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <h2 className="mb-2">{isRegistering ? "Registrar" : "Login"}</h2>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+      <div className="bg-gray-900 p-6 rounded-lg max-w-sm w-full relative">
+        <button className="absolute top-2 right-2 text-white" onClick={handleClose}>✖</button>
+        <h2 className="text-2xl font-bold text-white mb-4 text-center">
+          {isRegistering ? "Crie sua conta" : "Login"}
+        </h2>
+
+        {error && <p className="text-red-500 text-center mb-3">{error}</p>}
+
+        <form onSubmit={handleSubmit} className="flex flex-col space-y-3">
           <input
             type="email"
-            placeholder="E-mail"
+            className="p-2 rounded bg-gray-800 text-white border border-gray-600"
+            placeholder="Seu e-mail"
             value={email}
-            onChange={e => setEmail(e.target.value)}
-            className="border p-2 w-full mb-2"
+            onChange={(e) => setEmail(e.target.value)}
           />
+
           <input
             type="password"
-            placeholder="Senha"
+            className="p-2 rounded bg-gray-800 text-white border border-gray-600"
+            placeholder="Sua senha"
             value={password}
-            onChange={e => setPassword(e.target.value)}
-            className="border p-2 w-full mb-2"
+            onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit" className="bg-blue-600 text-white py-2 px-4">
-            {isRegistering ? "Criar Conta" : "Entrar"}
+
+          <button
+            type="submit"
+            className="bg-red-600 hover:bg-red-700 text-white p-2 rounded"
+          >
+            {isRegistering ? "Registrar" : "Entrar"}
           </button>
         </form>
 
-        {isRegistering ? (
-          <p className="mt-2">
-            Já tem uma conta?{" "}
-            <button onClick={() => setIsRegistering(false)} className="text-blue-600 underline">
-              Faça Login
-            </button>
-          </p>
-        ) : (
-          <p className="mt-2">
-            Novo aqui?{" "}
-            <button onClick={() => setIsRegistering(true)} className="text-blue-600 underline">
-              Registre-se
-            </button>
-          </p>
-        )}
+        <div className="text-center mt-4">
+          {isRegistering ? (
+            <p className="text-gray-300 text-sm">
+              Já tem conta?{" "}
+              <button onClick={() => setIsRegistering(false)} className="text-red-400 underline">
+                Fazer Login
+              </button>
+            </p>
+          ) : (
+            <p className="text-gray-300 text-sm">
+              Novo por aqui?{" "}
+              <button onClick={() => setIsRegistering(true)} className="text-red-400 underline">
+                Criar Conta
+              </button>
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
