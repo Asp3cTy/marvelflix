@@ -23,7 +23,7 @@ router.post("/add", async (req, res) => {
   }
 });
 
-// Buscar TODOS os filmes ou filtrados por coleção
+// Buscar todos os filmes ou filtrados por coleção
 router.get("/", async (req, res) => {
   const { collection_id } = req.query;
 
@@ -42,23 +42,6 @@ router.get("/", async (req, res) => {
   } catch (error) {
     console.error("Erro ao buscar filmes:", error);
     res.status(500).json({ message: "Erro ao buscar filmes no banco de dados." });
-  }
-});
-
-// Buscar filme por ID
-router.get("/:movieId", async (req, res) => {
-  const { movieId } = req.params;
-  try {
-    const result = await queryD1("SELECT * FROM movies WHERE id = ?", [movieId]);
-
-    if (!result || result.length === 0) {
-      return res.status(404).json({ message: "Filme não encontrado" });
-    }
-
-    res.json(result[0]);
-  } catch (error) {
-    console.error("Erro ao buscar filme:", error);
-    res.status(500).json({ message: "Erro ao buscar filme." });
   }
 });
 
