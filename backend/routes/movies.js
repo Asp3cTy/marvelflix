@@ -45,4 +45,38 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Rota para EDITAR filme
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { title, collection_id, url, cover_url, duration } = req.body;
+
+  if (!title || !collection_id || !url || !cover_url || !duration) {
+    return res.status(400).json({ message: "Todos os campos são obrigatórios!" });
+  }
+
+  try {
+    // Faz update
+    await queryD1(
+      "UPDATE movies SET title = ?, collection_id = ?, url = ?, cover_url = ?, duration = ? WHERE id = ?",
+      [title, collection_id, url, cover_url, duration, id]
+    );
+    res.json({ message: "Filme atualizado com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao editar filme:", error);
+    res.status(500).json({ message: "Erro ao editar filme." });
+  }
+});
+
+router.delete("/:movieId", async (req, res) => {
+  const { movieId } = req.params;
+  try {
+    await queryD1("DELETE FROM movies WHERE id = ?", [movieId]);
+    res.json({ message: "Filme excluído com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao excluir filme:", error);
+    res.status(500).json({ message: "Erro ao excluir filme." });
+  }
+});
+
+
 module.exports = router;

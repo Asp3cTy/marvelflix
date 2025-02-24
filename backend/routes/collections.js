@@ -33,4 +33,36 @@ router.post(["/", "/add"], async (req, res) => {
   }
 });
 
+// Rota para EDITAR coleção
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { name, image } = req.body;
+
+  if (!name || !image) {
+    return res.status(400).json({ message: "Nome e imagem são obrigatórios." });
+  }
+
+  try {
+    // Faz update
+    await queryD1("UPDATE collections SET name = ?, image = ? WHERE id = ?", [name, image, id]);
+    res.json({ message: "Coleção atualizada com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao editar coleção:", error);
+    res.status(500).json({ message: "Erro ao editar coleção." });
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    await queryD1("DELETE FROM collections WHERE id = ?", [id]);
+    res.json({ message: "Coleção excluída com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao excluir coleção:", error);
+    res.status(500).json({ message: "Erro ao excluir coleção." });
+  }
+});
+
+
+
 module.exports = router;
