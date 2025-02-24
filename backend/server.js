@@ -9,6 +9,8 @@ const moviesRoutes = require("./routes/movies");
 const thumbnailsRoutes = require("./routes/thumbnails");
 const usersRoutes = require("./routes/users");
 
+
+
 const app = express();
 app.use(cors());
 app.use(express.json());
