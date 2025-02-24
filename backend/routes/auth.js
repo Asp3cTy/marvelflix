@@ -27,10 +27,11 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Credenciais inválidas' });
     }
 
+    // Criptografa o ID do usuário e gera token
     const encryptedId = encrypt(user.id.toString());
     const token = jwt.sign({ id: encryptedId }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    // Aqui só retorna o token, sem role ou user:
+    // Retorna apenas o token (sem role ou isAdmin)
     res.json({ token });
   } catch (error) {
     console.error('Erro ao autenticar usuário:', error);
@@ -40,7 +41,7 @@ router.post('/login', async (req, res) => {
 
 // =========== REGISTER ===========
 router.post('/register', async (req, res) => {
-  const { email, password, role = 'user' } = req.body;
+  const { email, password } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({ message: 'Preencha todos os campos' });
@@ -55,38 +56,16 @@ router.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const createdAt = new Date().toISOString();
 
+    // role não é mais relevante. Se quiser, mantenha 'user'
     await queryD1(
       'INSERT INTO users (email, password, role, created_at) VALUES (?, ?, ?, ?)',
-      [email, hashedPassword, role, createdAt]
+      [email, hashedPassword, 'user', createdAt]
     );
 
     res.json({ message: 'Usuário criado com sucesso!' });
   } catch (error) {
     console.error('Erro ao criar usuário:', error);
     res.status(500).json({ message: 'Erro ao criar usuário' });
-  }
-});
-
-// =========== CHECK ADMIN ===========
-router.get('/check-admin', async (req, res) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) {
-    return res.status(401).json({ message: 'Token não fornecido' });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const decryptedId = decrypt(decoded.id);
-
-    // Busca o usuário pelo ID
-    const users = await queryD1('SELECT role FROM users WHERE id = ?', [decryptedId]);
-    const user = Array.isArray(users) && users.length > 0 ? users[0] : null;
-    console.log("Usuário verificado:", user);
-
-    res.json({ isAdmin: user && user.role === 'admin' });
-  } catch (error) {
-    console.error('Erro ao verificar administrador:', error);
-    res.status(500).json({ message: 'Erro ao verificar administrador' });
   }
 });
 
