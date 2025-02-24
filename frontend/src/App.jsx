@@ -8,6 +8,7 @@ import Home from "./pages/home";
 import Collections from "./pages/collections";
 import CollectionView from "./pages/collectionview";
 import MovieView from "./pages/movieview";
+import AdminPanel from "./pages/adminpanel";
 
 const ProtectedRoute = ({ children }) => {
   const { authToken } = useAuth();
@@ -40,6 +41,7 @@ const AppContent = () => {
           <Route path="/collections" element={<ProtectedRoute><Collections /></ProtectedRoute>} />
           <Route path="/collection/:collectionId" element={<ProtectedRoute><CollectionView /></ProtectedRoute>} />
           <Route path="/movie/:movieId" element={<ProtectedRoute><MovieView /></ProtectedRoute>} />
+          <Route path="/admin" element={<AdminPanel />} />
 
           {/* Removemos rotas de admin e login */}
           <Route path="*" element={<Navigate to="/" />} />
