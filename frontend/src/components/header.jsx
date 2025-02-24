@@ -1,10 +1,11 @@
-import { useState } from "react";
+// src/components/header.jsx
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/authcontext";
+import { AuthContext } from "../context/authcontext";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { authToken, logout } = useAuth();
+  const { authToken, logout } = useContext(AuthContext);
 
   return (
     <>
@@ -31,6 +32,7 @@ const Header = () => {
             />
           </Link>
 
+          {/* Se tem token, mostra logout */}
           {authToken && (
             <button
               onClick={logout}
