@@ -1,13 +1,13 @@
+// src/pages/landingpage.jsx
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/authcontext";
 import AuthModal from "../components/authmodal";
 
 const LandingPage = () => {
-  // Pegamos authToken direto do contexto, sem usar useAuth
   const { authToken } = useContext(AuthContext);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
-  // Se já estiver logado, não exibimos a LandingPage (ou redirecionamos, se quiser)
+  // Se já estiver logado, não exibimos nada (ou poderíamos redirecionar)
   if (authToken) {
     return null;
   }
