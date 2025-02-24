@@ -1,6 +1,7 @@
+// src/App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "./context/authcontext";
+import { AuthProvider, AuthContext } from "./context/authcontext";
 import LandingPage from "./pages/landingpage";
 import Header from "./components/header";
 import Footer from "./components/footer";
@@ -8,10 +9,10 @@ import Home from "./pages/home";
 import Collections from "./pages/collections";
 import CollectionView from "./pages/collectionview";
 import MovieView from "./pages/movieview";
-import AdminPanel from "./pages/adminpanel";
 
+// Rota protegida: se não tiver token, manda para "/"
 const ProtectedRoute = ({ children }) => {
-  const { authToken } = useAuth();
+  const { authToken } = React.useContext(AuthContext);
   if (!authToken) {
     return <Navigate to="/" />;
   }
@@ -29,7 +30,7 @@ const App = () => {
 };
 
 const AppContent = () => {
-  const { authToken } = useAuth();
+  const { authToken } = React.useContext(AuthContext);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -41,9 +42,8 @@ const AppContent = () => {
           <Route path="/collections" element={<ProtectedRoute><Collections /></ProtectedRoute>} />
           <Route path="/collection/:collectionId" element={<ProtectedRoute><CollectionView /></ProtectedRoute>} />
           <Route path="/movie/:movieId" element={<ProtectedRoute><MovieView /></ProtectedRoute>} />
-          <Route path="/admin" element={<AdminPanel />} />
 
-          {/* Removemos rotas de admin e login */}
+          {/* Removemos quaisquer rotas de admin ou login extras */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
