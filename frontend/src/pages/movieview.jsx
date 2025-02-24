@@ -1,5 +1,5 @@
 // src/pages/movieview.jsx
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import API_URL from "../config";
@@ -10,21 +10,16 @@ const MovieView = () => {
   const [videoUrl, setVideoUrl] = useState("");
 
   useEffect(() => {
-    // Primeiro, buscar informações do filme
-    axios
-      .get(`${API_URL}/api/movies/${movieId}`)
-      .then((response) => {
+    axios.get(`${API_URL}/api/movies/${movieId}`)
+      .then(response => {
         setMovie(response.data);
-
-        // Depois, buscar a URL segura (se quiser)
+        // Buscar a URL segura
         return axios.get(`${API_URL}/api/movies/secure-video/${movieId}`);
       })
-      .then((response) => {
+      .then(response => {
         setVideoUrl(response.data.secureUrl);
       })
-      .catch((error) => {
-        console.error("Erro ao buscar informações do filme:", error);
-      });
+      .catch(error => console.error("Erro ao buscar informações do filme:", error));
   }, [movieId]);
 
   return (
