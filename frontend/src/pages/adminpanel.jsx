@@ -65,6 +65,36 @@ const AdminPanel = () => {
       .catch(err => console.error("Erro ao adicionar filme:", err));
   };
 
+  // Excluir coleção
+  const handleDeleteCollection = (id) => {
+    axios.delete(`${API_URL}/api/collections/${id}`)
+      .then(() => {
+        alert("Coleção excluída com sucesso!");
+        fetchCollections();
+      })
+      .catch(err => alert("Erro ao excluir coleção: " + err.response.data.message));
+  };
+
+  // Editar coleção
+  const handleEditCollection = (collection) => {
+    setNewCollection(collection);
+  };
+
+  // Excluir filme
+  const handleDeleteMovie = (id) => {
+    axios.delete(`${API_URL}/api/movies/${id}`)
+      .then(() => {
+        alert("Filme excluído com sucesso!");
+        fetchMovies();
+      })
+      .catch(err => alert("Erro ao excluir filme: " + err.response.data.message));
+  };
+
+  // Editar filme
+  const handleEditMovie = (movie) => {
+    setNewMovie(movie);
+  };
+
   // Excluir usuário
   const handleDeleteUser = (id) => {
     axios.delete(`${API_URL}/api/users/${id}`)
@@ -119,6 +149,15 @@ const AdminPanel = () => {
       {activeTab === "collections" && (
         <div>
           <h2 className="text-xl font-bold mb-2">Lista de Coleções</h2>
+          {collections.map(collection => (
+            <div key={collection.id} className="bg-gray-800 p-2 rounded flex justify-between items-center mb-2">
+              <span>{collection.name}</span>
+              <div>
+                <button onClick={() => handleEditCollection(collection)} className="bg-blue-500 px-2 py-1 rounded mr-2">Editar</button>
+                <button onClick={() => handleDeleteCollection(collection.id)} className="bg-red-500 px-2 py-1 rounded">Excluir</button>
+              </div>
+            </div>
+          ))}
           <input type="text" placeholder="Nome da coleção" className="w-full p-2 mb-2 bg-gray-700 text-white rounded" value={newCollection.name} onChange={(e) => setNewCollection({ ...newCollection, name: e.target.value })} />
           <select className="w-full p-2 mb-2 bg-gray-700 text-white rounded" value={newCollection.image} onChange={(e) => setNewCollection({ ...newCollection, image: e.target.value })}>
             <option value="">Selecione uma imagem</option>
@@ -131,6 +170,16 @@ const AdminPanel = () => {
       {/* ========== Filmes ========== */}
       {activeTab === "movies" && (
         <div>
+          <h2 className="text-xl font-bold mb-2">Lista de Filmes</h2>
+          {movies.map(movie => (
+            <div key={movie.id} className="bg-gray-800 p-2 rounded flex justify-between items-center mb-2">
+              <span>{movie.title}</span>
+              <div>
+                <button onClick={() => handleEditMovie(movie)} className="bg-blue-500 px-2 py-1 rounded mr-2">Editar</button>
+                <button onClick={() => handleDeleteMovie(movie.id)} className="bg-red-500 px-2 py-1 rounded">Excluir</button>
+              </div>
+            </div>
+          ))}
           <h2 className="text-xl font-bold mb-2">Adicionar Filme</h2>
           <input type="text" placeholder="Título do Filme" className="w-full p-2 mb-2 bg-gray-700 text-white rounded" value={newMovie.title} onChange={(e) => setNewMovie({ ...newMovie, title: e.target.value })} />
           <select className="w-full p-2 mb-2 bg-gray-700 text-white rounded" value={newMovie.collection_id} onChange={(e) => setNewMovie({ ...newMovie, collection_id: e.target.value })}>
@@ -152,9 +201,12 @@ const AdminPanel = () => {
         <div>
           <h2 className="text-xl font-bold mb-2">Lista de Usuários</h2>
           {users.map(user => (
-            <div key={user.id} className="bg-gray-800 p-2 rounded flex justify-between items-center">
+            <div key={user.id} className="bg-gray-800 p-2 rounded flex justify-between items-center mb-2">
               <span>{user.email}</span>
-              <button onClick={() => handleDeleteUser(user.id)} className="bg-red-500 px-2 py-1 rounded">Excluir</button>
+              <div>
+                <button onClick={() => handleEditUser(user)} className="bg-blue-500 px-2 py-1 rounded mr-2">Editar</button>
+                <button onClick={() => handleDeleteUser(user.id)} className="bg-red-500 px-2 py-1 rounded">Excluir</button>
+              </div>
             </div>
           ))}
           {editingUser && (
