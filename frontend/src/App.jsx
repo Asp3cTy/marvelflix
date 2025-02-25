@@ -10,18 +10,20 @@ import CollectionView from "./pages/collectionview";
 import MovieView from "./pages/movieview";
 import AdminPanel from "./pages/adminpanel";
 
-// ✅ Rota protegida para usuários autenticados
+// ✅ Rota protegida: Apenas usuários logados podem acessar
 const ProtectedRoute = ({ children }) => {
   const { authToken } = React.useContext(AuthContext);
+  
   if (!authToken) {
     console.log("🔒 Acesso negado! Redirecionando para LandingPage...");
     return <Navigate to="/" replace />;
   }
+  
   return children;
 };
 
-// ✅ Rota exclusiva para Zulinn
-const ProtectedAdminRoute = ({ children }) => {
+// ✅ Rota protegida SOMENTE para "zulinn@marvelflix.com"
+const AdminProtectedRoute = ({ children }) => {
   const { authToken, userEmail } = React.useContext(AuthContext);
 
   if (!authToken) {
@@ -30,7 +32,7 @@ const ProtectedAdminRoute = ({ children }) => {
   }
 
   if (userEmail !== "zulinn@marvelflix.com") {
-    console.log("🚫 Acesso negado!");
+    console.log("🚫 Acesso negado ao Admin Panel!");
     return <Navigate to="/home" replace />;
   }
 
@@ -61,10 +63,10 @@ const AppContent = () => {
           <Route path="/collection/:collectionId" element={<ProtectedRoute><CollectionView /></ProtectedRoute>} />
           <Route path="/movie/:movieId" element={<ProtectedRoute><MovieView /></ProtectedRoute>} />
 
-          {/* ✅ Somente Zulinn pode acessar o painel de admin */}
-          <Route path="/admin" element={<ProtectedAdminRoute><AdminPanel /></ProtectedAdminRoute>} />
+          {/* ✅ Somente Zulinn pode acessar o painel administrativo */}
+          <Route path="/admin" element={<AdminProtectedRoute><AdminPanel /></AdminProtectedRoute>} />
 
-          {/* Redireciona qualquer outra rota para LandingPage */}
+          {/* 🔄 Redireciona qualquer outra rota inválida para LandingPage */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>

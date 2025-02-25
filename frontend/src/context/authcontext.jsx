@@ -1,9 +1,10 @@
 import React, { createContext, useState, useEffect } from "react";
+import DOMPurify from "dompurify"; // 🔹 Importa DOMPurify para evitar XSS
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Tenta obter o token e o email do sessionStorage (mais seguro que localStorage)
+  // 🔹 Obtém o token e o email do sessionStorage
   const storedToken = sessionStorage.getItem("token");
   const storedEmail = sessionStorage.getItem("userEmail");
 
@@ -13,8 +14,8 @@ export const AuthProvider = ({ children }) => {
   // ✅ Atualiza o sessionStorage sempre que o usuário logar/deslogar
   useEffect(() => {
     if (authToken && userEmail) {
-      sessionStorage.setItem("token", authToken);
-      sessionStorage.setItem("userEmail", userEmail);
+      sessionStorage.setItem("token", DOMPurify.sanitize(authToken)); // 🔹 Sanitiza o token
+      sessionStorage.setItem("userEmail", DOMPurify.sanitize(userEmail)); // 🔹 Sanitiza o email
     } else {
       sessionStorage.removeItem("token");
       sessionStorage.removeItem("userEmail");
@@ -23,15 +24,15 @@ export const AuthProvider = ({ children }) => {
 
   // ✅ Atualiza o estado ao logar
   const login = (token, email) => {
-    setAuthToken(token);
-    setUserEmail(email);
+    setAuthToken(DOMPurify.sanitize(token)); // 🔹 Sanitiza antes de salvar
+    setUserEmail(DOMPurify.sanitize(email)); // 🔹 Sanitiza antes de salvar
   };
 
   // ✅ Remove os dados ao deslogar
   const logout = () => {
     setAuthToken(null);
     setUserEmail(null);
-    sessionStorage.clear(); // Remove tudo ao deslogar
+    sessionStorage.clear(); // 🔹 Remove tudo ao deslogar
   };
 
   return (

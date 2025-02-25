@@ -146,12 +146,14 @@ app.use("/api/users", usersRoutes);
 // ✅ 8. Servindo arquivos estáticos corretamente
 app.use(
   "/thumbnails",
-  express.static(path.join(__dirname, "assets/thumbnails"), {
+  express.static(path.join(__dirname, "../frontend/public/thumbnails"), {
     setHeaders: (res, path) => {
       res.set("X-Content-Type-Options", "nosniff");
+      res.set("Access-Control-Allow-Origin", "*"); // ✅ Permitir acesso de qualquer origem
     },
   })
 );
+
 
 
 // ✅ 9. Iniciar o servidor
