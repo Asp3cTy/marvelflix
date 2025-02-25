@@ -23,10 +23,10 @@ const CollectionView = () => {
     <div className="p-10 text-white text-center bg-marvelDark min-h-screen">
       <div className="sticky top-2 left-0 flex justify-start z-50 mb-4">
         <button
-          onClick={() => (window.location.href = "/")}
+          onClick={() => (window.location.href = "/collections")}
           className="bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-red-700 transition"
         >
-          ⬅ Voltar para Home
+          ⬅ Voltar para Coleções
         </button>
       </div>
 
