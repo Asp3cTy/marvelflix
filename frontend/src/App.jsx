@@ -9,7 +9,6 @@ import Collections from "./pages/collections";
 import CollectionView from "./pages/collectionview";
 import MovieView from "./pages/movieview";
 import AdminPanel from "./pages/adminpanel";
-import Thumbnails from "./pages/thumbnails";
 
 // ✅ Rota protegida: Apenas usuários logados podem acessar
 const ProtectedRoute = ({ children }) => {
@@ -63,7 +62,6 @@ const AppContent = () => {
           <Route path="/collections" element={<ProtectedRoute><Collections /></ProtectedRoute>} />
           <Route path="/collection/:collectionId" element={<ProtectedRoute><CollectionView /></ProtectedRoute>} />
           <Route path="/movie/:movieId" element={<ProtectedRoute><MovieView /></ProtectedRoute>} />
-          <Route path="/thumbnails" element={<ProtectedRoute><Thumbnails /></ProtectedRoute>} />
 
           {/* ✅ Somente Zulinn pode acessar o painel administrativo */}
           <Route path="/admin" element={<AdminProtectedRoute><AdminPanel /></AdminProtectedRoute>} />
