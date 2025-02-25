@@ -10,24 +10,27 @@ const BUNNY_ACCESS_KEY = process.env.BUNNY_ACCESS_KEY; // 🔹 Pegando do .env
 
 // ✅ Rota para buscar as imagens do CDN via backend
 router.get("/", async (req, res) => {
+  console.log("🔍 Rota `/api/thumbnails` chamada!");
+
   try {
+    console.log("🔑 Chave BunnyCDN:", BUNNY_ACCESS_KEY);
+    console.log("🌍 URL chamada:", `${BUNNY_CDN_STORAGE_URL}?accessKey=${BUNNY_ACCESS_KEY}`);
+
     const response = await axios.get(`${BUNNY_CDN_STORAGE_URL}?accessKey=${BUNNY_ACCESS_KEY}`);
 
-    if (Array.isArray(response.data)) {
-      // 🔹 Retorna a lista completa de imagens com os nomes e links diretos
-      const images = response.data.map(item => ({
-        name: item.ObjectName,
-        url: `https://marvelflix.b-cdn.net/thumbnails/${item.ObjectName}`,
-      }));
+    console.log("✅ Resposta recebida:", response.data);
 
+    if (Array.isArray(response.data)) {
+      const images = response.data.map(item => item.ObjectName);
       return res.json(images);
     }
 
     res.status(500).json({ error: "Formato inesperado da resposta do BunnyCDN" });
   } catch (error) {
-    console.error("Erro ao buscar imagens do BunnyCDN:", error.response ? error.response.data : error.message);
+    console.error("❌ Erro ao buscar imagens:", error.response ? error.response.data : error.message);
     res.status(500).json({ error: "Erro ao buscar imagens do BunnyCDN" });
   }
 });
+
 
 module.exports = router;

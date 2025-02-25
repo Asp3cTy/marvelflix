@@ -167,12 +167,19 @@ async function createTables() {
 }
 createTables();
 
-// ✅ 7. Definir as rotas da API
+console.log("✅ Rotas carregadas!");
+console.log("🔹 Auth:", authRoutes ? "OK" : "Erro");
+console.log("🔹 Collections:", collectionsRoutes ? "OK" : "Erro");
+console.log("🔹 Movies:", moviesRoutes ? "OK" : "Erro");
+console.log("🔹 Thumbnails:", thumbnailsRoutes ? "OK" : "Erro");
+console.log("🔹 Users:", usersRoutes ? "OK" : "Erro");
+
 app.use("/api/auth", authRoutes);
 app.use("/api/collections", collectionsRoutes);
 app.use("/api/movies", moviesRoutes);
 app.use("/api/thumbnails", thumbnailsRoutes);
 app.use("/api/users", usersRoutes);
+
 
 
 
