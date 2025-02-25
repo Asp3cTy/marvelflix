@@ -55,45 +55,70 @@ app.use(
       directives: {
         defaultSrc: ["'self'"],
 
-        // Permitir scripts inline e APIs externas
-        scriptSrc: ["'self'", "'unsafe-inline'", "https://apis.google.com"],
+        // ✅ Permitir scripts inline e APIs externas
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://apis.google.com",
+          "https://assets.mediadelivery.net" // 🔥 Permite o carregamento do rum.js
+        ],
 
-        // Permitir estilos inline e Google Fonts
-        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+        // ✅ Permitir estilos inline e Google Fonts
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://fonts.googleapis.com"
+        ],
 
-        // Permitir fontes do Google
+        // ✅ Permitir fontes do Google
         fontSrc: ["'self'", "https://fonts.gstatic.com"],
 
-        // Permitir imagens de fontes externas
+        // ✅ Permitir imagens de fontes externas
         imgSrc: [
           "'self'",
           "data:", // Permite imagens embutidas (base64)
           "https://i.imgur.com",
-          "https://img.icons8.com"
+          "https://img.icons8.com",
+          "https://assets.mediadelivery.net" // 🔥 Permite imagens do BunnyStream
         ],
 
-        // Permitir conexões externas (API do BunnyStream e outras)
+        // ✅ Permitir conexões externas (API do BunnyStream e outras)
         connectSrc: [
           "'self'",
           "https://srv-marvelflix.onrender.com",
-          "https://video.bunnycdn.com"
+          "https://video.bunnycdn.com",
+          "https://assets.mediadelivery.net" // 🔥 Permite conexões com mediadelivery.net
         ],
 
-        // Permitir iframes do BunnyStream
-        frameSrc: ["'self'", "https://iframe.mediadelivery.net"],
+        // ✅ Permitir iframes do BunnyStream
+        frameSrc: [
+          "'self'",
+          "https://iframe.mediadelivery.net"
+        ],
 
-        // Permitir carregamento de arquivos de mídia (vídeos, áudios)
-        mediaSrc: ["'self'", "https://iframe.mediadelivery.net"],
+        // ✅ Permitir carregamento de arquivos de mídia (vídeos, áudios)
+        mediaSrc: [
+          "'self'",
+          "https://iframe.mediadelivery.net"
+        ],
 
-        // Permitir carregamento de estilos externos específicos
-        styleSrcElem: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+        // ✅ Permitir carregamento de estilos externos específicos
+        styleSrcElem: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://fonts.googleapis.com"
+        ],
 
-        // Permitir embeds e frames de fontes confiáveis
-        frameAncestors: ["'self'", "https://iframe.mediadelivery.net"]
+        // ✅ Permitir embeds e frames de fontes confiáveis
+        frameAncestors: [
+          "'self'",
+          "https://iframe.mediadelivery.net"
+        ]
       },
     },
   })
 );
+
 
 
 
