@@ -27,7 +27,7 @@ app.use(limiter);
 
 
 const allowedOrigins = [
-  "https://marvelflix.onrender.com",
+  "https://marvelflix-krxl.onrender.com",
   "https://srv-marvelflix.onrender.com"
 ];
 
