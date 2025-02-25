@@ -12,6 +12,7 @@ const xss = require("xss-clean");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 
+
 // ✅ 1. Criando o `app` antes de usá-lo
 const app = express();
 
@@ -55,12 +56,13 @@ app.use(
       directives: {
         defaultSrc: ["'self'"],
 
-        // ✅ Permitir scripts inline e APIs externas
+        // ✅ Permitir scripts externos (incluindo rum.js)
         scriptSrc: [
           "'self'",
           "'unsafe-inline'",
           "https://apis.google.com",
-          "https://assets.mediadelivery.net" // 🔥 Permite o carregamento do rum.js
+          "https://assets.mediadelivery.net", // 🔥 BunnyStream Analytics (rum.js)
+          "https://video-1365.mediadelivery.net" // 🔥 BunnyStream API para métricas
         ],
 
         // ✅ Permitir estilos inline e Google Fonts
@@ -73,21 +75,23 @@ app.use(
         // ✅ Permitir fontes do Google
         fontSrc: ["'self'", "https://fonts.gstatic.com"],
 
-        // ✅ Permitir imagens de fontes externas
+        // ✅ Permitir imagens do BunnyStream
         imgSrc: [
           "'self'",
           "data:", // Permite imagens embutidas (base64)
           "https://i.imgur.com",
           "https://img.icons8.com",
-          "https://assets.mediadelivery.net" // 🔥 Permite imagens do BunnyStream
+          "https://assets.mediadelivery.net",
+          "https://video-1365.mediadelivery.net"
         ],
 
-        // ✅ Permitir conexões externas (API do BunnyStream e outras)
+        // ✅ Permitir conexões externas (BunnyStream)
         connectSrc: [
           "'self'",
           "https://srv-marvelflix.onrender.com",
           "https://video.bunnycdn.com",
-          "https://assets.mediadelivery.net" // 🔥 Permite conexões com mediadelivery.net
+          "https://assets.mediadelivery.net",
+          "https://video-1365.mediadelivery.net"
         ],
 
         // ✅ Permitir iframes do BunnyStream
@@ -99,10 +103,11 @@ app.use(
         // ✅ Permitir carregamento de arquivos de mídia (vídeos, áudios)
         mediaSrc: [
           "'self'",
-          "https://iframe.mediadelivery.net"
+          "https://iframe.mediadelivery.net",
+          "https://video-1365.mediadelivery.net"
         ],
 
-        // ✅ Permitir carregamento de estilos externos específicos
+        // ✅ Permitir estilos externos específicos
         styleSrcElem: [
           "'self'",
           "'unsafe-inline'",
@@ -118,6 +123,7 @@ app.use(
     },
   })
 );
+
 
 
 
@@ -168,16 +174,11 @@ app.use("/api/movies", moviesRoutes);
 app.use("/api/thumbnails", thumbnailsRoutes);
 app.use("/api/users", usersRoutes);
 
-// ✅ 8. Servindo arquivos estáticos corretamente
-app.use(
-  "/thumbnails",
-  express.static(path.join(__dirname, "../frontend/public/thumbnails"), {
-    setHeaders: (res, path) => {
-      res.set("X-Content-Type-Options", "nosniff");
-      res.set("Access-Control-Allow-Origin", "*"); // ✅ Permitir acesso de qualquer origem
-    },
-  })
-);
+
+
+
+
+
 
 
 
