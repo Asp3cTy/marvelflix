@@ -3,20 +3,21 @@ import React, { createContext, useState, useEffect } from "react";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const storedToken = localStorage.getItem("token");
-  const storedEmail = localStorage.getItem("userEmail");
+  // Tenta obter o token e o email do sessionStorage (mais seguro que localStorage)
+  const storedToken = sessionStorage.getItem("token");
+  const storedEmail = sessionStorage.getItem("userEmail");
 
   const [authToken, setAuthToken] = useState(storedToken || null);
   const [userEmail, setUserEmail] = useState(storedEmail || null);
 
-  // Atualizar o localStorage sempre que o usuário logar/deslogar
+  // ✅ Atualiza o sessionStorage sempre que o usuário logar/deslogar
   useEffect(() => {
     if (authToken && userEmail) {
-      localStorage.setItem("token", authToken);
-      localStorage.setItem("userEmail", userEmail);
+      sessionStorage.setItem("token", authToken);
+      sessionStorage.setItem("userEmail", userEmail);
     } else {
-      localStorage.removeItem("token");
-      localStorage.removeItem("userEmail");
+      sessionStorage.removeItem("token");
+      sessionStorage.removeItem("userEmail");
     }
   }, [authToken, userEmail]);
 
@@ -30,6 +31,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setAuthToken(null);
     setUserEmail(null);
+    sessionStorage.clear(); // Remove tudo ao deslogar
   };
 
   return (

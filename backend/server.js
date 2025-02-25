@@ -24,7 +24,28 @@ const limiter = rateLimit({
 
 // ✅ 3. Aplicando middlewares de segurança ANTES das rotas
 app.use(limiter);
-app.use(cors());
+
+
+const allowedOrigins = [
+  "https://marvelflix.onrender.com",
+  "https://srv-marvelflix.onrender.com"
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Acesso bloqueado por CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(xss());
 app.use(
@@ -125,12 +146,13 @@ app.use("/api/users", usersRoutes);
 // ✅ 8. Servindo arquivos estáticos corretamente
 app.use(
   "/thumbnails",
-  express.static(path.join(__dirname, "../frontend/public/thumbnails"), {
+  express.static(path.join(__dirname, "assets/thumbnails"), {
     setHeaders: (res, path) => {
       res.set("X-Content-Type-Options", "nosniff");
     },
   })
 );
+
 
 // ✅ 9. Iniciar o servidor
 const PORT = process.env.PORT || 5000;
