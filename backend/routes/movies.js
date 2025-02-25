@@ -97,40 +97,50 @@ router.delete("/:movieId", async (req, res) => {
 });
 
 // Nova rota para gerar URL segura do BunnyStream
+// Nova rota para gerar URL segura do BunnyStream
 router.get("/secure-video/:movieId", async (req, res) => {
-    try {
-        const { movieId } = req.params;
+  try {
+    const { movieId } = req.params;
 
-        // Buscar o filme no banco de dados
-        const movieQuery = await queryD1("SELECT * FROM movies WHERE id = ?", [movieId]);
+    console.log(`🎬 Buscando filme no banco para o ID: ${movieId}`);
 
-        if (!movieQuery.length) {
-            return res.status(404).json({ error: "Filme não encontrado." });
-        }
+    // Buscar o filme no banco de dados
+    const movieQuery = await queryD1("SELECT * FROM movies WHERE id = ?", [movieId]);
 
-        const movie = movieQuery[0];
-
-        // Certificar que a URL do BunnyStream é válida
-        if (!movie.url) {
-            return res.status(400).json({ error: "URL do vídeo não disponível." });
-        }
-
-        // 🔹 Aqui corrigimos a extração do ID do vídeo 🔹
-        const videoId = movie.url.split("/").pop(); // Pegando o último segmento da URL
-
-        if (!videoId || isNaN(videoId)) {
-            return res.status(400).json({ error: "ID do vídeo inválido." });
-        }
-
-        // Gerar a URL segura com o BunnyToken
-        const secureUrl = generateBunnyToken(videoId);
-
-        res.json({ secureUrl });
-
-    } catch (error) {
-        console.error("Erro ao gerar URL segura:", error);
-        res.status(500).json({ error: "Erro interno ao gerar URL segura." });
+    if (!movieQuery.length) {
+      console.error("❌ Filme não encontrado no banco.");
+      return res.status(404).json({ error: "Filme não encontrado." });
     }
+
+    const movie = movieQuery[0];
+
+    // Certificar que a URL do BunnyStream é válida
+    if (!movie.url) {
+      console.error("❌ URL do vídeo não encontrada no banco.");
+      return res.status(400).json({ error: "URL do vídeo não disponível." });
+    }
+
+    console.log(`🔍 ID do vídeo BunnyStream antes do processamento: ${movie.url}`);
+
+    // Certifique-se de que a URL salva no banco contém **somente o ID** do vídeo
+    const videoId = movie.url.trim();
+
+    if (!videoId || videoId.length < 10) {
+      console.error("❌ ID do vídeo inválido:", videoId);
+      return res.status(400).json({ error: "ID do vídeo inválido." });
+    }
+
+    // Gerar a URL segura com o BunnyToken
+    const secureUrl = generateBunnyToken(videoId);
+    
+    console.log(`✅ URL segura gerada: ${secureUrl}`);
+
+    res.json({ secureUrl });
+
+  } catch (error) {
+    console.error("❌ Erro ao gerar URL segura:", error);
+    res.status(500).json({ error: "Erro interno ao gerar URL segura." });
+  }
 });
 
 
