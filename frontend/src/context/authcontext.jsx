@@ -1,30 +1,39 @@
-// src/context/authcontext.jsx
 import React, { createContext, useState, useEffect } from "react";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [authToken, setAuthToken] = useState(localStorage.getItem("token") || null);
+  const storedToken = localStorage.getItem("token");
+  const storedEmail = localStorage.getItem("userEmail");
 
-  // Sempre que mudar o token, salvamos/limpamos no localStorage
+  const [authToken, setAuthToken] = useState(storedToken || null);
+  const [userEmail, setUserEmail] = useState(storedEmail || null);
+
+  // Atualizar o localStorage sempre que o usuário logar/deslogar
   useEffect(() => {
-    if (authToken) {
+    if (authToken && userEmail) {
       localStorage.setItem("token", authToken);
+      localStorage.setItem("userEmail", userEmail);
     } else {
       localStorage.removeItem("token");
+      localStorage.removeItem("userEmail");
     }
-  }, [authToken]);
+  }, [authToken, userEmail]);
 
-  const login = (token) => {
+  // ✅ Atualiza o estado ao logar
+  const login = (token, email) => {
     setAuthToken(token);
+    setUserEmail(email);
   };
 
+  // ✅ Remove os dados ao deslogar
   const logout = () => {
     setAuthToken(null);
+    setUserEmail(null);
   };
 
   return (
-    <AuthContext.Provider value={{ authToken, login, logout }}>
+    <AuthContext.Provider value={{ authToken, userEmail, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

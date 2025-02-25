@@ -3,6 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import API_URL from "../config";
+import DOMPurify from "dompurify"; // Importa DOMPurify para sanitização de HTML
+
+const sanitizedHTML = (html) => {
+  return { __html: DOMPurify.sanitize(html) };
+};
 
 const MovieView = () => {
   const { movieId } = useParams();
@@ -23,7 +28,7 @@ const MovieView = () => {
         setLoadingMovie(false);
         console.log("✅ Detalhes do filme carregados:", response.data);
 
-        // Agora, buscar a URL segura do vídeo
+        // Buscar a URL segura do vídeo
         return axios.get(`${API_URL}/api/movies/secure-video/${movieId}`);
       })
       .then(response => {
@@ -68,6 +73,11 @@ const MovieView = () => {
         </div>
       ) : (
         !error && <p className="text-gray-400 mt-6 text-center">Carregando vídeo...</p>
+      )}
+
+      {/* Exibir descrição do filme de forma segura */}
+      {movie?.description && (
+        <div className="mt-4 text-gray-300 text-lg" dangerouslySetInnerHTML={sanitizedHTML(movie.description)} />
       )}
 
       {/* Exibir duração do filme */}

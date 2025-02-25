@@ -8,12 +8,40 @@ const collectionsRoutes = require("./routes/collections");
 const moviesRoutes = require("./routes/movies");
 const thumbnailsRoutes = require("./routes/thumbnails");
 const usersRoutes = require("./routes/users");
+const xss = require("xss-clean");
+const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
+
+
+
+
+
+
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 100, // Máximo de 100 requisições por IP
+  message: "Muitas requisições. Tente novamente mais tarde.",
+});
+
+app.use(limiter);
+
 
 
 
 const app = express();
+app.use((req, res, next) => {
+  res.cookie("session", "valor", {
+    httpOnly: true, // Impede acesso via JavaScript
+    secure: process.env.NODE_ENV === "production", // Apenas HTTPS em produção
+    sameSite: "Strict", // Impede envio entre sites
+  });
+  next();
+});
 app.use(cors());
 app.use(express.json());
+app.use(xss());
+app.use(helmet());
 
 app.get("/", (req, res) => {
   res.send("API do MarvelFlix está funcionando!");
@@ -51,7 +79,12 @@ app.use("/api/thumbnails", thumbnailsRoutes);
 app.use("/api/users", usersRoutes);
 
 // Em vez de "../frontend/public/thumbnails", aponte para "assets/thumbnails"
-app.use("/thumbnails", express.static(path.join(__dirname, "assets/thumbnails")));
+app.use("/thumbnails", express.static(path.join(__dirname, "../frontend/public/thumbnails"), {
+  setHeaders: (res, path) => {
+    res.set("X-Content-Type-Options", "nosniff");
+  }
+}));
+
 
 
 const PORT = process.env.PORT || 5000;
