@@ -5,7 +5,7 @@ require("dotenv").config();
 const router = express.Router();
 
 // 🔹 Configuração do BunnyCDN
-const BUNNY_CDN_STORAGE_URL = "https://br.storage.bunnycdn.com/marvelflix-assets/thumbnails/";
+const BUNNY_CDN_STORAGE_URL = "https://br.storage.bunnycdn.com/marvelflix-assets/thumbnails";
 const BUNNY_ACCESS_KEY = process.env.BUNNY_ACCESS_KEY; // 🔹 Pegando do .env
 
 // ✅ Rota para buscar as imagens do CDN via backend
