@@ -85,7 +85,7 @@ const Header = () => {
         </div>
       )}
 
-      <div className="pt-16 bg-marvelDark"></div>
+      <div className="pt-14 bg-marvelDark"></div>
     </>
   );
 };
