@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import API_URL from "../config";
 
+const BUNNY_CDN_URL = "https://br.storage.bunnycdn.com/marvelflix-assets/thumbnails/"; // URL base do CDN
+
 const CollectionView = () => {
   const { collectionId } = useParams();
   const [collection, setCollection] = useState(null);
@@ -35,42 +37,45 @@ const CollectionView = () => {
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-6">
-        {movies.map((movie) => (
-          <div key={movie.id} className="flex flex-col items-center">
-            <div className="relative group w-[220px] h-[330px] rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
-            <img
-  src={
-    movie.cover_url.startsWith("http")
-      ? movie.cover_url
-      : `${API_URL}/thumbnails/${movie.cover_url}`
-  }
-  alt={movie.title}
-  className="w-full h-full object-cover"
-/>
+        {movies.map((movie) => {
+          // Se a URL começar com "http", usa diretamente, senão carrega do BunnyCDN
+          const movieImageUrl = movie.cover_url.startsWith("http")
+            ? movie.cover_url
+            : `${BUNNY_CDN_URL}${movie.cover_url}`;
 
+          return (
+            <div key={movie.id} className="flex flex-col items-center">
+              <div className="relative group w-[220px] h-[330px] rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
+                <img
+                  src={movieImageUrl}
+                  alt={movie.title}
+                  className="w-full h-full object-cover"
+                  onError={(e) => (e.target.src = "/fallback.jpg")} // Se não carregar, usa uma imagem alternativa
+                />
 
-              <div
-                className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                onClick={() => (window.location.href = `/movie/${movie.id}`)}
-              >
-                <div className="w-16 h-16 flex items-center justify-center bg-red-600 rounded-full transition-transform duration-300 hover:scale-110">
-                  <svg
-                    width="36"
-                    height="36"
-                    viewBox="0 0 24 24"
-                    fill="white"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
+                <div
+                  className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  onClick={() => (window.location.href = `/movie/${movie.id}`)}
+                >
+                  <div className="w-16 h-16 flex items-center justify-center bg-red-600 rounded-full transition-transform duration-300 hover:scale-110">
+                    <svg
+                      width="36"
+                      height="36"
+                      viewBox="0 0 24 24"
+                      fill="white"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
                 </div>
               </div>
+              <p className="mt-2 text-lg font-bold text-white text-center">
+                {movie.title}
+              </p>
             </div>
-            <p className="mt-2 text-lg font-bold text-white text-center">
-              {movie.title}
-            </p>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
