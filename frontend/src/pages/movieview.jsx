@@ -9,35 +9,43 @@ const MovieView = () => {
   const [movie, setMovie] = useState(null);
   const [videoUrl, setVideoUrl] = useState("");
   const [loadingMovie, setLoadingMovie] = useState(true);
-  const [loadingVideo, setLoadingVideo] = useState(true);
+  const [loadingVideo, setLoadingVideo] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Buscar informações do filme
-    axios
-      .get(`${API_URL}/api/movies/${movieId}`)
-      .then(response => {
+    const fetchMovieDetails = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/api/movies/${movieId}`);
         setMovie(response.data);
         setLoadingMovie(false);
-      })
-      .catch(error => {
-        console.error("Erro ao buscar informações do filme:", error);
+
+        // Só buscar a URL segura se o filme tiver um link válido
+        if (response.data.url) {
+          fetchSecureVideoUrl(response.data.url);
+        } else {
+          setError("URL do vídeo não disponível.");
+        }
+      } catch (err) {
+        console.error("Erro ao buscar informações do filme:", err);
         setError("Erro ao carregar os detalhes do filme.");
         setLoadingMovie(false);
-      });
+      }
+    };
 
-    // Buscar URL segura do vídeo
-    axios
-      .get(`${API_URL}/api/movies/secure-video/${movieId}`)
-      .then(response => {
+    const fetchSecureVideoUrl = async (movieUrl) => {
+      try {
+        setLoadingVideo(true);
+        const response = await axios.get(`${API_URL}/api/movies/secure-video/${movieId}`);
         setVideoUrl(response.data.secureUrl);
         setLoadingVideo(false);
-      })
-      .catch(error => {
-        console.error("Erro ao buscar URL segura do vídeo:", error);
+      } catch (err) {
+        console.error("Erro ao buscar URL segura do vídeo:", err);
         setError("Erro ao carregar o vídeo.");
         setLoadingVideo(false);
-      });
+      }
+    };
+
+    fetchMovieDetails();
   }, [movieId]);
 
   return (
@@ -55,7 +63,7 @@ const MovieView = () => {
         {loadingMovie ? "Carregando..." : movie ? `Assistindo: ${movie.title}` : "Filme não encontrado"}
       </h1>
 
-      {/* Exibir erros caso existam */}
+      {/* Exibir mensagens de erro */}
       {error && <p className="text-red-400 mt-4">{error}</p>}
 
       {/* Player de vídeo */}
