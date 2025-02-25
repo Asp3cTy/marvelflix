@@ -12,24 +12,24 @@ const xss = require("xss-clean");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 
+// ✅ 1. Criando o `app` antes de usá-lo
+const app = express();
 
-
-
-
-
-
+// ✅ 2. Configuração do Rate Limiter (proteção contra ataques)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
   max: 100, // Máximo de 100 requisições por IP
   message: "Muitas requisições. Tente novamente mais tarde.",
 });
 
+// ✅ 3. Aplicando middlewares de segurança ANTES das rotas
 app.use(limiter);
+app.use(cors());
+app.use(express.json());
+app.use(xss());
+app.use(helmet());
 
-
-
-
-const app = express();
+// ✅ 4. Definindo cookies seguros
 app.use((req, res, next) => {
   res.cookie("session", "valor", {
     httpOnly: true, // Impede acesso via JavaScript
@@ -38,16 +38,13 @@ app.use((req, res, next) => {
   });
   next();
 });
-app.use(cors());
-app.use(express.json());
-app.use(xss());
-app.use(helmet());
 
+// ✅ 5. Teste de conexão com a API
 app.get("/", (req, res) => {
   res.send("API do MarvelFlix está funcionando!");
 });
 
-// Criar tabelas automaticamente
+// ✅ 6. Criar tabelas automaticamente
 async function createTables() {
   try {
     console.log("📂 Criando/verificando tabelas...");
@@ -71,22 +68,24 @@ async function createTables() {
 }
 createTables();
 
-// Rotas da API
+// ✅ 7. Definir as rotas da API
 app.use("/api/auth", authRoutes);
 app.use("/api/collections", collectionsRoutes);
 app.use("/api/movies", moviesRoutes);
 app.use("/api/thumbnails", thumbnailsRoutes);
 app.use("/api/users", usersRoutes);
 
-// Em vez de "../frontend/public/thumbnails", aponte para "assets/thumbnails"
-app.use("/thumbnails", express.static(path.join(__dirname, "../frontend/public/thumbnails"), {
-  setHeaders: (res, path) => {
-    res.set("X-Content-Type-Options", "nosniff");
-  }
-}));
+// ✅ 8. Servindo arquivos estáticos corretamente
+app.use(
+  "/thumbnails",
+  express.static(path.join(__dirname, "../frontend/public/thumbnails"), {
+    setHeaders: (res, path) => {
+      res.set("X-Content-Type-Options", "nosniff");
+    },
+  })
+);
 
-
-
+// ✅ 9. Iniciar o servidor
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🔥 Servidor rodando na porta ${PORT}`);
