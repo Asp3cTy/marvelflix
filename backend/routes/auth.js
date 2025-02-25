@@ -18,6 +18,7 @@ router.post('/login', async (req, res) => {
   try {
     const users = await queryD1('SELECT * FROM users WHERE email = ?', [email]);
     const user = Array.isArray(users) && users.length > 0 ? users[0] : null;
+
     if (!user) {
       return res.status(401).json({ message: 'Credenciais inválidas' });
     }
@@ -31,13 +32,15 @@ router.post('/login', async (req, res) => {
     const encryptedId = encrypt(user.id.toString());
     const token = jwt.sign({ id: encryptedId }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    // Retorna apenas o token (sem role ou isAdmin)
-    res.json({ token });
+    // 🔹 Agora retornamos também o email
+    res.json({ token, email: user.email });
   } catch (error) {
     console.error('Erro ao autenticar usuário:', error);
     res.status(500).json({ message: 'Erro ao autenticar usuário' });
   }
 });
+
+
 
 // =========== REGISTER ===========
 router.post('/register', async (req, res) => {
