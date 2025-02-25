@@ -4,7 +4,7 @@ import DOMPurify from "dompurify"; // Proteção contra XSS
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // 🔹 Obtém os valores do sessionStorage (pode estar vazio inicialmente)
+  // 🔹 Obtém os valores do sessionStorage
   const storedToken = sessionStorage.getItem("token");
   const storedEmail = sessionStorage.getItem("userEmail");
 
@@ -18,10 +18,10 @@ export const AuthProvider = ({ children }) => {
   // ✅ Atualiza o sessionStorage sempre que o usuário logar/deslogar
   useEffect(() => {
     if (authToken && userEmail) {
-      sessionStorage.setItem("token", DOMPurify.sanitize(authToken)); // Protege contra XSS
+      sessionStorage.setItem("token", DOMPurify.sanitize(authToken));
       sessionStorage.setItem("userEmail", DOMPurify.sanitize(userEmail));
-      console.log("✅ Token salvo no sessionStorage:", authToken);
-      console.log("✅ Email salvo no sessionStorage:", userEmail);
+      console.log("✅ Token salvo:", authToken);
+      console.log("✅ Email salvo:", userEmail);
     } else {
       sessionStorage.removeItem("token");
       sessionStorage.removeItem("userEmail");
@@ -31,9 +31,21 @@ export const AuthProvider = ({ children }) => {
 
   // ✅ Atualiza o estado ao logar
   const login = (token, email) => {
-    setAuthToken(DOMPurify.sanitize(token)); // Sanitiza antes de salvar
+    console.log("🔹 Dados recebidos no login:", { token, email });
+
+    if (!token) {
+      console.error("❌ ERRO: Token inválido recebido!");
+      return;
+    }
+
+    if (!email) {
+      console.warn("⚠️ Aviso: Email não foi passado, usando 'desconhecido@marvelflix.com'");
+      email = "desconhecido@marvelflix.com"; // Define um valor padrão
+    }
+
+    setAuthToken(DOMPurify.sanitize(token));
     setUserEmail(DOMPurify.sanitize(email));
-    console.log("🔓 Usuário logado:", email);
+    console.log("🔓 Usuário logado com sucesso:", email);
   };
 
   // ✅ Remove os dados ao deslogar
