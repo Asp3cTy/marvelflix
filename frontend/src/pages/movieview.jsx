@@ -9,43 +9,34 @@ const MovieView = () => {
   const [movie, setMovie] = useState(null);
   const [videoUrl, setVideoUrl] = useState("");
   const [loadingMovie, setLoadingMovie] = useState(true);
-  const [loadingVideo, setLoadingVideo] = useState(false);
+  const [loadingVideo, setLoadingVideo] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchMovieDetails = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/api/movies/${movieId}`);
+    console.log(`🎬 Buscando detalhes do filme ID: ${movieId}`);
+
+    // Buscar informações do filme
+    axios
+      .get(`${API_URL}/api/movies/${movieId}`)
+      .then(response => {
         setMovie(response.data);
         setLoadingMovie(false);
+        console.log("✅ Detalhes do filme carregados:", response.data);
 
-        // Só buscar a URL segura se o filme tiver um link válido
-        if (response.data.url) {
-          fetchSecureVideoUrl(response.data.url);
-        } else {
-          setError("URL do vídeo não disponível.");
-        }
-      } catch (err) {
-        console.error("Erro ao buscar informações do filme:", err);
-        setError("Erro ao carregar os detalhes do filme.");
-        setLoadingMovie(false);
-      }
-    };
-
-    const fetchSecureVideoUrl = async (movieUrl) => {
-      try {
-        setLoadingVideo(true);
-        const response = await axios.get(`${API_URL}/api/movies/secure-video/${movieId}`);
+        // Agora, buscar a URL segura do vídeo
+        return axios.get(`${API_URL}/api/movies/secure-video/${movieId}`);
+      })
+      .then(response => {
         setVideoUrl(response.data.secureUrl);
         setLoadingVideo(false);
-      } catch (err) {
-        console.error("Erro ao buscar URL segura do vídeo:", err);
-        setError("Erro ao carregar o vídeo.");
+        console.log("✅ URL segura do vídeo:", response.data.secureUrl);
+      })
+      .catch(error => {
+        console.error("❌ Erro ao buscar informações do filme ou vídeo:", error);
+        setError("Erro ao carregar os detalhes do filme ou vídeo.");
+        setLoadingMovie(false);
         setLoadingVideo(false);
-      }
-    };
-
-    fetchMovieDetails();
+      });
   }, [movieId]);
 
   return (
@@ -63,7 +54,7 @@ const MovieView = () => {
         {loadingMovie ? "Carregando..." : movie ? `Assistindo: ${movie.title}` : "Filme não encontrado"}
       </h1>
 
-      {/* Exibir mensagens de erro */}
+      {/* Exibir erros caso existam */}
       {error && <p className="text-red-400 mt-4">{error}</p>}
 
       {/* Player de vídeo */}
