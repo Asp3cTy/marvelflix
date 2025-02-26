@@ -56,15 +56,24 @@ const allowedOrigins = [
   "https://srv-marvelflix.onrender.com"
 ];
 
-app.use(cors({
-  origin: allowedOrigins, // ✅ Agora aceita múltiplos domínios
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-}));
+// ✅ Middleware de CORS (corrigido)
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+  }
 
-// ✅ Middleware para lidar com pré-voo de CORS
-app.options("*", cors());
+  // Permitir requisições OPTIONS (preflight)
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+
+  next();
+});
+
 
 
 app.use(express.json());
