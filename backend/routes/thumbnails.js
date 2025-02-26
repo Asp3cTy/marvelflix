@@ -8,9 +8,8 @@ const router = express.Router();
 const BUNNY_CDN_STORAGE_URL = "https://br.storage.bunnycdn.com/marvelflix-assets/thumbnails/";
 const BUNNY_ACCESS_KEY = process.env.BUNNY_ACCESS_KEY; // 🔹 Pegando do .env
 
-// ✅ Rota para buscar as imagens do CDN via backend
 router.get("/", async (req, res) => {
-  console.log("🔍 Rota `/api/thumbnails` chamada!");
+  console.log("✅ Rota `/api/thumbnails` chamada!");
 
   try {
     console.log("🔑 Chave BunnyCDN:", BUNNY_ACCESS_KEY);
@@ -31,6 +30,7 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: "Erro ao buscar imagens do BunnyCDN" });
   }
 });
+
 
 
 module.exports = router;

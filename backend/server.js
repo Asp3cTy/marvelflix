@@ -16,6 +16,10 @@ const helmet = require("helmet");
 // ✅ 1. Criando o `app` antes de usá-lo
 const app = express();
 
+
+
+
+
 // ✅ 2. Configuração do Rate Limiter (proteção contra ataques)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
@@ -26,6 +30,24 @@ const limiter = rateLimit({
 // ✅ 3. Aplicando middlewares de segurança ANTES das rotas
 app.use(limiter);
 
+
+console.log("✅ Rotas carregadas!");
+console.log("🔹 Auth:", authRoutes ? "OK" : "Erro");
+console.log("🔹 Collections:", collectionsRoutes ? "OK" : "Erro");
+console.log("🔹 Movies:", moviesRoutes ? "OK" : "Erro");
+console.log("🔹 Thumbnails:", thumbnailsRoutes ? "OK" : "Erro");
+console.log("🔹 Users:", usersRoutes ? "OK" : "Erro");
+app.use((req, res, next) => {
+  console.log(`🔍 Nova requisição: ${req.method} ${req.url}`);
+  next();
+});
+
+
+app.use("/api/auth", authRoutes);
+app.use("/api/collections", collectionsRoutes);
+app.use("/api/movies", moviesRoutes);
+app.use("/api/thumbnails", thumbnailsRoutes);
+app.use("/api/users", usersRoutes);
 
 const allowedOrigins = [
   "https://marvelflix-krxl.onrender.com",
@@ -143,42 +165,8 @@ app.get("/", (req, res) => {
   res.send("API do MarvelFlix está funcionando!");
 });
 
-// ✅ 6. Criar tabelas automaticamente
-async function createTables() {
-  try {
-    console.log("📂 Criando/verificando tabelas...");
 
-    await queryD1(
-      "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, role TEXT DEFAULT 'user', created_at TEXT)"
-    );
 
-    await queryD1(
-      "CREATE TABLE IF NOT EXISTS collections (id INTEGER PRIMARY KEY, name TEXT UNIQUE NOT NULL, image TEXT)"
-    );
-
-    await queryD1(
-      "CREATE TABLE IF NOT EXISTS movies (id INTEGER PRIMARY KEY, title TEXT NOT NULL, collection_id INTEGER, url TEXT NOT NULL, cover_url TEXT NOT NULL, duration TEXT)"
-    );
-
-    console.log("✅ Banco de dados D1 pronto!");
-  } catch (error) {
-    console.error("❌ Erro ao criar tabelas:", error);
-  }
-}
-createTables();
-
-console.log("✅ Rotas carregadas!");
-console.log("🔹 Auth:", authRoutes ? "OK" : "Erro");
-console.log("🔹 Collections:", collectionsRoutes ? "OK" : "Erro");
-console.log("🔹 Movies:", moviesRoutes ? "OK" : "Erro");
-console.log("🔹 Thumbnails:", thumbnailsRoutes ? "OK" : "Erro");
-console.log("🔹 Users:", usersRoutes ? "OK" : "Erro");
-
-app.use("/api/auth", authRoutes);
-app.use("/api/collections", collectionsRoutes);
-app.use("/api/movies", moviesRoutes);
-app.use("/api/thumbnails", thumbnailsRoutes);
-app.use("/api/users", usersRoutes);
 
 
 
