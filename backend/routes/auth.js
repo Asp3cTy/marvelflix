@@ -48,7 +48,7 @@ console.log("JWT_SECRET em auth.js:", process.env.JWT_SECRET);
       );
 
       // Retorna apenas o token
-      res.json({ token });
+      res.json({ token, email: user.email });
     } catch (error) {
       console.error('Erro ao autenticar usuário:', error);
       res.status(500).json({ message: 'Erro ao autenticar usuário' });
