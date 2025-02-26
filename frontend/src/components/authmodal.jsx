@@ -109,7 +109,7 @@ const AuthModal = ({ onClose }) => {
         // Login bem-sucedido
         if (data.token && data.email) {
           login(data.token);
-          sessionStorage.setItem("userEmail", data.email);
+          localStorage.setItem("userEmail", data.email);
           setSuccessMsg("Login bem-sucedido");
           
           // Em 3s, redireciona
