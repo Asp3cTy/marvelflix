@@ -13,6 +13,8 @@ const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 
 
+console.log("🔍 Teste de importação:", thumbnailsRoutes);
+
 // ✅ 1. Criando o `app` antes de usá-lo
 const app = express();
 

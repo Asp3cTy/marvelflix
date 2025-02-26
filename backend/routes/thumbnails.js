@@ -8,6 +8,11 @@ const router = express.Router();
 const BUNNY_CDN_STORAGE_URL = "https://br.storage.bunnycdn.com/marvelflix-assets/thumbnails/";
 const BUNNY_ACCESS_KEY = process.env.BUNNY_ACCESS_KEY; // 🔹 Pegando do .env
 
+
+router.get("/test", async (req, res) => {
+  res.json("Rota de Thumbnails funcionando!");
+})
+
 router.get("/", async (req, res) => {
   console.log("✅ Rota `/api/thumbnails` chamada!");
 
