@@ -107,9 +107,11 @@ const AuthModal = ({ onClose }) => {
         }, 3000);
       } else {
         // Login bem-sucedido
-        if (data.token) {
+        if (data.token && data.email) {
           login(data.token);
+          sessionStorage.setItem("userEmail", data.email);
           setSuccessMsg("Login bem-sucedido");
+          
           // Em 3s, redireciona
           setTimeout(() => {
             navigate("/home");

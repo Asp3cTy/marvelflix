@@ -15,7 +15,7 @@ const Header = () => {
   // Exemplo: vamos supor que no AuthContext exista "userEmail"
   // const { authToken, userEmail, logout } = useContext(AuthContext);
 
-  const userEmail = localStorage.getItem("userEmail"); 
+  const userEmail = sessionStorage.getItem("userEmail"); 
   // <-- gambiarra: caso você queira salvar userEmail no localStorage
   // Ideal seria um state no context. Ajuste conforme sua lógica real.
 
@@ -76,7 +76,7 @@ const Header = () => {
       </header>
 
       {isMenuOpen && (
-        <div className="bg-marvelDark text-white py-4 shadow-md mt-16">
+        <div className="bg-marvelDark text-white py-4 shadow-md">
           <nav className="flex flex-col items-center space-y-4">
             <Link to="/home" className="hover:text-red-500">Home</Link>
             <Link to="/collections" className="hover:text-red-500">Coleções</Link>
