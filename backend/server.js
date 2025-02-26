@@ -8,185 +8,52 @@ const collectionsRoutes = require("./routes/collections");
 const moviesRoutes = require("./routes/movies");
 const thumbnailsRoutes = require("./routes/thumbnails");
 const usersRoutes = require("./routes/users");
-const xss = require("xss-clean");
-const rateLimit = require("express-rate-limit");
-const helmet = require("helmet");
 
 
-console.log("🔍 Teste de importação:", thumbnailsRoutes);
 
-// ✅ 1. Criando o `app` antes de usá-lo
 const app = express();
+app.use(cors());
+app.use(express.json());
 
-
-
-
-
-// ✅ 2. Configuração do Rate Limiter (proteção contra ataques)
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 100, // Máximo de 100 requisições por IP
-  message: "Muitas requisições. Tente novamente mais tarde.",
+app.get("/", (req, res) => {
+  res.send("API do MarvelFlix está funcionando!");
 });
 
-// ✅ 3. Aplicando middlewares de segurança ANTES das rotas
-app.use(limiter);
+// Criar tabelas automaticamente
+async function createTables() {
+  try {
+    console.log("📂 Criando/verificando tabelas...");
 
+    await queryD1(
+      "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL, role TEXT DEFAULT 'user', created_at TEXT)"
+    );
 
-console.log("✅ Rotas carregadas!");
-console.log("🔹 Auth:", authRoutes ? "OK" : "Erro");
-console.log("🔹 Collections:", collectionsRoutes ? "OK" : "Erro");
-console.log("🔹 Movies:", moviesRoutes ? "OK" : "Erro");
-console.log("🔹 Thumbnails:", thumbnailsRoutes ? "OK" : "Erro");
-console.log("🔹 Users:", usersRoutes ? "OK" : "Erro");
-app.use((req, res, next) => {
-  console.log(`🔍 Nova requisição: ${req.method} ${req.url}`);
-  next();
-});
+    await queryD1(
+      "CREATE TABLE IF NOT EXISTS collections (id INTEGER PRIMARY KEY, name TEXT UNIQUE NOT NULL, image TEXT)"
+    );
 
-const allowedOrigins = [
-  "https://marvelflix-krxl.onrender.com",
-  "https://srv-marvelflix.onrender.com"
-];
+    await queryD1(
+      "CREATE TABLE IF NOT EXISTS movies (id INTEGER PRIMARY KEY, title TEXT NOT NULL, collection_id INTEGER, url TEXT NOT NULL, cover_url TEXT NOT NULL, duration TEXT)"
+    );
 
-// ✅ Middleware de CORS (corrigido)
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
+    console.log("✅ Banco de dados D1 pronto!");
+  } catch (error) {
+    console.error("❌ Erro ao criar tabelas:", error);
   }
+}
+createTables();
 
-  // Permitir requisições OPTIONS (preflight)
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
-
-  next();
-});
-
-
+// Rotas da API
 app.use("/api/auth", authRoutes);
 app.use("/api/collections", collectionsRoutes);
 app.use("/api/movies", moviesRoutes);
 app.use("/api/thumbnails", thumbnailsRoutes);
 app.use("/api/users", usersRoutes);
 
+// Em vez de "../frontend/public/thumbnails", aponte para "assets/thumbnails"
+app.use("/thumbnails", express.static(path.join(__dirname, "assets/thumbnails")));
 
 
-
-
-app.use(express.json());
-app.use(xss());
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      useDefaults: true,
-      directives: {
-        defaultSrc: ["'self'"],
-
-        // ✅ Permitir scripts externos (incluindo rum.js)
-        scriptSrc: [
-          "'self'",
-          "'unsafe-inline'",
-          "https://apis.google.com",
-          "https://assets.mediadelivery.net", // 🔥 BunnyStream Analytics (rum.js)
-          "https://video-1365.mediadelivery.net" // 🔥 BunnyStream API para métricas
-        ],
-
-        // ✅ Permitir estilos inline e Google Fonts
-        styleSrc: [
-          "'self'",
-          "'unsafe-inline'",
-          "https://fonts.googleapis.com"
-        ],
-
-        // ✅ Permitir fontes do Google
-        fontSrc: ["'self'", "https://fonts.gstatic.com"],
-
-        // ✅ Permitir imagens do BunnyStream
-        imgSrc: [
-          "'self'",
-          "data:", // Permite imagens embutidas (base64)
-          "https://i.imgur.com",
-          "https://img.icons8.com",
-          "https://assets.mediadelivery.net",
-          "https://video-1365.mediadelivery.net"
-        ],
-
-        // ✅ Permitir conexões externas (BunnyStream)
-        connectSrc: [
-          "'self'",
-          "https://srv-marvelflix.onrender.com",
-          "https://video.bunnycdn.com",
-          "https://assets.mediadelivery.net",
-          "https://video-1365.mediadelivery.net"
-        ],
-
-        // ✅ Permitir iframes do BunnyStream
-        frameSrc: [
-          "'self'",
-          "https://iframe.mediadelivery.net"
-        ],
-
-        // ✅ Permitir carregamento de arquivos de mídia (vídeos, áudios)
-        mediaSrc: [
-          "'self'",
-          "https://iframe.mediadelivery.net",
-          "https://video-1365.mediadelivery.net"
-        ],
-
-        // ✅ Permitir estilos externos específicos
-        styleSrcElem: [
-          "'self'",
-          "'unsafe-inline'",
-          "https://fonts.googleapis.com"
-        ],
-
-        // ✅ Permitir embeds e frames de fontes confiáveis
-        frameAncestors: [
-          "'self'",
-          "https://iframe.mediadelivery.net"
-        ]
-      },
-    },
-  })
-);
-
-
-
-
- 
-// ✅ 4. Definindo cookies seguros
-app.use((req, res, next) => {
-  res.cookie("session", "valor", {
-    httpOnly: true, // Impede acesso via JavaScript
-    secure: process.env.NODE_ENV === "production", // Apenas HTTPS em produção
-    sameSite: "Strict", // Impede envio entre sites
-  });
-  next();
-});
-
-// ✅ 5. Teste de conexão com a API
-app.get("/", (req, res) => {
-  res.send("API do MarvelFlix está funcionando!");
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ✅ 9. Iniciar o servidor
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🔥 Servidor rodando na porta ${PORT}`);

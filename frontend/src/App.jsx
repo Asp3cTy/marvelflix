@@ -1,3 +1,4 @@
+// src/App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, AuthContext } from "./context/authcontext";
@@ -10,32 +11,12 @@ import CollectionView from "./pages/collectionview";
 import MovieView from "./pages/movieview";
 import AdminPanel from "./pages/adminpanel";
 
-// ✅ Rota protegida: Apenas usuários logados podem acessar
+// Rota protegida: se não tiver token, manda para "/"
 const ProtectedRoute = ({ children }) => {
   const { authToken } = React.useContext(AuthContext);
-  
   if (!authToken) {
-    console.log("🔒 Acesso negado! Redirecionando para LandingPage...");
-    return <Navigate to="/" replace />;
+    return <Navigate to="/" />;
   }
-  
-  return children;
-};
-
-// ✅ Rota protegida SOMENTE para "zulinn@marvelflix.com"
-const AdminProtectedRoute = ({ children }) => {
-  const { authToken, userEmail } = React.useContext(AuthContext);
-
-  if (!authToken) {
-    console.log("🔒 Acesso negado! Redirecionando para LandingPage...");
-    return <Navigate to="/" replace />;
-  }
-
-  if (userEmail !== "1@1") {
-    console.log("🚫 Acesso negado ao Admin Panel!");
-    return <Navigate to="/home" replace />;
-  }
-
   return children;
 };
 
@@ -57,17 +38,15 @@ const AppContent = () => {
       {authToken && <Header />}
       <div className="flex-grow">
         <Routes>
-          <Route path="/" element={authToken ? <Navigate to="/home" replace /> : <LandingPage />} />
+          <Route path="/" element={!authToken ? <LandingPage /> : <Navigate to="/home" />} />
           <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path="/collections" element={<ProtectedRoute><Collections /></ProtectedRoute>} />
           <Route path="/collection/:collectionId" element={<ProtectedRoute><CollectionView /></ProtectedRoute>} />
           <Route path="/movie/:movieId" element={<ProtectedRoute><MovieView /></ProtectedRoute>} />
+          <Route path="/admin" element={<AdminPanel />} />
 
-          {/* ✅ Somente Zulinn pode acessar o painel administrativo */}
-          <Route path="/admin" element={<AdminProtectedRoute><AdminPanel /></AdminProtectedRoute>} />
-
-          {/* 🔄 Redireciona qualquer outra rota inválida para LandingPage */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          {/* Removemos quaisquer rotas de admin ou login extras */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
       {authToken && <Footer />}

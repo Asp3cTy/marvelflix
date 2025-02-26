@@ -65,6 +65,7 @@ const AdminPanel = () => {
       return;
     }
 
+    // Se tiver "newCollection.id", edita (PUT), senão cria (POST)
     const request = newCollection.id
       ? axios.put(`${API_URL}/api/collections/${newCollection.id}`, newCollection)
       : axios.post(`${API_URL}/api/collections`, newCollection);
@@ -75,6 +76,7 @@ const AdminPanel = () => {
         setNewCollection({ name: "", image: "" });
         alert("Coleção salva com sucesso!");
 
+        // Se existir o botão, muda o texto para "Criar Coleção"
         const collectionBtn = document.getElementById("collection-submit-button");
         if (collectionBtn) collectionBtn.innerText = "Criar Coleção";
       })
@@ -100,6 +102,7 @@ const AdminPanel = () => {
   const handleEditCollection = (collection) => {
     setNewCollection(collection);
 
+    // Se existir o botão, muda o texto para "Editar Coleção"
     const collectionBtn = document.getElementById("collection-submit-button");
     if (collectionBtn) collectionBtn.innerText = "Editar Coleção";
   };
@@ -146,6 +149,7 @@ const AdminPanel = () => {
   const handleEditMovie = (movie) => {
     setNewMovie(movie);
 
+    // Se existir o botão, muda o texto para "Editar Filme"
     const movieBtn = document.getElementById("movie-submit-button");
     if (movieBtn) movieBtn.innerText = "Editar Filme";
   };
@@ -262,8 +266,8 @@ const AdminPanel = () => {
           >
             <option value="">Selecione uma imagem</option>
             {thumbnails.map(thumb => (
-              <option key={thumb.filename} value={thumb.url}>
-                {thumb.filename}
+              <option key={thumb} value={thumb}>
+                {thumb}
               </option>
             ))}
           </select>
@@ -338,8 +342,8 @@ const AdminPanel = () => {
           >
             <option value="">Selecione uma imagem de capa</option>
             {thumbnails.map(thumb => (
-              <option key={thumb.filename} value={thumb.url}>
-                {thumb.filename}
+              <option key={thumb} value={thumb}>
+                {thumb}
               </option>
             ))}
           </select>

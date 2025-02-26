@@ -15,7 +15,7 @@ const Header = () => {
   // Exemplo: vamos supor que no AuthContext exista "userEmail"
   // const { authToken, userEmail, logout } = useContext(AuthContext);
 
-  const userEmail = sessionStorage.getItem("userEmail"); 
+  const userEmail = localStorage.getItem("userEmail"); 
   // <-- gambiarra: caso você queira salvar userEmail no localStorage
   // Ideal seria um state no context. Ajuste conforme sua lógica real.
 
@@ -85,7 +85,7 @@ const Header = () => {
         </div>
       )}
 
-      <div className="pt-14 bg-marvelDark"></div>
+      <div className="pt-16 bg-marvelDark"></div>
     </>
   );
 };
