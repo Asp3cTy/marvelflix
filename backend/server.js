@@ -9,7 +9,7 @@ const moviesRoutes = require("./routes/movies");
 const thumbnailsRoutes = require("./routes/thumbnails");
 const usersRoutes = require("./routes/users");
 const thumbnailsBunnyRoutes = require("./routes/thumbnails-bunny");
-const thumbnailsBunnyRoutes = require("./routes/thumbnails-bunny");
+
 
 
 
