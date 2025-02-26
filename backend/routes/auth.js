@@ -8,10 +8,13 @@ require('dotenv').config();
 
 const router = express.Router();
 
+console.log("JWT_SECRET em auth.js:", process.env.JWT_SECRET);
+
 // =========== LOGIN ===========
 router.post(
   '/login',
   [
+    
     body('email').isEmail().withMessage('Email inválido').normalizeEmail(),
     body('password').notEmpty().withMessage('Senha é obrigatória'),
   ],
@@ -23,7 +26,7 @@ router.post(
     }
 
     const { email, password } = req.body;
-
+console.log("JWT_SECRET em auth.js:", process.env.JWT_SECRET);
     try {
       const users = await queryD1('SELECT * FROM users WHERE email = ?', [email]);
       const user = Array.isArray(users) && users.length > 0 ? users[0] : null;
@@ -35,7 +38,7 @@ router.post(
       if (!isPasswordValid) {
         return res.status(401).json({ message: 'Credenciais inválidas' });
       }
-
+      console.log("JWT_SECRET em auth.js:", process.env.JWT_SECRET);
       // Criptografa o ID do usuário e gera token, agora incluindo o email no payload
       const encryptedId = encrypt(user.id.toString());
       const token = jwt.sign(
