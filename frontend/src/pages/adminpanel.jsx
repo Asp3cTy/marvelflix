@@ -52,10 +52,11 @@ const AdminPanel = () => {
   };
 
   const fetchThumbnails = () => {
-    axios
-      .get(`${API_URL}/api/thumbnails`)
-      .then(res => setThumbnails(res.data))
+        axios
+      .get(`${API_URL}/api/thumbnails-bunny`)
+      .then((res) => setThumbnails(res.data))
       .catch(err => console.error("Erro ao buscar thumbnails:", err));
+
   };
 
   // ================ COLEÇÕES ================
