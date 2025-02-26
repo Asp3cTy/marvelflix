@@ -10,8 +10,9 @@ import Collections from "./pages/collections";
 import CollectionView from "./pages/collectionview";
 import MovieView from "./pages/movieview";
 import AdminPanel from "./pages/adminpanel";
+import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 
-// Rota protegida: se não tiver token, manda para "/"
+// Rota protegida genérica: se não tiver token, redireciona para "/"
 const ProtectedRoute = ({ children }) => {
   const { authToken } = React.useContext(AuthContext);
   if (!authToken) {
@@ -43,9 +44,12 @@ const AppContent = () => {
           <Route path="/collections" element={<ProtectedRoute><Collections /></ProtectedRoute>} />
           <Route path="/collection/:collectionId" element={<ProtectedRoute><CollectionView /></ProtectedRoute>} />
           <Route path="/movie/:movieId" element={<ProtectedRoute><MovieView /></ProtectedRoute>} />
-          <Route path="/admin" element={<AdminPanel />} />
-
-          {/* Removemos quaisquer rotas de admin ou login extras */}
+          {/* Protege a rota /admin usando o componente específico para admin */}
+          <Route path="/admin" element={
+            <ProtectedAdminRoute>
+              <AdminPanel />
+            </ProtectedAdminRoute>
+          } />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
