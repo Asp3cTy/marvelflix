@@ -10,7 +10,7 @@ import Collections from "./pages/collections";
 import CollectionView from "./pages/collectionview";
 import MovieView from "./pages/movieview";
 import AdminPanel from "./pages/adminpanel";
-import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
+import ProtectedAdminRoute from "./components/protectedadminroute";
 
 // Rota protegida genérica: se não tiver token, redireciona para "/"
 const ProtectedRoute = ({ children }) => {
