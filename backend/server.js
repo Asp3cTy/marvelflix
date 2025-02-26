@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const cors = require("cors");
+
 const path = require("path");
 const { queryD1 } = require("./d1");
 const authRoutes = require("./routes/auth");
@@ -51,28 +51,7 @@ app.use("/api/movies", moviesRoutes);
 app.use("/api/thumbnails", thumbnailsRoutes);
 app.use("/api/users", usersRoutes);
 
-const allowedOrigins = [
-  "https://marvelflix-krxl.onrender.com",
-  "https://srv-marvelflix.onrender.com"
-];
 
-// ✅ Middleware de CORS (corrigido)
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-  }
-
-  // Permitir requisições OPTIONS (preflight)
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
-
-  next();
-});
 
 
 
@@ -156,7 +135,7 @@ app.use(
 
 
 
-
+ 
 // ✅ 4. Definindo cookies seguros
 app.use((req, res, next) => {
   res.cookie("session", "valor", {
