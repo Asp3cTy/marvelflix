@@ -66,4 +66,24 @@ router.get("/image", async (req, res) => {
   });
   
 
+  // routes/thumbnails-bunny.js
+router.get("/list", async (req, res) => {
+    try {
+      const bunnyResponse = await axios.get(
+        "https://br.storage.bunnycdn.com/marvelflix-assets/thumbnails/",
+        {
+          headers: {
+            AccessKey: process.env.BUNNY_ACCESS_KEY,
+          },
+        }
+      );
+      // bunnyResponse.data é um array de objetos com "ObjectName", "IsDirectory", etc.
+      res.json(bunnyResponse.data);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Falha ao listar arquivos" });
+    }
+  });
+  
+
 module.exports = router;
