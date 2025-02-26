@@ -19,9 +19,8 @@ const Collections = () => {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 p-6">
         {collections.map((collection) => {
           const collectionImageUrl = collection?.image?.startsWith("http")
-          ? collection.image
-          : `${API_URL}/thumbnails/${collection.image}`;
-
+            ? collection.image
+            : `${API_URL}/api/bunnycdn/image?objectName=${collection.image}`;
 
           return (
             <Link to={`/collection/${collection.id}`} key={collection.id}>

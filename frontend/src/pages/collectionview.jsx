@@ -38,16 +38,15 @@ const CollectionView = () => {
         {movies.map((movie) => (
           <div key={movie.id} className="flex flex-col items-center">
             <div className="relative group w-[220px] h-[330px] rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
-            <img
-  src={
-    movie.cover_url.startsWith("http")
-      ? movie.cover_url
-      : `${API_URL}/thumbnails/${movie.cover_url}`
-  }
-  alt={movie.title}
-  className="w-full h-full object-cover"
-/>
-
+              <img
+                src={
+                  movie.cover_url.startsWith("http")
+                    ? movie.cover_url
+                    : `${API_URL}/api/bunnycdn/image?objectName=${movie.cover_url}`
+                }
+                alt={movie.title}
+                className="w-full h-full object-cover"
+              />
 
               <div
                 className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
