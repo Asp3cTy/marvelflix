@@ -9,7 +9,6 @@ require('dotenv').config();
 const router = express.Router();
 
 // =========== LOGIN ===========
-// Adicionamos validação para os campos 'email' e 'password'
 router.post(
   '/login',
   [
@@ -37,11 +36,15 @@ router.post(
         return res.status(401).json({ message: 'Credenciais inválidas' });
       }
 
-      // Criptografa o ID do usuário e gera token
+      // Criptografa o ID do usuário e gera token, agora incluindo o email no payload
       const encryptedId = encrypt(user.id.toString());
-      const token = jwt.sign({ id: encryptedId }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      const token = jwt.sign(
+        { id: encryptedId, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' }
+      );
 
-      // Retorna apenas o token (sem role ou isAdmin)
+      // Retorna apenas o token
       res.json({ token });
     } catch (error) {
       console.error('Erro ao autenticar usuário:', error);
@@ -49,6 +52,7 @@ router.post(
     }
   }
 );
+
 
 // =========== REGISTER ===========
 // Adicionamos validação para os campos e sanitizamos o email

@@ -9,6 +9,9 @@ const moviesRoutes = require("./routes/movies");
 const thumbnailsRoutes = require("./routes/thumbnails");
 const usersRoutes = require("./routes/users");
 const thumbnailsBunnyRoutes = require("./routes/thumbnails-bunny");
+const adminRoutes = require("./routes/admin");
+
+
 
 
 
@@ -58,6 +61,7 @@ app.use("/api/thumbnails", thumbnailsRoutes);
 app.use("/api/thumbnails-bunny", thumbnailsBunnyRoutes);
 app.use("/api/bunnycdn", thumbnailsBunnyRoutes);
 app.use("/api/users", usersRoutes);
+app.use("/admin", adminRoutes);
 
 // Em vez de "../frontend/public/thumbnails", aponte para "assets/thumbnails"
 app.use("/thumbnails", express.static(path.join(__dirname, "assets/thumbnails")));
