@@ -1,5 +1,6 @@
 const express = require('express');
-const fetch = require('node-fetch'); // ou use axios
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { queryD1 } = require('../d1');
