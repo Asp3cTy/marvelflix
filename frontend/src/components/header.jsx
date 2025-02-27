@@ -94,16 +94,17 @@ const Header = () => {
                     logout();
                     setIsMenuOpen(false);
                   }}
-                  className="bg-zinc-50 text-marvelRed px-4 py-2 rounded-lg hover:bg-zinc-300 text-marvelRed transition"
+                  className="bg-zinc-50 px-4 py-2 rounded-lg hover:bg-zinc-300 text-marvelRed transition"
                 >
                   Logout
                 </button>
               )}
             </nav>
           </div>
-          <div className="pt-0 md:pt-16"></div>
+          
         </>
       )}
+      <div className="pb-16 md:pb-0"></div>
     </>
   );
 };
