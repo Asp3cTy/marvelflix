@@ -103,9 +103,6 @@ const Header = () => {
           </div>
         </>
       )}
-
-      {/* Espaço para empurrar o conteúdo principal, considerando os headers */}
-      <div className="pt-16 md:pt-16"></div>
     </>
   );
 };
