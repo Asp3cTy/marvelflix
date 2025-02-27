@@ -17,12 +17,11 @@ const app = express();
 
 // Middleware para gerar um nonce único por requisição
 app.use((req, res, next) => {
-  // Gera 16 bytes aleatórios convertidos para base64
   res.locals.nonce = crypto.randomBytes(16).toString("base64");
   next();
 });
 
-// Configuração do Helmet com CSP utilizando nonce dinâmico
+// Configuração do Helmet com Content Security Policy
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -31,10 +30,11 @@ app.use(
         defaultSrc: ["'self'"],
         scriptSrc: [
           "'self'",
+          "'unsafe-inline'", // Permite scripts inline
+          "'unsafe-eval'",
           "https://challenges.cloudflare.com",
-          // Injeta o nonce dinamicamente
-          (req, res) => `'nonce-${res.locals.nonce}'`,
-          "'unsafe-eval'"
+          // Adiciona o nonce dinâmico – essa função será chamada para cada requisição
+          (req, res) => `'nonce-${res.locals.nonce}'`
         ],
         connectSrc: [
           "'self'",
@@ -62,9 +62,9 @@ app.use(
         ],
         objectSrc: ["'none'"],
         upgradeInsecureRequests: []
-      },
+      }
     },
-    crossOriginResourcePolicy: { policy: "cross-origin" },
+    crossOriginResourcePolicy: { policy: "cross-origin" }
   })
 );
 
