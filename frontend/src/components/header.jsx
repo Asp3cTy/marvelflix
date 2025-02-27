@@ -3,37 +3,24 @@ import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/authcontext";
 
+// Exemplo de formatação do nome
+function formatDisplayName(email) {
+  const username = email.split("@")[0].toLowerCase();
+  return username.charAt(0).toUpperCase() + username.slice(1);
+}
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { authToken, logout } = useContext(AuthContext);
 
-  // Você pode, se quiser, no login do backend retornar também o email do usuário.
-  // Porém, no exemplo atual, só temos "token".
-  // Se quiser exibir "Olá, userEmail", precisamos ter "userEmail" no contexto.
-  // Vou presumir que seu back agora retorna: { token, email }, e no "login(token, email)" salvamos no context.
-
-  // Exemplo: vamos supor que no AuthContext exista "userEmail"
-  // const { authToken, userEmail, logout } = useContext(AuthContext);
-
-  const userEmail = sessionStorage.getItem("userEmail"); 
-  // <-- gambiarra: caso você queira salvar userEmail no localStorage
-  // Ideal seria um state no context. Ajuste conforme sua lógica real.
-
-  // Exemplo de função para formatar o email
-function formatDisplayName(email) {
-  // Pega a parte antes do '@'
-  const username = email.split("@")[0];
-  // Converte tudo para minúsculas, caso tenha letras maiúsculas
-  const lowerCaseUsername = username.toLowerCase();
-  // Retorna a primeira letra maiúscula e o resto minúsculas
-  return lowerCaseUsername.charAt(0).toUpperCase() + lowerCaseUsername.slice(1);
-}
-
+  // Se você salva o email no localStorage:
+  const userEmail = localStorage.getItem("userEmail"); 
 
   return (
     <>
       <header className="fixed top-0 left-0 w-full bg-marvelDark text-white p-4 shadow-md z-50">
-        <div className="container mx-auto flex items-center justify-between">
+        <div className="container mx-auto flex items-center justify-between relative">
+          {/* Botão hamburguer visível só no mobile */}
           <button
             className="text-2xl md:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -41,27 +28,20 @@ function formatDisplayName(email) {
             {isMenuOpen ? "✖" : "☰"}
           </button>
 
+          {/* Nav principal (só em telas md+) */}
           <nav className="hidden md:flex items-center space-x-6">
-            <Link
-              to="/home"
-              className="hover:text-red-500 transition-colors"
-            >
+            <Link to="/home" className="hover:text-red-500 transition-colors">
               Home
             </Link>
-            <Link
-              to="/collections"
-              className="hover:text-red-500 transition-colors"
-            >
+            <Link to="/collections" className="hover:text-red-500 transition-colors">
               Coleções
             </Link>
-            <Link
-              to="/about"
-              className="hover:text-red-500 transition-colors"
-            >
+            <Link to="/about" className="hover:text-red-500 transition-colors">
               Sobre
             </Link>
           </nav>
 
+          {/* Logo centralizada */}
           <Link to="/home" className="absolute left-1/2 transform -translate-x-1/2">
             <img
               src="https://i.imgur.com/GpB2cuj.png"
@@ -70,35 +50,60 @@ function formatDisplayName(email) {
             />
           </Link>
 
-          {authToken ? (
-            <div className="flex items-center space-x-4">
-              {userEmail && (
-                <span className="text-gray-200">
-                  Olá, {formatDisplayName(userEmail)}
-                </span>
-              )}
-
+          {/* Se estiver logado e em telas md+, exibe saudação + Logout */}
+          <div className="hidden md:flex items-center space-x-4">
+            {authToken && userEmail && (
+              <span className="text-gray-200">
+                Olá, {formatDisplayName(userEmail)}
+              </span>
+            )}
+            {authToken && (
               <button
                 onClick={logout}
                 className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
               >
                 Logout
               </button>
-            </div>
-          ) : null}
+            )}
+          </div>
         </div>
       </header>
 
+      {/* Dropdown do mobile (só aparece se isMenuOpen for true) */}
       {isMenuOpen && (
-        <div className="bg-marvelDark text-white py-4 shadow-md">
+        <div
+          className="bg-marvelDark text-white py-4 shadow-md md:hidden 
+                     absolute top-[64px] w-full"
+          // ^ Uso absolute + top-[64px] para ficar logo abaixo do header fixo
+        >
           <nav className="flex flex-col items-center space-y-4">
-            <Link to="/home" className="hover:text-red-500">Home</Link>
-            <Link to="/collections" className="hover:text-red-500">Coleções</Link>
-            <Link to="/about" className="hover:text-red-500">Sobre</Link>
+            <Link to="/home" onClick={() => setIsMenuOpen(false)} className="hover:text-red-500">
+              Home
+            </Link>
+            <Link to="/collections" onClick={() => setIsMenuOpen(false)} className="hover:text-red-500">
+              Coleções
+            </Link>
+            <Link to="/about" onClick={() => setIsMenuOpen(false)} className="hover:text-red-500">
+              Sobre
+            </Link>
+
+            {/* Se estiver logado, exibe o Logout no dropdown mobile */}
+            {authToken && (
+              <button
+                onClick={() => {
+                  logout();
+                  setIsMenuOpen(false);
+                }}
+                className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
+              >
+                Logout
+              </button>
+            )}
           </nav>
         </div>
       )}
 
+      {/* Empurra o conteúdo principal para baixo do header fixo */}
       <div className="pt-16 bg-marvelDark"></div>
     </>
   );
