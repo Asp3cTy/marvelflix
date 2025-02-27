@@ -16,46 +16,10 @@ const app = express();
 
 app.use(
   helmet({
-    contentSecurityPolicy: {
-      useDefaults: false, // Desabilita a config padrão que pode gerar nonce
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: [
-          "'self'",
-          "https://challenges.cloudflare.com",
-          "'unsafe-inline'",
-          "'unsafe-eval'"
-        ],
-        connectSrc: [
-          "'self'",
-          "https://marvelflix.fun",
-          "https://api.marvelflix.fun",
-          "https://marvelflix-krxl.onrender.com",
-          "https://br.storage.bunnycdn.com"
-        ],
-        imgSrc: [
-          "'self'",
-          "data:",
-          "https://i.imgur.com",
-          "https://br.storage.bunnycdn.com"
-        ],
-        styleSrc: [
-          "'self'",
-          "'unsafe-inline'",
-          "https://fonts.googleapis.com"
-        ],
-        fontSrc: ["'self'", "https://fonts.gstatic.com"],
-        frameSrc: [
-          "'self'",
-          "https://challenges.cloudflare.com",
-          "https://iframe.mediadelivery.net"
-        ],
-        objectSrc: ["'none'"],
-      },
-    },
-    crossOriginResourcePolicy: { policy: "cross-origin" },
+    contentSecurityPolicy: false
   })
 );
+
 
 
 
