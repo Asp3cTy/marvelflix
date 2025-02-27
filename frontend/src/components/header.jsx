@@ -75,48 +75,70 @@ const Header = () => {
 
       {/* Dropdown mobile */}
       {isMenuOpen && (
-        <div
-          className="bg-marvelDark text-white py-4 shadow-md md:hidden
-                     absolute top-[64px] w-full z-40"
-        >
-          <nav className="flex flex-col items-center space-y-4">
-            <Link
-              to="/home"
-              onClick={() => setIsMenuOpen(false)}
-              className="hover:text-red-500"
-            >
-              Home
-            </Link>
-            <Link
-              to="/collections"
-              onClick={() => setIsMenuOpen(false)}
-              className="hover:text-red-500"
-            >
-              Coleções
-            </Link>
-            <Link
-              to="/about"
-              onClick={() => setIsMenuOpen(false)}
-              className="hover:text-red-500"
-            >
-              Sobre
-            </Link>
+  <>
+    {/* Backdrop: preenche toda a tela e fica atrás do dropdown */}
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 z-30"
+      onClick={() => setIsMenuOpen(false)}
+    />
 
-            {/* Logout no mobile */}
-            {authToken && (
-              <button
-                onClick={() => {
-                  logout();
-                  setIsMenuOpen(false);
-                }}
-                className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
-              >
-                Logout
-              </button>
-            )}
-          </nav>
-        </div>
-      )}
+    {/* Dropdown fixo abaixo do header */}
+    <div
+      className="
+        fixed
+        top-[64px]     /* ajusta conforme a altura do seu header */
+        left-0
+        w-full
+        z-40
+        bg-marvelDark
+        text-white
+        shadow-md
+        md:hidden
+        max-h-[calc(100vh-64px)]
+        overflow-y-auto
+        py-4
+      "
+    >
+      <nav className="flex flex-col items-center space-y-4">
+        <Link
+          to="/home"
+          className="hover:text-red-500"
+          onClick={() => setIsMenuOpen(false)}
+        >
+          Home
+        </Link>
+        <Link
+          to="/collections"
+          className="hover:text-red-500"
+          onClick={() => setIsMenuOpen(false)}
+        >
+          Coleções
+        </Link>
+        <Link
+          to="/about"
+          className="hover:text-red-500"
+          onClick={() => setIsMenuOpen(false)}
+        >
+          Sobre
+        </Link>
+
+        {/* Se quiser logout no mobile */}
+        {authToken && (
+          <button
+            onClick={() => {
+              logout();
+              setIsMenuOpen(false);
+            }}
+            className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
+          >
+            Logout
+          </button>
+        )}
+      </nav>
+    </div>
+  </>
+)}
+
 
       {/* Empurra o conteúdo para baixo do header fixo */}
       <div className="pt-16 bg-marvelDark"></div>
