@@ -17,20 +17,20 @@ const Header = () => {
   return (
     <>
       {/* Header Desktop: fixado no topo */}
-      <header className="fixed top-0 left-0 w-full bg-marvelRed text-marvelDark p-4 shadow-md z-50 hidden md:flex items-center justify-between">
+      <header className="fixed top-0 left-0 w-full bg-marvelRed text-white p-4 shadow-md z-50 hidden md:flex items-center justify-between">
         <div className="flex items-center space-x-6">
-          <Link to="/home" className="hover:text-white transition-colors">Home</Link>
-          <Link to="/collections" className="hover:text-white transition-colors">Coleções</Link>
-          <Link to="/about" className="hover:text-white transition-colors">Sobre</Link>
+          <Link to="/home" className="hover:text-marvelDark transition-colors">Home</Link>
+          <Link to="/collections" className="hover:text-marvelDarktransition-colors">Coleções</Link>
+          <Link to="/about" className="hover:text-marvelDark transition-colors">Sobre</Link>
         </div>
         <div className="flex items-center space-x-4">
           {authToken && userEmail && (
-            <span className="text-marvelDark">Olá, {formatDisplayName(userEmail)}</span>
+            <span className="text-white">Olá, {formatDisplayName(userEmail)}</span>
           )}
           {authToken && (
             <button
               onClick={logout}
-              className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
+              className="bg-zinc-50 px-4 py-2 rounded-lg hover:bg-zinc-300 text-marvelRed transition"
             >
               Logout
             </button>
@@ -39,10 +39,10 @@ const Header = () => {
       </header>
 
       {/* Header Mobile: fixado no rodapé */}
-      <header className="fixed bottom-0 left-0 w-full bg-marvelRed text-marvelDark p-4 shadow-md z-50 md:hidden flex items-center justify-between">
+      <header className="fixed bottom-0 left-0 w-full bg-marvelRed text-white p-4 shadow-md z-50 md:hidden flex items-center justify-between">
 
         {authToken && userEmail && (
-          <span className="text-marvelDark">
+          <span className="text-white">
             Olá, {formatDisplayName(userEmail)}
           </span>
         )}
