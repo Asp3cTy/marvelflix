@@ -41,14 +41,7 @@ const MovieView = () => {
 
   return (
     <div className="p-10 bg-marvelDark min-h-screen text-white text-center">
-      <div className="fixed top-4 left-4">
-        <button
-          onClick={() => window.history.back()}
-          className="bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-red-700 transition"
-        >
-          ⬅ Voltar
-        </button>
-      </div>
+
 
       <h1 className="text-3xl font-bold text-red-600 mt-16">
         {loadingMovie ? "Carregando..." : movie ? `Assistindo: ${movie.title}` : "Filme não encontrado"}
