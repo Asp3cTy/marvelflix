@@ -1,9 +1,8 @@
-// src/components/Header.jsx
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/authcontext";
 
-// Exemplo de formatação do nome
+// Formata o nome antes do @, ex: "zulinn@..." => "Zulinn"
 function formatDisplayName(email) {
   const username = email.split("@")[0].toLowerCase();
   return username.charAt(0).toUpperCase() + username.slice(1);
@@ -13,8 +12,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { authToken, logout } = useContext(AuthContext);
 
-  // Se você salva o email no localStorage:
-  const userEmail = localStorage.getItem("userEmail"); 
+  const userEmail = localStorage.getItem("userEmail");
 
   return (
     <>
@@ -50,17 +48,19 @@ const Header = () => {
             />
           </Link>
 
-          {/* Se estiver logado e em telas md+, exibe saudação + Logout */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Sempre visível: "Olá, Zulinn" (se logado), mas Logout só em telas md+ */}
+          <div className="flex items-center space-x-4">
+            {/* Se logado e userEmail existe, mostra a saudação */}
             {authToken && userEmail && (
               <span className="text-gray-200">
                 Olá, {formatDisplayName(userEmail)}
               </span>
             )}
+            {/* Logout visível apenas em telas md+ (desktop) */}
             {authToken && (
               <button
                 onClick={logout}
-                className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
+                className="hidden md:inline bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
               >
                 Logout
               </button>
@@ -72,9 +72,7 @@ const Header = () => {
       {/* Dropdown do mobile (só aparece se isMenuOpen for true) */}
       {isMenuOpen && (
         <div
-          className="bg-marvelDark text-white py-4 shadow-md md:hidden 
-                     absolute top-[64px] w-full"
-          // ^ Uso absolute + top-[64px] para ficar logo abaixo do header fixo
+          className="bg-marvelDark text-white py-4 shadow-md md:hidden absolute top-[64px] w-full"
         >
           <nav className="flex flex-col items-center space-y-4">
             <Link to="/home" onClick={() => setIsMenuOpen(false)} className="hover:text-red-500">
@@ -87,7 +85,7 @@ const Header = () => {
               Sobre
             </Link>
 
-            {/* Se estiver logado, exibe o Logout no dropdown mobile */}
+            {/* Logout no dropdown, apenas em mobile */}
             {authToken && (
               <button
                 onClick={() => {
