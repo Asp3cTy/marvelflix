@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const helmet = require("helmet");
+const crypto = require("crypto"); // para gerar nonce
 const { queryD1 } = require("./d1");
 const authRoutes = require("./routes/auth");
 const collectionsRoutes = require("./routes/collections");
@@ -14,22 +15,38 @@ const adminRoutes = require("./routes/admin");
 
 const app = express();
 
-// Configuração do Helmet com Content Security Policy
+// Middleware para gerar um nonce único por requisição
+app.use((req, res, next) => {
+  // Gera 16 bytes aleatórios convertidos para base64
+  res.locals.nonce = crypto.randomBytes(16).toString("base64");
+  next();
+});
+
+// Configure o Helmet para usar o nonce dinamicamente em scriptSrc.
+// O Helmet (a partir de algumas versões) permite que você defina funções para as diretivas.
+const crypto = require("crypto");
+
+function generateNonce() {
+  return crypto.randomBytes(16).toString("base64");
+}
+
+app.use((req, res, next) => {
+  res.locals.nonce = generateNonce();
+  next();
+});
+
 app.use(
   helmet({
     contentSecurityPolicy: {
-      useDefaults: false, // Desativa as configurações padrão (que podem injetar nonces)
+      useDefaults: false,
       directives: {
-        // Permite carregar recursos apenas do próprio domínio e dos domínios especificados
         defaultSrc: ["'self'"],
-        // Scripts podem vir do próprio domínio, do Cloudflare Turnstile e permitem inline e eval
         scriptSrc: [
           "'self'",
           "https://challenges.cloudflare.com",
-          "'unsafe-inline'",
+          (req, res) => `'nonce-${res.locals.nonce}'`,
           "'unsafe-eval'"
         ],
-        // Permite requisições para o seu front, back e BunnyCDN
         connectSrc: [
           "'self'",
           "https://marvelflix.fun",
@@ -37,33 +54,27 @@ app.use(
           "https://marvelflix-krxl.onrender.com",
           "https://br.storage.bunnycdn.com"
         ],
-        // Permite imagens do próprio domínio, data URIs, do Imgur e do BunnyCDN
         imgSrc: [
           "'self'",
           "data:",
           "https://i.imgur.com",
           "https://br.storage.bunnycdn.com"
         ],
-        // Permite estilos inline e folhas de estilo do Google Fonts
         styleSrc: [
           "'self'",
           "'unsafe-inline'",
           "https://fonts.googleapis.com"
         ],
-        // Permite carregar fontes do próprio domínio e do Google Fonts
         fontSrc: [
           "'self'",
           "https://fonts.gstatic.com"
         ],
-        // Permite iframes do Cloudflare Turnstile e do serviço de vídeo (Bunny)
         frameSrc: [
           "'self'",
           "https://challenges.cloudflare.com",
           "https://iframe.mediadelivery.net"
         ],
-        // Bloqueia objetos
         objectSrc: ["'none'"],
-        // Não força upgrade de HTTP para HTTPS automaticamente
         upgradeInsecureRequests: []
       },
     },
@@ -75,7 +86,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Rota para teste
 app.get("/", (req, res) => {
   res.send("API do MarvelFlix está funcionando!");
 });
