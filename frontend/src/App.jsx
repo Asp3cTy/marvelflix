@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { AuthProvider, AuthContext } from "./context/authcontext";
 import LandingPage from "./pages/landingpage";
 import Header from "./components/header";
-import Footer from "./components/Footer";
+import Footer from "./components/footer";
 import Home from "./pages/home";
 import Collections from "./pages/collections";
 import CollectionView from "./pages/collectionview";
@@ -41,7 +41,7 @@ const AppContent = () => {
           Para desktop: pt-16 adiciona espaço para o header fixo no topo.
           Para mobile: pt-0 (porque o header fica no rodapé) e pb-16 para garantir que o footer seja totalmente visível.
       */}
-      <div className="flex-grow pt-0 md:pt-16 pb-[96px] md:pb-0">
+      <div className="flex-grow pt-0 md:pt-16 pb-[144px] md:pb-0">
         <Routes>
           <Route path="/" element={!authToken ? <LandingPage /> : <Navigate to="/home" />} />
           <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
