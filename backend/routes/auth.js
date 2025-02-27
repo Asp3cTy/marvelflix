@@ -1,4 +1,3 @@
-// routes/auth.js
 const express = require('express');
 const fetch = require('node-fetch'); // ou use axios
 const bcrypt = require('bcryptjs');
