@@ -19,49 +19,43 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        // Permite carregar recursos do próprio domínio
         defaultSrc: ["'self'"],
-        // Scripts podem ser carregados do próprio domínio e de desafios do Cloudflare Turnstile.
         scriptSrc: [
           "'self'",
           "https://challenges.cloudflare.com",
-          "'unsafe-eval'" // necessário se o Turnstile ou outros scripts usarem eval
+          "'unsafe-inline'", // Adicionado para permitir inline scripts
+          "'unsafe-eval'"
         ],
-        // Permite conexões para o seu backend e para o BunnyCDN
         connectSrc: [
           "'self'",
           "https://api.marvelflix.fun",
           "https://marvelflix-krxl.onrender.com",
           "https://br.storage.bunnycdn.com"
         ],
-        // Permite imagens do próprio domínio, data URIs, do Imgur e do BunnyCDN
         imgSrc: [
           "'self'",
           "data:",
           "https://i.imgur.com",
           "https://br.storage.bunnycdn.com"
         ],
-        // Permite estilos inline e do Google Fonts
         styleSrc: [
           "'self'",
           "'unsafe-inline'",
           "https://fonts.googleapis.com"
         ],
-        // Permite fontes do próprio domínio e do Google Fonts
         fontSrc: ["'self'", "https://fonts.gstatic.com"],
-        // Permite iframes do Turnstile e do serviço de vídeo (por exemplo, o BunnyStream)
         frameSrc: [
           "'self'",
           "https://challenges.cloudflare.com",
           "https://iframe.mediadelivery.net"
         ],
-        // Bloqueia objetos
         objectSrc: ["'none'"],
       },
     },
     crossOriginResourcePolicy: { policy: "cross-origin" },
   })
 );
+
 
 app.use(cors());
 app.use(express.json());
