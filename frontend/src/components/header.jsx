@@ -17,15 +17,15 @@ const Header = () => {
   return (
     <>
       {/* Header Desktop: fixado no topo */}
-      <header className="fixed top-0 left-0 w-full bg-marvelDark text-white p-4 shadow-md z-50 hidden md:flex items-center justify-between">
+      <header className="fixed top-0 left-0 w-full bg-marvelRed text-marvelDark p-4 shadow-md z-50 hidden md:flex items-center justify-between">
         <div className="flex items-center space-x-6">
-          <Link to="/home" className="hover:text-red-500 transition-colors">Home</Link>
-          <Link to="/collections" className="hover:text-red-500 transition-colors">Coleções</Link>
-          <Link to="/about" className="hover:text-red-500 transition-colors">Sobre</Link>
+          <Link to="/home" className="hover:text-white transition-colors">Home</Link>
+          <Link to="/collections" className="hover:text-white transition-colors">Coleções</Link>
+          <Link to="/about" className="hover:text-white transition-colors">Sobre</Link>
         </div>
         <div className="flex items-center space-x-4">
           {authToken && userEmail && (
-            <span className="text-gray-200">Olá, {formatDisplayName(userEmail)}</span>
+            <span className="text-marvelDark">Olá, {formatDisplayName(userEmail)}</span>
           )}
           {authToken && (
             <button
@@ -39,10 +39,10 @@ const Header = () => {
       </header>
 
       {/* Header Mobile: fixado no rodapé */}
-      <header className="fixed bottom-0 left-0 w-full bg-marvelDark text-white p-4 shadow-md z-50 md:hidden flex items-center justify-between">
+      <header className="fixed bottom-0 left-0 w-full bg-marvelRed text-marvelDark p-4 shadow-md z-50 md:hidden flex items-center justify-between">
 
         {authToken && userEmail && (
-          <span className="text-gray-200">
+          <span className="text-marvelDark">
             Olá, {formatDisplayName(userEmail)}
           </span>
         )}
@@ -65,7 +65,7 @@ const Header = () => {
           />
           {/* Dropdown fixo: Posicionado acima do header mobile */}
           <div
-            className="fixed bottom-[64px] left-0 w-full z-40 bg-marvelRed text-white shadow-md max-h-[calc(100vh-64px)] overflow-y-auto py-4"
+            className="fixed bottom-[64px] left-0 w-full z-40 bg-marvelDark text-white shadow-md max-h-[calc(100vh-64px)] overflow-y-auto py-4"
           >
             <nav className="flex flex-col items-center space-y-4">
               <Link
