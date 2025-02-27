@@ -1,10 +1,8 @@
-// src/components/AuthModal.jsx
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authcontext";
 import API_URL from "../config";
 
-// Função simples para validar a força da senha
 function validatePasswordStrength(password) {
   const strongRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
   return strongRegex.test(password);
@@ -13,20 +11,26 @@ function validatePasswordStrength(password) {
 const AuthModal = ({ onClose }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [isRegistering, setIsRegistering] = useState(false);
-  // Campos do formulário
+
+  // Campos do form
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  // Estados para feedback
+
+  // Estado para mensagens
   const [error, setError] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
-  // Controle do loading/spinner
+
+  // Loading
   const [isLoading, setIsLoading] = useState(false);
+
+  // Armazena o token do Turnstile
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
-  // Fecha o modal
+  // Fecha modal
   const handleClose = () => {
     setIsVisible(false);
     setTimeout(() => {
@@ -34,46 +38,66 @@ const AuthModal = ({ onClose }) => {
     }, 300);
   };
 
-  // Submete o formulário com Enter
+  // Ao apertar Enter
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       handleSubmit(e);
     }
   };
 
+  // -------------- Modo explícito do Turnstile --------------
+  // 1. Precisamos renderizar manualmente o widget
+  useEffect(() => {
+    // Se o script do Turnstile já estiver carregado, window.turnstile existirá
+    if (window.turnstile) {
+      // Renderizamos no div #my-turnstile
+      const widgetId = window.turnstile.render("#my-turnstile", {
+        sitekey: "0x4AAAAAAA-xFXi12VnMOhnp",   // Substitua pela sua sitekey
+        size: "compact",           // ou "normal", "invisible"
+        theme: "dark",             // ou "light", "auto"
+        callback: (token) => {
+          // Sempre que o desafio for resolvido, armazenamos o token
+          setTurnstileToken(token);
+        },
+        "error-callback": () => {
+          console.error("Erro ao gerar token do Turnstile");
+        },
+      });
+      // Se quiser resetar ou executar manualmente depois, guarde widgetId
+    }
+  }, []);
+  // ---------------------------------------------------------
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccessMsg("");
 
+    // Validações de email/senha...
     if (!email.includes("@")) {
       setError("Insira um email válido");
       return;
     }
-
     if (password.length < 8) {
       setError("A senha deve ter pelo menos 8 caracteres.");
       return;
     }
-
     if (isRegistering && password !== confirmPassword) {
       setError("As senhas não coincidem!");
       return;
     }
-
     if (isRegistering && !validatePasswordStrength(password)) {
       setError("A senha deve ter ao menos 8 caracteres, 1 maiúscula, 1 número e 1 símbolo.");
       return;
     }
 
-    // Obter o token Turnstile gerado pelo widget
-    const turnstileToken = document.querySelector('input[name="cf-turnstile-response"]')?.value;
+    // Se o Turnstile não gerou token ainda
     if (!turnstileToken) {
-      setError("Por favor, complete o desafio Turnstile.");
+      setError("Por favor, resolva o desafio Turnstile antes de enviar.");
       return;
     }
 
-    // Define o endpoint de acordo com a ação (login ou register)
+    // Define endpoint
     const endpoint = isRegistering
       ? `${API_URL}/api/auth/register`
       : `${API_URL}/api/auth/login`;
@@ -81,17 +105,19 @@ const AuthModal = ({ onClose }) => {
     setIsLoading(true);
 
     try {
+      // Envia o token do Turnstile junto com email/senha
       const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // Envia email, password e o token Turnstile
-        body: JSON.stringify({ email, password, "cf-turnstile-response": turnstileToken }),
+        body: JSON.stringify({
+          email,
+          password,
+          "cf-turnstile-response": turnstileToken,
+        }),
       });
 
       const data = await response.json();
-
-      // Simula 3 segundos de carregamento (opcional)
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise((resolve) => setTimeout(resolve, 3000)); // simulação de loading
       setIsLoading(false);
 
       if (!response.ok) {
@@ -100,14 +126,14 @@ const AuthModal = ({ onClose }) => {
       }
 
       if (isRegistering) {
-        // Registro bem-sucedido
+        // Registro ok
         setSuccessMsg("Registro realizado com sucesso! Bem-vindo ao MarvelFlix");
         setTimeout(() => {
           navigate("/home");
           handleClose();
         }, 3000);
       } else {
-        // Login bem-sucedido
+        // Login ok
         if (data.token && data.email) {
           login(data.token);
           sessionStorage.setItem("userEmail", data.email);
@@ -186,52 +212,15 @@ const AuthModal = ({ onClose }) => {
             />
           )}
 
-          {/* Turnstile widget */}
-                      window.onload = () {
-              turnstile.render('#turnstile-container', {
-                sitekey: 'SUA_SITE_KEY',
-                size: 'compact',
-                theme: 'dark',
-                callback: (token) => {
-                  console.log('Desafio resolvido, token:', token);
-                }
-              })
-            }
-
+          {/* Aqui vai o container do Turnstile no modo explícito */}
+          <div id="my-turnstile"></div>
 
           <button
             type="submit"
             className="bg-red-600 text-white py-2 rounded mt-2 disabled:opacity-50"
             disabled={isLoading}
           >
-            {isLoading ? (
-              <div className="flex items-center justify-center space-x-2">
-                <svg
-                  className="animate-spin h-5 w-5 text-white"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                    fill="none"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v8z"
-                  />
-                </svg>
-                <span>Carregando...</span>
-              </div>
-            ) : isRegistering ? (
-              "Registrar"
-            ) : (
-              "Entrar"
-            )}
+            {isLoading ? "Carregando..." : isRegistering ? "Registrar" : "Entrar"}
           </button>
         </form>
 
