@@ -22,13 +22,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Configure o Helmet para usar o nonce dinamicamente em scriptSrc.
-// O Helmet (a partir de algumas versões) permite que você defina funções para as diretivas.
-const crypto = require("crypto");
 
-function generateNonce() {
-  return crypto.randomBytes(16).toString("base64");
-}
 
 app.use((req, res, next) => {
   res.locals.nonce = generateNonce();
