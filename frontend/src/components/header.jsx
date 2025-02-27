@@ -64,27 +64,27 @@ const Header = () => {
           />
           {/* Dropdown fixo: Posicionado acima do header mobile */}
           <div
-            className="fixed bottom-[64px] left-0 w-full z-40 bg-marvelDark text-white shadow-md max-h-[calc(100vh-64px)] overflow-y-auto py-4"
+            className="fixed bottom-[64px] left-0 w-full z-40 bg-marvelRed text-white shadow-md max-h-[calc(100vh-64px)] overflow-y-auto py-4"
           >
             <nav className="flex flex-col items-center space-y-4">
               <Link
                 to="/home"
                 onClick={() => setIsMenuOpen(false)}
-                className="hover:text-red-500"
+                className="hover:text-white-500"
               >
                 Home
               </Link>
               <Link
                 to="/collections"
                 onClick={() => setIsMenuOpen(false)}
-                className="hover:text-red-500"
+                className="hover:text-white-500"
               >
                 Coleções
               </Link>
               <Link
                 to="/about"
                 onClick={() => setIsMenuOpen(false)}
-                className="hover:text-red-500"
+                className="hover:text-white-500"
               >
                 Sobre
               </Link>
@@ -94,7 +94,7 @@ const Header = () => {
                     logout();
                     setIsMenuOpen(false);
                   }}
-                  className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
+                  className="bg-zinc-50 text-marvelRed px-4 py-2 rounded-lg hover:bg-zinc-300 text-marvelRed transition"
                 >
                   Logout
                 </button>
