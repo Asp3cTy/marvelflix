@@ -16,8 +16,6 @@
 
 
 html, body {
-  margin: 0;
-  padding: 0;
   background-color: #202020; /* se quiser */
 }
 
@@ -37,5 +35,5 @@ p, span {
 }
 
 footer {
-  border-top: 1px solid #333; /* Linha sutil para separar */
+  border-top: 1px solid red; /* Linha sutil para separar */
 }
