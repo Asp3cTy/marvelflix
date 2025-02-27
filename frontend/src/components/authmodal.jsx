@@ -187,12 +187,17 @@ const AuthModal = ({ onClose }) => {
           )}
 
           {/* Turnstile widget */}
-          <div
-            className="cf-turnstile"
-            data-sitekey="0x4AAAAAAA-xFXi12VnMOhnp"
-            data-theme="dark"
-            data-size="compact"
-          ></div>
+                      window.onload = () {
+              turnstile.render('#turnstile-container', {
+                sitekey: 'SUA_SITE_KEY',
+                size: 'compact',
+                theme: 'dark',
+                callback: (token) => {
+                  console.log('Desafio resolvido, token:', token);
+                }
+              })
+            }
+
 
           <button
             type="submit"
