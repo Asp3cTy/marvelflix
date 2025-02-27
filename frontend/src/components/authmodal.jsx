@@ -191,7 +191,7 @@ const AuthModal = ({ onClose }) => {
             className="cf-turnstile"
             data-sitekey="0x4AAAAAAA-xFXi12VnMOhnp"
             data-theme="dark"
-            data-size="normal"
+            data-size="compact"
           ></div>
 
           <button
