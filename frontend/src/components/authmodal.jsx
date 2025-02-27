@@ -53,7 +53,7 @@ const AuthModal = ({ onClose }) => {
       // Renderizamos no div #my-turnstile
       const widgetId = window.turnstile.render("#my-turnstile", {
         sitekey: "0x4AAAAAAA-xFXi12VnMOhnp",   // Substitua pela sua sitekey
-        size: "compact",           // ou "normal", "invisible"
+        size: "flexible",           // ou "normal", "invisible"
         theme: "dark",             // ou "light", "auto"
         callback: (token) => {
           // Sempre que o desafio for resolvido, armazenamos o token
