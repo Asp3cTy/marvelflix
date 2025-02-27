@@ -15,7 +15,9 @@
 }
 
 
-
+body {
+  background-color: #202020;
+}
 
 * {
   font-family: 'Poppins', sans-serif;
