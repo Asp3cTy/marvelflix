@@ -104,7 +104,6 @@ const Header = () => {
           
         </>
       )}
-<div className="pt-0 md:pt-16"></div>
     </>
   );
 };
