@@ -40,17 +40,18 @@ const Header = () => {
 
       {/* Header Mobile: fixado no rodapé */}
       <header className="fixed bottom-0 left-0 w-full bg-marvelDark text-white p-4 shadow-md z-50 md:hidden flex items-center justify-between">
+
+        {authToken && userEmail && (
+          <span className="text-gray-200">
+            Olá, {formatDisplayName(userEmail)}
+          </span>
+        )}
         <button
           className="text-2xl"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           {isMenuOpen ? "✖" : "☰"}
         </button>
-        {authToken && userEmail && (
-          <span className="text-gray-200">
-            Olá, {formatDisplayName(userEmail)}
-          </span>
-        )}
         {/* Se quiser pode manter um botão Logout também aqui, mas como a ideia é tê-lo só no dropdown, omitimos */}
       </header>
 
