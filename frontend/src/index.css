@@ -15,9 +15,12 @@
 }
 
 
-body {
-  background-color: #202020;
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #202020; /* se quiser */
 }
+
 
 * {
   font-family: 'Poppins', sans-serif;
