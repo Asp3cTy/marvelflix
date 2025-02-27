@@ -22,13 +22,7 @@ app.use((req, res, next) => {
   next();
 });
 
-
-
-app.use((req, res, next) => {
-  res.locals.nonce = generateNonce();
-  next();
-});
-
+// Configuração do Helmet com CSP utilizando nonce dinâmico
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -38,6 +32,7 @@ app.use(
         scriptSrc: [
           "'self'",
           "https://challenges.cloudflare.com",
+          // Injeta o nonce dinamicamente
           (req, res) => `'nonce-${res.locals.nonce}'`,
           "'unsafe-eval'"
         ],
@@ -59,10 +54,7 @@ app.use(
           "'unsafe-inline'",
           "https://fonts.googleapis.com"
         ],
-        fontSrc: [
-          "'self'",
-          "https://fonts.gstatic.com"
-        ],
+        fontSrc: ["'self'", "https://fonts.gstatic.com"],
         frameSrc: [
           "'self'",
           "https://challenges.cloudflare.com",
@@ -80,6 +72,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Rota para teste
 app.get("/", (req, res) => {
   res.send("API do MarvelFlix está funcionando!");
 });
