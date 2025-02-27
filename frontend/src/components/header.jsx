@@ -19,6 +19,17 @@ const Header = () => {
   // <-- gambiarra: caso você queira salvar userEmail no localStorage
   // Ideal seria um state no context. Ajuste conforme sua lógica real.
 
+  // Exemplo de função para formatar o email
+function formatDisplayName(email) {
+  // Pega a parte antes do '@'
+  const username = email.split("@")[0];
+  // Converte tudo para minúsculas, caso tenha letras maiúsculas
+  const lowerCaseUsername = username.toLowerCase();
+  // Retorna a primeira letra maiúscula e o resto minúsculas
+  return lowerCaseUsername.charAt(0).toUpperCase() + lowerCaseUsername.slice(1);
+}
+
+
   return (
     <>
       <header className="fixed top-0 left-0 w-full bg-marvelDark text-white p-4 shadow-md z-50">
@@ -62,8 +73,11 @@ const Header = () => {
           {authToken ? (
             <div className="flex items-center space-x-4">
               {userEmail && (
-                <span className="text-gray-200">Olá, {userEmail}</span>
+                <span className="text-gray-200">
+                  Olá, {formatDisplayName(userEmail)}
+                </span>
               )}
+
               <button
                 onClick={logout}
                 className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
