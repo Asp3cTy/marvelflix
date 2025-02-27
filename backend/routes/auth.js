@@ -1,4 +1,6 @@
+// routes/auth.js
 const express = require('express');
+const fetch = require('node-fetch'); // ou use axios
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { queryD1 } = require('../d1');
@@ -8,26 +10,51 @@ require('dotenv').config();
 
 const router = express.Router();
 
-console.log("JWT_SECRET em auth.js:", process.env.JWT_SECRET);
+// Pegue suas keys do .env
+const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // =========== LOGIN ===========
 router.post(
   '/login',
   [
-    
     body('email').isEmail().withMessage('Email inválido').normalizeEmail(),
     body('password').notEmpty().withMessage('Senha é obrigatória'),
   ],
   async (req, res) => {
-    // Verifica se há erros de validação
+    // 1. Validar campos email e password
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password } = req.body;
-console.log("JWT_SECRET em auth.js:", process.env.JWT_SECRET);
     try {
+      // 2. Validar Turnstile token
+      const turnstileToken = req.body['cf-turnstile-response'];
+      if (!turnstileToken) {
+        return res.status(400).json({ message: 'Turnstile token ausente.' });
+      }
+
+      const verifyURL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+      const formData = new URLSearchParams();
+      formData.append('secret', TURNSTILE_SECRET_KEY);
+      formData.append('response', turnstileToken);
+
+      const verifyRes = await fetch(verifyURL, {
+        method: 'POST',
+        body: formData,
+      });
+      const outcome = await verifyRes.json();
+
+      if (!outcome.success) {
+        return res.status(400).json({
+          message: 'Falha na verificação do Turnstile.',
+          'error-codes': outcome['error-codes'],
+        });
+      }
+
+      // 3. Se Turnstile aprovou, verificar email/senha
+      const { email, password } = req.body;
       const users = await queryD1('SELECT * FROM users WHERE email = ?', [email]);
       const user = Array.isArray(users) && users.length > 0 ? users[0] : null;
       if (!user) {
@@ -38,27 +65,21 @@ console.log("JWT_SECRET em auth.js:", process.env.JWT_SECRET);
       if (!isPasswordValid) {
         return res.status(401).json({ message: 'Credenciais inválidas' });
       }
-      console.log("JWT_SECRET em auth.js:", process.env.JWT_SECRET);
-      // Criptografa o ID do usuário e gera token, agora incluindo o email no payload
-      const encryptedId = encrypt(user.id.toString());
-      const token = jwt.sign(
-        { id: encryptedId, email: user.email },
-        process.env.JWT_SECRET,
-        { expiresIn: '1h' }
-      );
 
-      // Retorna apenas o token
-      res.json({ token, email: user.email });
+      // 4. Gera token JWT
+      const encryptedId = encrypt(user.id.toString());
+      const token = jwt.sign({ id: encryptedId, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+
+      // 5. Retorna token e email
+      return res.json({ token, email: user.email });
     } catch (error) {
       console.error('Erro ao autenticar usuário:', error);
-      res.status(500).json({ message: 'Erro ao autenticar usuário' });
+      return res.status(500).json({ message: 'Erro ao autenticar usuário' });
     }
   }
 );
 
-
 // =========== REGISTER ===========
-// Adicionamos validação para os campos e sanitizamos o email
 router.post(
   '/register',
   [
@@ -68,33 +89,56 @@ router.post(
       .withMessage('A senha deve ter no mínimo 8 caracteres'),
   ],
   async (req, res) => {
-    // Verifica se há erros de validação
+    // 1. Validar campos
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password } = req.body;
-
     try {
+      // 2. Validar Turnstile token
+      const turnstileToken = req.body['cf-turnstile-response'];
+      if (!turnstileToken) {
+        return res.status(400).json({ message: 'Turnstile token ausente.' });
+      }
+
+      const verifyURL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+      const formData = new URLSearchParams();
+      formData.append('secret', TURNSTILE_SECRET_KEY);
+      formData.append('response', turnstileToken);
+
+      const verifyRes = await fetch(verifyURL, {
+        method: 'POST',
+        body: formData,
+      });
+      const outcome = await verifyRes.json();
+
+      if (!outcome.success) {
+        return res.status(400).json({
+          message: 'Falha na verificação do Turnstile.',
+          'error-codes': outcome['error-codes'],
+        });
+      }
+
+      // 3. Se Turnstile aprovou, verifica se email já existe
+      const { email, password } = req.body;
       const existingUser = await queryD1('SELECT * FROM users WHERE email = ?', [email]);
       if (Array.isArray(existingUser) && existingUser.length > 0) {
         return res.status(400).json({ message: 'Usuário já existe' });
       }
 
+      // 4. Cria usuário
       const hashedPassword = await bcrypt.hash(password, 10);
       const createdAt = new Date().toISOString();
-
-      // Insere o usuário com role 'user'
       await queryD1(
         'INSERT INTO users (email, password, role, created_at) VALUES (?, ?, ?, ?)',
         [email, hashedPassword, 'user', createdAt]
       );
 
-      res.json({ message: 'Usuário criado com sucesso!' });
+      return res.json({ message: 'Usuário criado com sucesso!' });
     } catch (error) {
       console.error('Erro ao criar usuário:', error);
-      res.status(500).json({ message: 'Erro ao criar usuário' });
+      return res.status(500).json({ message: 'Erro ao criar usuário' });
     }
   }
 );
