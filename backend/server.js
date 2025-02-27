@@ -14,14 +14,62 @@ const adminRoutes = require("./routes/admin");
 
 const app = express();
 
+// Configuração do Helmet com Content Security Policy
 app.use(
   helmet({
-    contentSecurityPolicy: false
+    contentSecurityPolicy: {
+      useDefaults: false, // Desativa as configurações padrão (que podem injetar nonces)
+      directives: {
+        // Permite carregar recursos apenas do próprio domínio e dos domínios especificados
+        defaultSrc: ["'self'"],
+        // Scripts podem vir do próprio domínio, do Cloudflare Turnstile e permitem inline e eval
+        scriptSrc: [
+          "'self'",
+          "https://challenges.cloudflare.com",
+          "'unsafe-inline'",
+          "'unsafe-eval'"
+        ],
+        // Permite requisições para o seu front, back e BunnyCDN
+        connectSrc: [
+          "'self'",
+          "https://marvelflix.fun",
+          "https://api.marvelflix.fun",
+          "https://marvelflix-krxl.onrender.com",
+          "https://br.storage.bunnycdn.com"
+        ],
+        // Permite imagens do próprio domínio, data URIs, do Imgur e do BunnyCDN
+        imgSrc: [
+          "'self'",
+          "data:",
+          "https://i.imgur.com",
+          "https://br.storage.bunnycdn.com"
+        ],
+        // Permite estilos inline e folhas de estilo do Google Fonts
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://fonts.googleapis.com"
+        ],
+        // Permite carregar fontes do próprio domínio e do Google Fonts
+        fontSrc: [
+          "'self'",
+          "https://fonts.gstatic.com"
+        ],
+        // Permite iframes do Cloudflare Turnstile e do serviço de vídeo (Bunny)
+        frameSrc: [
+          "'self'",
+          "https://challenges.cloudflare.com",
+          "https://iframe.mediadelivery.net"
+        ],
+        // Bloqueia objetos
+        objectSrc: ["'none'"],
+        // Não força upgrade de HTTP para HTTPS automaticamente
+        upgradeInsecureRequests: []
+      },
+    },
+    crossOriginResourcePolicy: { policy: "cross-origin" },
   })
 );
-
-
-
 
 app.use(cors());
 app.use(express.json());
