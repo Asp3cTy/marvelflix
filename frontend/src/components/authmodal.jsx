@@ -1,8 +1,10 @@
-import React, { useState, useContext, useEffect } from "react";
+// src/components/AuthModal.jsx
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authcontext";
 import API_URL from "../config";
 
+// Função simples para checar força da senha
 function validatePasswordStrength(password) {
   const strongRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
   return strongRegex.test(password);
@@ -11,17 +13,23 @@ function validatePasswordStrength(password) {
 const AuthModal = ({ onClose }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [isRegistering, setIsRegistering] = useState(false);
+
+  // Campos de formulário
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  // Estados de feedback
   const [error, setError] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+
+  // Controle do loading/spinner
   const [isLoading, setIsLoading] = useState(false);
-  const [turnstileToken, setTurnstileToken] = useState("");
 
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
+  // Fecha o modal
   const handleClose = () => {
     setIsVisible(false);
     setTimeout(() => {
@@ -29,28 +37,12 @@ const AuthModal = ({ onClose }) => {
     }, 300);
   };
 
+  // Dispara o formulário com Enter
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       handleSubmit(e);
     }
   };
-
-  // Renderiza o widget do Turnstile explicitamente
-  useEffect(() => {
-    if (window.turnstile) {
-      window.turnstile.render("#my-turnstile", {
-        sitekey: "0x4AAAAAAA-xFXi12VnMOhnp", // substitua pela sua sitekey
-        size: "flexible",  // "flexible" para ajustar à largura do container
-        theme: "dark",
-        callback: (token) => {
-          setTurnstileToken(token);
-        },
-        "error-callback": () => {
-          console.error("Erro ao gerar token do Turnstile");
-        },
-      });
-    }
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -61,23 +53,23 @@ const AuthModal = ({ onClose }) => {
       setError("Insira um email válido");
       return;
     }
+
     if (password.length < 8) {
       setError("A senha deve ter pelo menos 8 caracteres.");
       return;
     }
+
     if (isRegistering && password !== confirmPassword) {
       setError("As senhas não coincidem!");
       return;
     }
+
     if (isRegistering && !validatePasswordStrength(password)) {
       setError("A senha deve ter ao menos 8 caracteres, 1 maiúscula, 1 número e 1 símbolo.");
       return;
     }
-    if (!turnstileToken) {
-      setError("Por favor, resolva o desafio Turnstile antes de enviar.");
-      return;
-    }
 
+    // Define endpoint
     const endpoint = isRegistering
       ? `${API_URL}/api/auth/register`
       : `${API_URL}/api/auth/login`;
@@ -88,11 +80,14 @@ const AuthModal = ({ onClose }) => {
       const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, "cf-turnstile-response": turnstileToken }),
+        body: JSON.stringify({ email, password })
       });
 
       const data = await response.json();
+
+      // Simula 3s de carregamento (opcional)
       await new Promise((resolve) => setTimeout(resolve, 3000));
+
       setIsLoading(false);
 
       if (!response.ok) {
@@ -101,16 +96,23 @@ const AuthModal = ({ onClose }) => {
       }
 
       if (isRegistering) {
+        // Registro bem-sucedido
         setSuccessMsg("Registro realizado com sucesso! Bem-vindo ao MarvelFlix");
+        // Em 3s, redireciona para home
         setTimeout(() => {
+          // Se quiser logar direto após o registro
+          // if (data.token) login(data.token);
           navigate("/home");
           handleClose();
         }, 3000);
       } else {
+        // Login bem-sucedido
         if (data.token && data.email) {
           login(data.token);
           sessionStorage.setItem("userEmail", data.email);
           setSuccessMsg("Login bem-sucedido");
+          
+          // Em 3s, redireciona
           setTimeout(() => {
             navigate("/home");
             handleClose();
@@ -131,11 +133,14 @@ const AuthModal = ({ onClose }) => {
   return (
     <div
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50"
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
+      onKeyDown={handleKeyDown} // permite submit ao apertar Enter
+      tabIndex={0} // para ativar keydown
     >
       <div className="bg-gray-900 p-6 rounded-lg max-w-sm w-full relative shadow-lg">
-        <button className="absolute top-2 right-2 text-white" onClick={handleClose}>
+        <button
+          className="absolute top-2 right-2 text-white"
+          onClick={handleClose}
+        >
           ✖
         </button>
 
@@ -143,12 +148,14 @@ const AuthModal = ({ onClose }) => {
           {isRegistering ? "Registrar-se" : "Login"}
         </h2>
 
+        {/* Exibe erro em caso de falha */}
         {error && (
           <div className="bg-red-600 text-white p-2 rounded mb-3 text-sm text-center">
             {error}
           </div>
         )}
 
+        {/* Exibe mensagem de sucesso */}
         {successMsg && (
           <div className="bg-green-600 text-white p-2 rounded mb-3 text-sm text-center">
             {successMsg}
@@ -163,6 +170,7 @@ const AuthModal = ({ onClose }) => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+
           <input
             type="password"
             placeholder="Sua senha"
@@ -170,6 +178,7 @@ const AuthModal = ({ onClose }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+
           {isRegistering && (
             <input
               type="password"
@@ -180,34 +189,63 @@ const AuthModal = ({ onClose }) => {
             />
           )}
 
-          {/* Container para o widget do Turnstile */}
-          <div id="my-turnstile" className="w-full"></div>
-
+          {/* Botão de submit */}
           <button
             type="submit"
             className="bg-red-600 text-white py-2 rounded mt-2 disabled:opacity-50"
-            disabled={isLoading}
+            disabled={isLoading} // desabilita se estiver carregando
           >
-            {isLoading
-              ? "Carregando..."
-              : isRegistering
-              ? "Registrar"
-              : "Entrar"}
+            {isLoading ? (
+              // Spinner
+              <div className="flex items-center justify-center space-x-2">
+                <svg
+                  className="animate-spin h-5 w-5 text-white"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    fill="none"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8z"
+                  />
+                </svg>
+                <span>Carregando...</span>
+              </div>
+            ) : isRegistering ? (
+              "Registrar"
+            ) : (
+              "Entrar"
+            )}
           </button>
         </form>
 
+        {/* Link para alternar entre "Registrar" e "Login" */}
         <div className="text-center mt-4 text-sm text-gray-300">
           {isRegistering ? (
             <p>
               Já tem conta?{" "}
-              <button className="text-red-400 underline" onClick={() => setIsRegistering(false)}>
+              <button
+                className="text-red-400 underline"
+                onClick={() => setIsRegistering(false)}
+              >
                 Fazer Login
               </button>
             </p>
           ) : (
             <p>
               Novo por aqui?{" "}
-              <button className="text-red-400 underline" onClick={() => setIsRegistering(true)}>
+              <button
+                className="text-red-400 underline"
+                onClick={() => setIsRegistering(true)}
+              >
                 Criar Conta
               </button>
             </p>

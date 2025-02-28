@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   preview: {
-    allowedHosts: ["marvelflix.fun", "api.marvelflix.fun", "0.0.0.0"], // Permitir acesso pelo domínio no Render
+    allowedHosts: ["marvelflix-krxl.onrender.com", "0.0.0.0"], // Permitir acesso pelo domínio no Render
   },
   server: {
     host: true, // Permite acesso a partir de qualquer IP externo

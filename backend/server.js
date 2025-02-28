@@ -2,8 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const helmet = require("helmet");
-const crypto = require("crypto"); // para gerar nonce
 const { queryD1 } = require("./d1");
 const authRoutes = require("./routes/auth");
 const collectionsRoutes = require("./routes/collections");
@@ -13,66 +11,20 @@ const usersRoutes = require("./routes/users");
 const thumbnailsBunnyRoutes = require("./routes/thumbnails-bunny");
 const adminRoutes = require("./routes/admin");
 
+
+
+
+
+
+
+
+
+
+
 const app = express();
-
-// Middleware para gerar um nonce único por requisição
-app.use((req, res, next) => {
-  res.locals.nonce = crypto.randomBytes(16).toString("base64");
-  next();
-});
-
-// Configuração do Helmet com Content Security Policy
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      useDefaults: false,
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: [
-          "'self'",
-          "'unsafe-inline'", // Permite scripts inline
-          "'unsafe-eval'",
-          "https://challenges.cloudflare.com",
-          // Adiciona o nonce dinâmico – essa função será chamada para cada requisição
-          (req, res) => `'nonce-${res.locals.nonce}'`
-        ],
-        connectSrc: [
-          "'self'",
-          "https://marvelflix.fun",
-          "https://api.marvelflix.fun",
-          "https://marvelflix-krxl.onrender.com",
-          "https://br.storage.bunnycdn.com"
-        ],
-        imgSrc: [
-          "'self'",
-          "data:",
-          "https://i.imgur.com",
-          "https://br.storage.bunnycdn.com"
-        ],
-        styleSrc: [
-          "'self'",
-          "'unsafe-inline'",
-          "https://fonts.googleapis.com"
-        ],
-        fontSrc: ["'self'", "https://fonts.gstatic.com"],
-        frameSrc: [
-          "'self'",
-          "https://challenges.cloudflare.com",
-          "https://iframe.mediadelivery.net"
-        ],
-        objectSrc: ["'none'"],
-        upgradeInsecureRequests: []
-      }
-    },
-    crossOriginResourcePolicy: { policy: "cross-origin" }
-  })
-);
-
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// Rota para teste
 app.get("/", (req, res) => {
   res.send("API do MarvelFlix está funcionando!");
 });
@@ -111,8 +63,9 @@ app.use("/api/bunnycdn", thumbnailsBunnyRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/admin", adminRoutes);
 
-// Servir arquivos estáticos da pasta "assets/thumbnails"
+// Em vez de "../frontend/public/thumbnails", aponte para "assets/thumbnails"
 app.use("/thumbnails", express.static(path.join(__dirname, "assets/thumbnails")));
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

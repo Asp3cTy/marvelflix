@@ -37,25 +37,19 @@ const AppContent = () => {
   return (
     <div className="flex flex-col min-h-screen">
       {authToken && <Header />}
-      {/* 
-          Para desktop: pt-16 adiciona espaço para o header fixo no topo.
-          Para mobile: pt-0 (porque o header fica no rodapé) e pb-16 para garantir que o footer seja totalmente visível.
-      */}
-      <div className="flex-grow pt-0 md:pt-16 pb-[96px] md:pb-0">
+      <div className="flex-grow">
         <Routes>
           <Route path="/" element={!authToken ? <LandingPage /> : <Navigate to="/home" />} />
           <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path="/collections" element={<ProtectedRoute><Collections /></ProtectedRoute>} />
           <Route path="/collection/:collectionId" element={<ProtectedRoute><CollectionView /></ProtectedRoute>} />
           <Route path="/movie/:movieId" element={<ProtectedRoute><MovieView /></ProtectedRoute>} />
-          <Route
-            path="/admin"
-            element={
-              <ProtectedAdminRoute>
-                <AdminPanel />
-              </ProtectedAdminRoute>
-            }
-          />
+          {/* Protege a rota /admin usando o componente específico para admin */}
+          <Route path="/admin" element={
+            <ProtectedAdminRoute>
+              <AdminPanel />
+            </ProtectedAdminRoute>
+          } />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
