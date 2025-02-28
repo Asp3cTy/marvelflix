@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+@media screen and (max-width: 768px) {
+  .collection-card img {
+    min-width: 250px; /* Garante que a imagem não fique fina demais */
+    max-width: 100%; /* Mantém responsivo */
+    height: auto; /* Mantém proporção */
+  }
+}
+
+
+
+
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+p, span {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+}
+
+footer {
+  border-top: 1px solid #333; /* Linha sutil para separar */
+}
