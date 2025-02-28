@@ -25,10 +25,10 @@ const LandingPage = () => {
 
       <div className="relative z-10 text-center max-w-2xl px-6">
         <h1 className="text-4xl md:text-6xl font-bold mb-4">
-          Unlimited movies, TV shows, and more
+        Assista aos seus filmes favoritos do Universo Marvel em até 4K
         </h1>
         <p className="text-lg md:text-xl mb-6">
-          Sign up now and start your journey!
+        reviva cada momento épico e mergulhe na ação como nunca antes!
         </p>
 
         <button
