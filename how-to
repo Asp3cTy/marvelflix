@@ -1,0 +1,716 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>COMO FAZER CERTIDAO DE MATRÍCULA - ARIRJ </title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1ec47cc5-7039-8084-adb6-d10fe4833166" class="page sans"><header><h1 class="page-title"><strong>COMO FAZER CERTIDAO DE MATRÍCULA - ARIRJ </strong></h1><p class="page-description"></p></header><div class="page-body"><h1 id="1ec47cc5-7039-8048-8915-f817e6ad56c2" class=""><strong>COMO FAZER CERTIDAO DE MATRÍCULA - </strong></h1><p id="1ec47cc5-7039-802c-b9c0-f9b59c1600b7" class=""><strong>***</strong><em>PASSO A PASSO DESENVOLVIDO POR </em><em><mark class="highlight-red"><strong><span style="border-bottom:0.05em solid">JULIO MOREIRA</span></strong></mark></em><em> MAS PODENDO SOFRER ALTERAÇÕES FUTURAS E MELHORIAS COM VISÕES DIFERENTE DOS MEUS COLEGAS DE EQUIPE. </em><strong>BOM APRENDIZADO </strong>😊</p><h2 id="1ec47cc5-7039-80f8-87ad-f5d66323f763" class=""><strong>1.º PASSO ~ </strong></h2><p id="1ec47cc5-7039-80f3-a6e9-c2f3e6e88255" class="">COM A CERTIDAO EM MÃOS, A PRIMEIRA COISA QUE VOCE IRÁ FAZER É LER O RECIBO E EM SEGUIDA VÊ SE AS INFORMAÇÕES BATEM COM A FOLHA <em>DETALHES DO PEDIDO</em> (NOME REQUERENTE, MATRÍCULA (QUE AS VEZES FOI DADO ENTRADA DE FORMA ERRADA, ENTAO E BOM CONFIRMAR), PROTOCOLO ARIRJ <em>S250....</em></p><div id="1ec47cc5-7039-803a-9ff3-ea3abdedb55c" class="column-list"><div id="1ec47cc5-7039-800f-ab39-d8f861e98aaa" style="width:31.25%" class="column"><figure id="1ec47cc5-7039-8067-995a-e22695ebeb31" class="image"><a href="image.png"><img style="width:240px" src="image.png"/></a><figcaption><strong>Pedido para a Matrícula 7.585</strong></figcaption></figure></div><div id="1ec47cc5-7039-8029-a152-f1a4a273bc6b" style="width:68.75%" class="column"><figure id="1ec47cc5-7039-8020-8580-e49952b0689f" class="image"><a href="image%201.png"><img style="width:2461px" src="image%201.png"/></a></figure><p id="1ec47cc5-7039-8041-adb0-c94d422f1601" class=""><strong>Pedido indicando a matrícula 7.585</strong></p></div></div><h2 id="1ec47cc5-7039-8096-a482-dadac562847d" class=""><strong>2.º PASSO ~</strong> </h2><p id="1ec47cc5-7039-8063-b82a-c745d7ccb1bd" class="">APÓS ESSE IMPORTANTE PASSO, VOCÊ VAI VERIFICAR SE A MATRÍCULA QUE ESTÁ NA SUA MÃO É A MATRÍCULA CORRETA. ** MATRÍCULA DA FOLHA DO PEDIDO &gt; MATRÍCULA DIGITADA NO PEDIDO &gt; MATRÍCULA NA SUA MÃO (COMO MOSTRA O EXEMPLO NAS IMAGENS ACIMA)</p><hr id="1ec47cc5-7039-80e2-9af2-c0a48b2dd9c5"/><h2 id="1ec47cc5-7039-8097-8986-ff47f6c2e76a" class="">3.º PASSO ~ </h2><p id="1ec47cc5-7039-804f-bfdc-ef1baeff4907" class="">VAMOS FAZER A LEITURA DA MATRÍCULA, VENDO INFORMAÇÕES COMO LOTE, QUADRA, LOTEAMENTO, SE POSSUI GLEBA/ZONA/AREA (SENDO FEEMA/PRAIASECA, DEVERÁ CONSTAR O CARIMBO 118.867 de 18/07/2006)</p><figure id="1ec47cc5-7039-80ef-952a-d864af00e9bc" class="image"><a href="image%202.png"><img style="width:429.98046875px" src="image%202.png"/></a><figcaption><strong>As informações do imóvel, na maioria das vezes, vai vir no começo após o “DESCRIÇÃO DO IMÓVEL”. Aqui, podemos verificar o LOTE, QUADRA, LOTEAMENTO e alguns de seus confrontantes.</strong></figcaption></figure><hr id="1ec47cc5-7039-8072-b0bb-c6a84da21027"/><h2 id="1ec47cc5-7039-80ae-a518-d029512a8655" class=""><strong>4.º PASSO ~ </strong></h2><p id="1ec47cc5-7039-80b0-b7d7-cb22c97f3523" class="">FAZER A LEITURA DOS REGISTROS (CAPUT, R.1, R.2 / AV.01/ AV.02 ..) E ENCONTRAR OS DEVIDOS PROPRIETÁRIOS DA MATRÍCULA, OU CREDOR/DEVEDOR ENFIM..</p><figure id="1ec47cc5-7039-8069-be64-c0c4e4438bc3" class="image"><a href="image%203.png"><img style="width:709.94140625px" src="image%203.png"/></a><figcaption>Podemos notar, que nesta matrícula o <strong>PROPRIETÁRIO</strong> na abertura da matrícula é o <strong>ADEMAR MOURA DE AZEVEDO </strong>mas isso nao significa que ele é de fato o PROPRIETÁRIO do imóvel.</figcaption></figure><p id="1ec47cc5-7039-806b-9799-ea74955ff2d0" class=""><em><strong>OBS.* </strong></em><em>REGISTROS COMUNS SEMPRE IRÃO VIR COM &quot;</em><em><strong>NOS TERMOS DA ESCRITURA DE COMPRA </strong></em><em>E VENDA&quot; OU &quot;COMPRA E VENDA&quot;, &quot;FORMAL DE PARTILHA..&quot;</em></p><figure id="1ec47cc5-7039-80e7-9bd5-e0a6106e867f" class="image"><a href="image%204.png"><img style="width:709.9609375px" src="image%204.png"/></a><figcaption>Exemplo de <strong>ESCRITURA DE COMPRA E VENDA</strong></figcaption></figure><p id="1ec47cc5-7039-80b6-8f17-e1af42c3d6b6" class=""><em><strong>OBS.2* </strong></em><em>SEMPRE SE ATENTAR AOS PROTOCOLOS CARIMBADOS NA MATRÍCULA, POIS ALGUNS VÃO SE ENCONTRAR CANCELADOS E CONSEQUENTEMENTE, DEVERÁ PEDIR ALGUÉM AUTORIZADO PRA BATER O CARIMBO DE CANCELAMENTO.</em></p><figure id="1ec47cc5-7039-8031-8732-eb0f2362f0e2" class="image"><a href="image%205.png"><img style="width:709.9609375px" src="image%205.png"/></a><figcaption>Os <strong>PROTOCOLOS </strong>poderão estar na Matrícula de duas formas; Digitados ou Carimbados.  O Protocolo <strong>166.698</strong> está digitado. O protocolo <strong>194.576 </strong>está carimbado.</figcaption></figure><figure id="1ec47cc5-7039-80cb-b2e7-f726aa5e2bf3" class="image"><a href="image%206.png"><img style="width:709.82421875px" src="image%206.png"/></a><figcaption>Exemplo de <strong>PROTOCOLO CANCELADO.</strong></figcaption></figure><p id="1ec47cc5-7039-802e-b4a4-f6e07f5e984b" class=""><em><strong>OBS.3*</strong></em><em> CASO O PROTOCOLO NAO VENHA ESTAR CANCELADO, </em><em><mark class="highlight-red">VERIFICAR DE QUE SE TRATA </mark></em><em>E SE É </em><em><mark class="highlight-red">NECESSÁRIO MENCIONAR</mark></em><em> O MESMO. PROTOCOLOS COM ATÉ</em><em><mark class="highlight-red"> 6 MESES</mark></em><em> DA DATA QUE VOCE ESTÁ FAZENDO A CERTIDAO, </em><em><mark class="highlight-red">DEVERÃO SER MENCIONADOS</mark></em><em>, APÓS OS 6 MESES, VERIFICAR MAIS A FUNDO DO QUE SE TRATA. </em><em><mark class="highlight-red">PENHORA, INDISPONIBILIDADE</mark></em><em>, ALGUMAS INTIMAÇÕES, MESMO APÓS OS 6 MESES, ALGUNS DELES DEVEMOS MENCIONAR.</em></p><figure id="1ec47cc5-7039-8093-869c-e7f1442bcbc5" class="image"><a href="image%207.png"><img style="width:709.98046875px" src="image%207.png"/></a><figcaption><mark class="highlight-red">Podemos vê que há dois protocolos </mark><mark class="highlight-red"><strong>(174.909 de 12/05/2016) </strong></mark><mark class="highlight-red">e o protocolo</mark><mark class="highlight-red"><strong> (175.177 de 02/06/2016)</strong></mark><mark class="highlight-red">. O protocolo </mark><mark class="highlight-red"><strong>175.177 </strong></mark><mark class="highlight-red">está registrado no </mark><mark class="highlight-red"><strong>AV.03 - IDENTIDADE </strong></mark><mark class="highlight-red">e o 174.909 não está registrado, porem podemos analisar que ele é de 2016, logo já passou dos 6 meses, </mark><mark class="highlight-red"><strong>NÃO </strong></mark><mark class="highlight-red">precisariamos mencionar mas </mark><mark class="highlight-red"><strong>AINDA PRECISAMOS </strong></mark><mark class="highlight-red">pesquisa-lo pra saber sobre do que se trata.</mark></figcaption></figure><p id="1ec47cc5-7039-8011-9e18-d2a47c09e3db" class=""><em><strong>OBS.4*</strong></em><em>  CONSEGUIMOS PESQUISAR PROTOCOLOS DE ALGUMAS FORMAS.  </em><div class="indented"><ul id="1ec47cc5-7039-8082-a837-f7789d367c36" class="toggle"><li><details open=""><summary>NA PASTA DO RGI (\\INFO-01\Publico\ESCANEADOS\RGI) ~ Onde tá escrito “Pesquisar em RGI” você digita o número do Protocolo desejado; exemplo: <strong>174.909</strong></summary><figure id="1ec47cc5-7039-80df-b4a5-e01a05243e4b" class="image"><a href="image%208.png"><img style="width:685.95703125px" src="image%208.png"/></a></figure><figure id="1ec47cc5-7039-8080-8209-fdf1f5feda96" class="image"><a href="image%209.png"><img style="width:696.89453125px" src="image%209.png"/></a><figcaption>Exemplo de onde irá ser digitado o número do Protocolo.</figcaption></figure><figure id="1ec47cc5-7039-8043-85d5-f30d80860ab6" class="image"><a href="image%2010.png"><img style="width:563.9453125px" src="image%2010.png"/></a><figcaption>Resultado da busca do Protocolo. Vai aparecer algo parecido com isso. Caso o Protocolo venha tá Cancelado, ele vai aparecer aqui como “Prot Canc”.</figcaption></figure><figure id="1ec47cc5-7039-803b-a41a-ec38411c5c9d" class="image"><a href="image%2011.png"><img style="width:592.96875px" src="image%2011.png"/></a><figcaption>No caso do Protocolo 174.709, ao abrir o arquivo, conseguimos ter uma noçao do que se trata. Confirmo que se trata de um Protocolo de Escritura de Compra e Venda. </figcaption></figure></details></li></ul><ul id="1ec47cc5-7039-80fd-b0da-fa5e0699948b" class="toggle"><li><details open=""><summary>NO  GESCART ~ Eu particularmente, utilizo o GESCART mais pra saber e o Protocolo se encontra Cancelado. Abaixo anexo algumas imagens do GESCART e um passo a passo minificado, de como você tambem consegue realizar essa consulta.</summary><figure id="1ec47cc5-7039-8065-b2b9-df002b278f01" class="image"><a href="image%2012.png"><img style="width:685.83984375px" src="image%2012.png"/></a><figcaption>Ao abrir o <strong>GESCART</strong>, você vai procurar no topo pela opção “<strong>SERVIÇOS EM ANDAMENTO”</strong></figcaption></figure><figure id="1ec47cc5-7039-8071-8f85-c50fff36f0be" class="image"><a href="image%2013.png"><img src="image%2013.png"/></a><figcaption>Após clicar na opção “<strong>SERVIÇOS EM ANDAMENTO”, iremos vê uma tela igual a essa e em seguida vamos procurar pela opção “CONSULTAR F2” e clicar.</strong></figcaption></figure><figure id="1ec47cc5-7039-8005-9f5a-fed3d6265ccc" class="image"><a href="image%2014.png"><img style="width:673.9453125px" src="image%2014.png"/></a><figcaption>Agora, nessa tela, vamos procurar a opção “<strong>N.º Protocolo F3”</strong></figcaption></figure><figure id="1ec47cc5-7039-802e-97fc-d0facd3a9eda" class="image"><a href="image%2015.png"><img style="width:676.97265625px" src="image%2015.png"/></a><figcaption>Voce vai digitar o n.º do seu Protocolo e da Enter.  </figcaption></figure><figure id="1ec47cc5-7039-8098-9e6a-e73771f0090c" class="image"><a href="image%2016.png"><img style="width:658.0078125px" src="image%2016.png"/></a><figcaption>Agora dê dois cliques em cima da <strong>PRIMEIRA OPÇÃO.</strong></figcaption></figure><figure id="1ec47cc5-7039-8047-9fec-d43c4c7fa569" class="image"><a href="image%2017.png"><img style="width:685.9765625px" src="image%2017.png"/></a><figcaption>Role até o final e vera algo parecido com isso. Caso o seu protocolo esteja <strong>CANCELADO, irá aparecer PROTOCOLO CANCELADO.</strong></figcaption></figure><figure id="1ec47cc5-7039-8055-93cb-ef873767e025" class="image"><a href="image%2018.png"><img style="width:657.98828125px" src="image%2018.png"/></a><figcaption>Exemplo real de um Protocolo <strong>CANCELADO </strong>no Gescart.</figcaption></figure></details></li></ul><ul id="1ec47cc5-7039-802f-9da2-c89fca8ddc19" class="toggle"><li><details open=""><summary>SERVCOM RGI ~ Você também consegue pesquisar o STATUS e tambem o que é (mas não recomendado) direto pelo SERVCOM.</summary><figure id="1ec47cc5-7039-8065-af56-fbb39624293a" class="image"><a href="image%2019.png"><img style="width:148.9453125px" src="image%2019.png"/></a><figcaption>Com o <strong>SERVCOM </strong>aberto, procure por esse ícone e de dois cliques.</figcaption></figure><figure id="1ec47cc5-7039-80d7-baf9-d721028e02d4" class="image"><a href="image%2020.png"><img style="width:685.9765625px" src="image%2020.png"/></a><figcaption>Ira abrir essa página. Pra pesquisar o protocolo é simples. Lá em cima tem o campo <strong>PROTOCOLO N.º, digite o número do protocolo e dê Enter.</strong></figcaption></figure><figure id="1ec47cc5-7039-8086-bef5-da94dd8e16f9" class="image"><a href="image%2021.png"><img style="width:658.0078125px" src="image%2021.png"/></a><figcaption>Aqui está o Resultado da Busca do mesmo protocolo que pesquisamos nas outras fontes. Temos como conclusão, que o melhor a se fazer, é pesquisar diretamente na pasta do RGI. Dessa forma, voce consegue abstrair todos os dados do Protocolo de forma mais sólida. Nas outras formas é válido, porém muito superficial e voce nao consegue saber exatamente do que se trata.</figcaption></figure></details></li></ul></div></p><p id="1ec47cc5-7039-8091-b745-df069925d3b1" class=""> </p><h3 id="1ec47cc5-7039-80d1-babd-edef69a35abe" class="">SABEMOS QUE ALGUÉM ESTÁ VENDENDO E ALGUÉM ESTÁ COMPRANDO DA SEGUINTE FORMA; A FRASE &quot;VENDIDO PARA LUANA POR COMPRA FEITA LUCAS&quot; SABEMOS QUE, LUANA ESTA ADQUIRINDO O IMOVEL E LUCAS ESTA VENDENDO O IMOVEL A ELA. TAMBEM É COMUM ENCONTRARMOS &quot;FOI POR LUCAS; VENDIDO PARA LUANA&quot;,  &quot;ADQUIRIDO POR LUANA, POR COMPRA FEITA A LUCAS&quot; NESSES CASOS SERÁ A MESMA COISA.</h3><figure id="1ee47cc5-7039-8018-9a2d-f15a50787fe9" class="image"><a href="image%2022.png"><img style="width:676.23046875px" src="image%2022.png"/></a><figcaption>Exemplo de Compra e Venda.</figcaption></figure><ul id="1ec47cc5-7039-803e-a3e2-fefdb14fb17c" class="bulleted-list"><li style="list-style-type:disc"><em>* QUANDO É UMA ALIENAÇÃO FIDUCIÁRIA, É COMUM VERMOS UM REGISTRO ANTERIOR A ALIENAÇÃO, UMA COMPRA E VENDA. EX; NA MATRÍCULA 46.432 NO R.03 TEM UMA COMPRA E VENDA E NO REGISTRO POSTERIOR (R.04) UMA ALIENAÇÃO FIDUCIÁRIA, DIZENDO &quot;FOI ALIENADO FIDUCIARIAMENTE EM GARANTIA À CREDORA FIDUCIÁRIA CAIXA ECONOMICA FEDERAL..., FIGURADO COMO DEVEDORES FIDUCIANTES ISMAEL NAVARRETE MARQUEZ, E SEU CONJUGE ALEX AUGUSTO MARCELO&quot;**</em><p id="1ec47cc5-7039-80e9-8eea-e1d3edfba92d" class=""><em><br/>~ NESSE EXEMPLO, PODEMOS TIRAR A CONCLUSÃO DE QUE A (CAIXA ECONOMICA FEDERAL É A CREDORA) E A ISMAEL NAVARRETE MARQUEZ E SEU CONJUGE ALEX AUGUSTO MARCELO SÃO OS DEVEDORES.<br/>~ NO SERVCOM DEVEMOS COLOCAR ENTÃO AS QUALIFICACOES PARA CAIXA (CREDOR), ISMAEL (DEVEDOR) E ALEX (DEVEDOR).<br/></em></p><figure id="1ee47cc5-7039-804c-86ac-cc16fef2b865" class="image"><a href="image%2023.png"><img style="width:646.25px" src="image%2023.png"/></a><figcaption>Imagem de Exemplo de uma Alienação Fiduciária.</figcaption></figure></li></ul><ul id="1ec47cc5-7039-80b6-bc8a-ef205f41fb8f" class="bulleted-list"><li style="list-style-type:disc"><em>* EM UMA HIPOTECA SERÁ A MESMA COISA QUE NA ALIENAÇÃO FIDUCIÁRIA, VAI TER SEMPRE O CREDOR E O DEVEDOR.**</em></li></ul><p id="1ec47cc5-7039-808b-bbaa-f94de2afb703" class="">
+</p><ul id="1ec47cc5-7039-8047-8103-f16f0d057ea3" class="bulleted-list"><li style="list-style-type:disc"><em>** NÃO CONFUNDA PENHORA COM HIPOTECA. NA HIPOTECA, COMO MENCIONADO ACIMA, TERÁ SEMPRE O CREDOR E O DEVEDOR, NA PENHORA NÃO TERÁ CREDOR E DEVEDOR ***</em></li></ul><p id="1ec47cc5-7039-8093-bb66-d719fb1eef53" class="">
+</p><h3 id="1ec47cc5-7039-805e-8716-eedf2f5ab3c7" class="">O PROPRIETÁRIO SERÁ SEMPRE O ÚLTIMO DO REGISTRO DA MATRÍCULA. EXEMPLO, A MATRÍCULA POSSUI 3 REGISTROS DE COMPRA E VENDA, O ULTIMO REGISTRO É O QUE CONTA DE FATO QUEM É O PROPRIETÁRIO DO IMÓVEL ATÉ O MOMENTO REGISTRADO EM NOSSA SERVENTIA. (CARTÓRIO 2.º OFÍCIO DE ARARUAMA)</h3><hr id="1ec47cc5-7039-80c5-bf05-ec9537ee5e25"/><h2 id="1ec47cc5-7039-80c9-b95b-c650d30a6685" class="">5.º PASSO ~ GRAVAMES</h2><p id="1ec47cc5-7039-80f7-b059-c5dee30290af" class="">
+</p><p id="1ec47cc5-7039-808e-98b3-e980dfaf6cf6" class="">SE ATENTAR AOS <strong>ÔNUS E GRAVAMES </strong>NAS MATRÍCULAS.</p><p id="1ec47cc5-7039-807e-8be8-e78e53084440" class="">LISTO ABAIXO ALGUNS ONUS/GRAVAMES COMUNS QUE ENCONTRAMOS NAS MATRÍCULAS</p><p id="1ec47cc5-7039-80c2-b787-d247cb278aad" class="">EX. <em>ALIENAÇÃO FIDUCIÁRIA, PENHORA, HIPOTECA,  RESERVA DE USUFRUTO, INDISPONIBILIDADE, CONSOLIDACAO DE PROPRIEDADE SEM O POSTERIOR REGISTRO DE QUITAÇÃO DE DIVIDA, PROMESSA DE COMPRA E VENDA, PROMESSA DE CESSAO DE DIREITOS E ETC</em></p><hr id="1ec47cc5-7039-800b-a9f0-c5fd32af8544"/><h2 id="1ec47cc5-7039-80a8-853c-eb2f6c5097f5" class=""><strong>6.º PASSO ~ QUALIFICAÇÕES</strong></h2><p id="1ec47cc5-7039-802b-86e2-dad907fcf418" class="">OS PARTICIPANTES POSSUEM QUALIFICACOES DENTRO DA MATRÍCULA, SENDO ELE O MAIS COMUM &quot;PROPRIETÁRIO&quot; MAS TAMBÉM PODEMOS VÊ O PARTICIPANTE COMO &quot;CREDOR, DEVEDOR, USUFRUTUÁRIO, NU-PROPRIETÁRIO, PROMITENTE COMPRADOR/VENDEDOR, DECLARANTE (USADO QUANDO O PARTICIPANTE ESTÁ EM UNIÃO ESTÁVEL COM A PARTICIPANTE QUE ESTA COMPRANDO O IMÓVEL) E ETC</p><figure id="1ee47cc5-7039-80bd-9c17-cb937e8eddff" class="image"><a href="image%2024.png"><img style="width:255px" src="image%2024.png"/></a><figcaption>Aqui você pode vê a lista de qualificações de uma Parte.</figcaption></figure><hr id="1ec47cc5-7039-801d-a61b-e9f5fc3fed1d"/><h2 id="1ec47cc5-7039-8075-b5c4-de6a3fc6e23d" class=""><strong>7.º PASSO ~ CONSULTA NACIONAL DE INDISPONIBILIDADE DE BENS (CNIB)</strong></h2><p id="1ec47cc5-7039-8081-ac39-d37cc4fc4112" class="">
+</p><p id="1ec47cc5-7039-807d-906e-ef1b781e58ab" class="">TODO PEDIDO/CERTIDÃO É IMPRESCINDÍVEL O CNIB. O CNIB VOCE PODE TA REALIZANDO ATRAVES DESSE LINK <a href="https://indisponibilidade.onr.org.br/">https://indisponibilidade.onr.org.br/</a></p><p id="1ec47cc5-7039-80ae-b8b9-fe9bb05f332b" class="">NÓS SEMPRE IREMOS FAZER OS CNIBs DOS PROPRIETÁRIOS. CASO SEJA PROMENTENDO VENDER, VAMOS FAZER DE QUEM ESTA PROMETENDO VENDER E QUEM ESTA PROMETENDO COMPRAR. QUANDO E UMA HIPOTECA, ALIENAÇÃO QUE POSSUI CREDOR E DEVEDOR, VAMOS FAZER DO CREDOR E DO DEVEDOR(EXEMPLO CAIXA ECONOMICA COMO CREDORA E UM CASAL(DEVEDORES) COMPRANDO SUA CASA NOVA, VOCE IRÁ FAZER O CNIB DA CAIXA E DOS DEVEDORES. HIPOTECA A MESMA COISA.</p><figure id="1ee47cc5-7039-8011-8933-e209c00605ed" class="image"><a href="image%2025.png"><img style="width:676.23046875px" src="image%2025.png"/></a><figcaption>Site do CNBI onde irá pesquisar se possui ou nao INDISPONIBILIDADE em algum CPF ou CNPJ.</figcaption></figure><p id="1ec47cc5-7039-801d-8043-d2d72c16a465" class="">ASSIM QUE FEITO, ANEXAR OS PDFS NO SERVCOM.</p><figure id="1ee47cc5-7039-802a-857e-d167f59b7827" class="image"><a href="image%2026.png"><img style="width:676.2109375px" src="image%2026.png"/></a><figcaption>Voce vai clicar nesse botao em destaque e ira aparecer a janela abaixo.</figcaption></figure><figure id="1ee47cc5-7039-8023-a341-ef02439a77a2" class="image"><a href="image%2027.png"><img style="width:651.97265625px" src="image%2027.png"/></a><figcaption>Área no SERVCOM onde os CNIBS precisam ser ANEXADOS. O seu quando abrir, vai estar vazio, entao voce vai clicar em “INCLUIR NOVO ARQUIVO ANEXO” e vai anexar o PDF do CNIB que voce acabara de fazer.</figcaption></figure><hr id="1ec47cc5-7039-80bc-a963-d79248a4523c"/><h2 id="1ec47cc5-7039-80b1-87d1-feaf56de0fc1" class=""><strong>8.º PASSO ~  SERVCOM</strong></h2><p id="1ec47cc5-7039-80de-aa8d-d50e62f88d45" class="">BOTAO &quot;ANÁLISE E CONFERENCIA DE MATRÍCULA&quot; ~  CASO VENHA QUERER VER AS IMAGENS, PROPRIETÁRIOS, ATOS, EDITAR ATO, INSERIR ONUS, REMOVER A ONUS, VAI SER AQUI NESSA OPÇÃO.</p><figure id="1ee47cc5-7039-8067-b24a-e2deeee218b6" class="image"><a href="image%2028.png"><img style="width:251.97265625px" src="image%2028.png"/></a></figure><figure id="1ee47cc5-7039-8094-ac4b-e63f65e47824" class="image"><a href="image%2029.png"><img style="width:676.23046875px" src="image%2029.png"/></a><figcaption>Vai abrir essa janela, onde voce digitara o numero da matrícula no lugar destacado e da Enter. Vai carregar a matrícula desejada no lado direito.</figcaption></figure><p id="1ec47cc5-7039-8093-8970-f636f9c7f73d" class="">BOTAO &quot;CONSULTA ARQUIVO&quot; ~  ONDE IREMOS FAZER A CONSULTA DOS PARTICIPANTES ATRAVÉS DO NOME E DOS DOCUMENTOS CPF/CNPJ. MUITO UTIL PARA VERIFICAR SE POSSUI ALGUM CPF PRA FAZER CNIB POR SEMELHANÇA, CASO NA MATRÍCULA NAO TENHA ALGUM CPF AVERBADO.</p><figure id="1ee47cc5-7039-80ce-9abb-fc7fb48004e0" class="image"><a href="image%2030.png"><img style="width:261.97265625px" src="image%2030.png"/></a></figure><figure id="1ee47cc5-7039-80d1-bd0f-dc1bccbad728" class="image"><a href="image%2031.png"><img style="width:676.23046875px" src="image%2031.png"/></a><figcaption>Após clicar no botão acima, ira aparecer essa janela, onde você consegue realizar a busca pelos dados do participanete. Sendo “NOME, CPF/CNPJ e Identidade”.</figcaption></figure><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ec47cc5-7039-801a-bbb3-f9716755b007" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">
+~CNIB POR SEMELHANÇA, É QUANDO ESTAMOS COM UMA MATRÍCULA NA MÃO E OS PROPRIETÁRIOS SÃO POR EXEMPLO O  &quot;JOSÉ CAMPOS VIEIRA&quot; e sua mulher &quot;NASTACIA CAMPOS VIEIRA&quot;. AMBOS SEM O CPF AVERBADO. PODEMOS NOTAR, QUE OS DOIS NOMES SÃO EXTREMAMENTE COMUM, GERANDO DÚVIDAS. ENTÃO, COMO É IMPRESCINDÍVEL O CNIB NA CERTIDÃO, NÓS IREMOS PESQUISAR PELO NOME &quot;JOSÉ CAMPOS VIEIRA&quot; e &quot;NASTACIA CAMPOS VIEIRA&quot; NO SERVCOM E CASO VENHA APARECER ALGUM CPF PARA OS DOIS, NÓS IREMOS FAZER O CNIB DESSES CPF (SIM, MESMO SEM SABER SE É OU NÃO O CPF VERDADEIRO DOS PROPRIETÁRIOS).
+~ CASO NESSA PESQUISA DE CPF POR SEMELHANÇA, ALGUM DOS CPFs VENHAM TER INDISPONIBILIDADE, IREMOS UTILIZAR A OBS DE SEMELHANÇA, QUE ESTA LOGO ABAIXO;
+
+
+&quot;Em pesquisa por semelhança, verificou-se CONSTAR lançamentos de INDISPONIBILIDADE DE BENS com o nome de NOME DO PROPRIETÁRIO e, diante da ausência da qualificação civil (identidade/CPF) de pessoa de nome análogo, conforme acima, em caso de alienação, oneração, transferência ou modificação, necessário esclarecer PREVIAMENTE tratar-se ou não de homonímia, procedendo-se aos atos necessários.&quot;
+</code></pre><figure id="1ee47cc5-7039-80dc-a1bf-ed3bf72aa1c9" class="image"><a href="image%2032.png"><img style="width:676.23046875px" src="image%2032.png"/></a><figcaption>Pesquisei um nome muito comum e segue o exemplo, de algumas indisponibilidades por semelhança.</figcaption></figure><hr id="1ec47cc5-7039-8001-a66c-ebc1ebd5f88a"/><h2 id="1ec47cc5-7039-8085-979d-f905298bcd35" class=""><em><strong>COMEÇANDO A CERTIDAO</strong></em></h2><p id="1ec47cc5-7039-80de-83e8-e088507c7c29" class="">
+</p><ol type="1" id="1ec47cc5-7039-804e-b229-c9410d000e81" class="numbered-list" start="1"><li>VAMOS PROCURAR O BOTAO &quot;PEDIDO DE CERTIDÃO&quot;, DENTRO DELE VAMOS CONSEGUIR DIGITAR O NUMERO DO PEDIDO, ANALISAR O REQUERENTE DO PEDIDO E ETC.</li></ol><ol type="1" id="1ee47cc5-7039-80dd-ae77-cb4b6bd52409" class="numbered-list" start="2"><li></li></ol><figure id="1ee47cc5-7039-8020-8e2e-fbfbc00541bf" class="image"><a href="image%2033.png"><img style="width:261.97265625px" src="image%2033.png"/></a></figure><ol type="1" id="1ec47cc5-7039-804e-961e-ee608fc6f243" class="numbered-list" start="1"><li>VAMOS DIGITAR O NUMERO DO PEDIDO;<br/>EX. <br/><strong>000123</strong></li></ol><ol type="1" id="1ee47cc5-7039-8014-a375-e01c4308314b" class="numbered-list" start="2"><li></li></ol><figure id="1ee47cc5-7039-8013-bff0-c2f3d8396add" class="image"><a href="image%2034.png"><img style="width:676.2109375px" src="image%2034.png"/></a></figure><ol type="1" id="1ec47cc5-7039-806b-8aa9-d639b87d4a43" class="numbered-list" start="1"><li>VAMOS TER OS CAMPOS<ol type="a" id="1ec47cc5-7039-806d-9b16-ee5daab49fee" class="numbered-list" start="1"><li>REQUERENTE ~ CPF/CNPJ ~ TELEFONE ~ EMAIL (TUDO AQUI É REFERENTE AO REQUERENTE)<figure id="1ee47cc5-7039-802a-b910-d1275c2160ce" class="image"><a href="image%2035.png"><img style="width:645.99609375px" src="image%2035.png"/></a></figure></li></ol><ol type="a" id="1ee47cc5-7039-8049-a16c-e7a96abdd2c8" class="numbered-list" start="2"><li>NO CAMPO ABAIXO &quot;DADOS DO IMOVEL&quot;, IRÁ APARECER OS DADOS APÓS PREENCHER O CAMPO MATRÍCULA.<figure id="1ee47cc5-7039-8086-b3b9-f5f85e1b99c9" class="image"><a href="image%2036.png"><img style="width:646.23046875px" src="image%2036.png"/></a></figure></li></ol><ol type="a" id="1ec47cc5-7039-8006-8a06-c5850b7f9e6f" class="numbered-list" start="3"><li>VOCE VAI COLOCAR NO CAMPO MATRÍCULA A MATRÍCULA QUE FOI INDICADA OU QUE A BUSCA TE DEU, CASO NAO VENHA PREENCHIDO E APÓS VOCE IRÁ CLICAR EM &quot;EDITAR&quot; E DENTRO DO &quot;EDITAR&quot; VAMOS APAGAR OS DADOS QUE ESTA EM &quot;OBS DO IMOVEL&quot;, EM SEGUIDA FECHE E CLIQUE EM &quot;ANÁLISE DA SITUAÇÃO DO IMÓVEL (F3)&quot;, IRÁ APARECER OS PROPRIETÁRIOS DA MATRÍCULA, CASO O INDICADOR REAL ESTEJA CORRETO, OS PROTOCOLOS EM ABERTO E SE HÁ ONUS OU NÃO. APÓS CONFIRMAR QUE TUDO ESTÁ BATENDO, CLIQUE EM &quot;GRAVAR A ANÁLISE DA SITUAÇÃO DO IMÓVEL&quot;<figure id="1ee47cc5-7039-803b-90fe-f6e619330c97" class="image"><a href="image%2037.png"><img style="width:111.97265625px" src="image%2037.png"/></a><figcaption>Caso ja venha preenchido, você precisa analisar no pedido se a matrícula está correta.</figcaption></figure></li></ol><p id="1ee47cc5-7039-8099-9168-ebbd2d67d357" class="">
+</p><p id="1ee47cc5-7039-8060-ad82-fc93072e8795" class="">
+</p></li></ol><ol type="1" id="1ec47cc5-7039-8037-be52-d05bd831b99c" class="numbered-list" start="2"><li>AGORA VAMOS PARA A ABA &quot;DADOS DA(S) PESSOA(S)&quot;<figure id="1ee47cc5-7039-8043-ae42-f9c34ff50944" class="image"><a href="image%2038.png"><img style="width:676.19140625px" src="image%2038.png"/></a></figure></li></ol><ol type="1" id="1ec47cc5-7039-8014-b505-ca96b3cf44a1" class="numbered-list" start="3"><li>CASO OS PROPRIETÁRIOS ESTEJAM INSERIDOS NA MATRÍCULA DE FORMA CORRETA, OU SEJA, O INDICADOR REAL ESTEJA SIDO REALIZADO, AO CLICAR NO BOTAO &quot;INSERIR PROPRIETÁRIOS (F4)&quot; AUTOMATICAMENTE IRÁ PUXAR OS PROPRIETÁRIOS DO IMÓVEL. (LEMBRANDO, CREDORES COSTUMAM NAO SER PUXADOS AUTOMATICAMENTE, POR EXEMPLO A CAIXA, ITAU, BRADESCO, SANTANDER, FAR E ETC) VOCE PRECISA PREENCHER DE FORMA MANUAL E PARA ISSO VOCE VAI CLICAR NO BOTAO &quot;INCLUIR PESSOA&quot; E DEPOIS EM &quot;BUSCAR PESSOA&quot;, IRÁ ABRIR O &quot;BUSCA ARQUIVO PESSOAL&quot;,  AÍ SÓ VOCE PESQUISAR E INSERIR O PARTICIPANTE QUE DESEJA. APÓS ISSO, VOCE IRÁ CLICAR NO BOTAO &quot;LISTAR&quot; E VAI APARECER UMA JANELA CONTENDO TODOS OS PARTICIPANTES DA MATRÍCULA, ESTANDO CORRETO, CLIQUE EM &quot;GRAVAR PESQUISA&quot;.<figure id="1ee47cc5-7039-8028-a1cf-d0d3bcf62663" class="image"><a href="image%2039.png"><img style="width:676.23046875px" src="image%2039.png"/></a></figure></li></ol><p id="1ee47cc5-7039-8013-9383-c5b17807c63a" class="">
+</p><p id="1ee47cc5-7039-805f-853b-f125678bb226" class="">
+</p><ol type="1" id="1ec47cc5-7039-801e-beb4-c77ca1ce8907" class="numbered-list" start="1"><li>EMBAIXO NA OPÇÃO &quot;FORMA DE ENTREGA&quot;, ALTERAMOS PARA SEMPRE &quot;ELETRÔNICA&quot;</li></ol><figure id="1ee47cc5-7039-80da-8142-ebf894034596" class="image"><a href="image%2040.png"><img style="width:676.171875px" src="image%2040.png"/></a></figure><ol type="1" id="1ec47cc5-7039-8042-bc72-ed52edc3def7" class="numbered-list" start="1"><li>AGORA NOS VAMOS PARA A ETAPA DO &quot;RESULTADO DA BUSCA&quot;, AQUI VAMOS DIZER SE A CERTIDAO É NEGATIVA DE ONUS, POSITIVA PARA ONUS OU SE ELA É INDETERMINADA.<figure id="1ee47cc5-7039-80ad-964f-ec816298539c" class="image"><a href="image%2041.png"><img style="width:676.15234375px" src="image%2041.png"/></a></figure></li></ol><ol type="1" id="1ec47cc5-7039-806f-bf59-c93f040bb542" class="numbered-list" start="2"><li>UMA CERTIDAO É POSITIVA QUANDO: POSSUI QUAISQUER ONUS OU GRAVAMES (INDISPONIBILIDADE, HIPOTECA, ALIENAÇÃO E ETC)</li></ol><ol type="1" id="1ec47cc5-7039-8016-94f4-f24347149127" class="numbered-list" start="3"><li>UMA CERTIDAO É NEGATIVA QUANDO: NÃO POSSUI QUAISQUER ONUS OU GRAVAMES (INDISPONIBILIDADE, HIPOTECA, ALIENAÇÃO E ETC)</li></ol><ol type="1" id="1ec47cc5-7039-8078-9ec7-e1d9d23ef4d4" class="numbered-list" start="4"><li>E UMA CERTIDAO É INDETERMINADA QUANDO: NAO CONSEGUIMOS DETERMINAR QUEM É O PROPRIETÁRIO LEGAL DAQUELE IMÓVEL, QUANDO O IMÓVEL HÁ DESMEMBRAMENTOS, REGISTRO DE CONDOMINIO E POSTERIOR ABERTURA DE MATRÍCULAS E ETC.</li></ol><ol type="1" id="1ec47cc5-7039-8078-a5f2-d2cf68db629b" class="numbered-list" start="5"><li>DEPOIS DE SELECIONARMOS SE A CERTIDÃO É POSITIVA, NEGATIVA OU INDETERMINADA, VAMOS AJUSTAR A DATA DO SELO APERTANDO H (A LETRA H VAI SEMPRE PUXAR A DATA DO DIA) E DEPOIS CLICAMOS NO ICONE AO LADO DA CALCULADORA (UM ICONE QUE PARECE UM SELO)</li></ol><figure id="1ee47cc5-7039-80a7-a35d-d1c80795f5d4" class="image"><a href="image%2042.png"><img style="width:345.9375px" src="image%2042.png"/></a></figure><ol type="1" id="1ec47cc5-7039-80d8-bdeb-fb6aaf83459f" class="numbered-list" start="1"><li>AGORA VAI ABRIR A TELA &quot;BAIXA DE SELO ELETRONICO&quot;, NESSA TELA VOCE PODE CLICAR NA PARTE EM BRANCA E APERTAR &quot;ENTER&quot; DUAS VEZES, EM SEGUIDA VAI APARECER ALGO COMO &quot;N.º 1 - CERTIDÃO PEDIDO N.º 12/1234&quot;. </li></ol><figure id="1ee47cc5-7039-802d-b0b6-c987186b62bb" class="image"><a href="image%2043.png"><img style="width:676.23046875px" src="image%2043.png"/></a></figure><ol type="1" id="1ec47cc5-7039-8016-8406-dc3d2ab33ad5" class="numbered-list" start="1"><li>ENTAO VAMOS  CLICAR EM CIMA E SELECIONAR, APÓS SELECIONADO VOCE VAI CLICAR LÁ EMBAIXO NA OPÇÃO &quot;BAIXAR SELOS (F5)&quot;, VAI ABRIR UMA JANELA COM ALGUMAS INFORMAÇÕES, COMO TOTAL DE SELOS CUSTODIADOS QUE VOCE POSSUI E ETC, MAS VAMOS CLICAR LÁ EMBAIXO EM &quot;CONFIRMAR BAIXA (F5)<figure id="1ee47cc5-7039-80ee-a154-d59f305ad5a0" class="image"><a href="image%2044.png"><img style="width:676.23046875px" src="image%2044.png"/></a></figure><figure id="1ee47cc5-7039-80f6-88f0-fdfab8d3131a" class="image"><a href="image%2045.png"><img style="width:676.23046875px" src="image%2045.png"/></a></figure><ol type="1" id="1ec47cc5-7039-80a2-a852-d89ca8776a66" class="numbered-list" start="1"><li>~PODEMOS PERCEBER QUE AGORA NA ABA DE SELO, APARECE O SELO E NA ABA DE ANÁLISE APARECE &quot;PRONTO&quot;. NÓS VAMOS MANTER SELECIONADO E CLICAR LÁ EMBAIXO NA OPÇÃO &quot;INFORMAÇÕES DO ATO (F6)</li></ol><figure id="1ee47cc5-7039-8046-86a8-eb58fc4957f8" class="image"><a href="image%2046.png"><img style="width:646.25px" src="image%2046.png"/></a></figure><ol type="1" id="1ec47cc5-7039-80d0-8cf9-ca73abf31222" class="numbered-list" start="1"><li>~ IRÁ ABRIR 4 ABAS (DADOS DO ATO, IMOVEIS, PARTICIPANTES E ATOS VINCULADOS)</li></ol><figure id="1ee47cc5-7039-8054-b071-f6d7e00b7f31" class="image"><a href="image%2047.png"><img style="width:646.25px" src="image%2047.png"/></a></figure><ol type="1" id="1ec47cc5-7039-8018-a78e-d8901caff970" class="numbered-list" start="1"><li>~ ABA DADOS DO ATO, VAMOS MEXER NA OPÇÃO &quot;QNTDE. FOLHAS&quot;, ONDE IREMOS COLOCAR A QUANTODADE DE FOLHAS QUE A MATRÍCULA POSSUI. EM TIPO DE CERTIDÃO, VAMOS MANTER ÔNUS REAIS, CASO VENHA SER INDETERMINADO, VAMOS ALTERAR PARA &quot;INTEIRO TEOR&quot; E PRONTO.</li></ol><figure id="1ee47cc5-7039-80b5-9b6d-c3727b437c78" class="image"><a href="image%2048.png"><img style="width:646.25px" src="image%2048.png"/></a></figure></li></ol><ol type="1" id="1ec47cc5-7039-8080-af01-e3f9567cf422" class="numbered-list" start="2"><li>AGORA VAMOS PARA A ABA &quot;IMÓVEIS&quot;<ol type="a" id="1ec47cc5-7039-807e-8832-c105b09e618c" class="numbered-list" start="1"><li>~ O CAMPO LOGRADOURO, GERALMENTE ALTERAMOS ALGUMAS VIRGULAS, INSERIMOS GLEBA, ZONA/AREA.</li></ol><figure id="1ee47cc5-7039-80f7-921a-cbb33a1c0e18" class="image"><a href="image%2049.png"><img style="width:646.25px" src="image%2049.png"/></a></figure><ol type="1" id="1ec47cc5-7039-800e-a0e3-c8b28e4cd6d0" class="numbered-list" start="1"><li>~ QUANDO ESTAMOS FAZENDO UMA CERTIDAO QUE É DE CONDOMÍNIO, O SERVCOM GERALMENTE PUXA (EX; LOTE 14, QUADRA 15, CONDOMINIO RESIDENCIAL MONSORES), NOS SEMPRE IREMOS ALTERAR PARA (UNIDADE 14, QUADRA 15...), VAMOS COLOCAR UNIDADE NO LUGAR DE LOTE.</li></ol><ol type="1" id="1ec47cc5-7039-80ed-a04f-e280cccaa10e" class="numbered-list" start="2"><li>	~ BAIRRO ALTERAMOS SE HOUVER NECESSIDADE</li></ol></li></ol><ol type="1" id="1ec47cc5-7039-801b-b597-d28141837f6a" class="numbered-list" start="3"><li>~ E POR FIM A ABA DE PARTICIPANTES, QUE É ONDE IREMOS MODIFICAR AS QUALIFICACOES DOS PARTICIPANTES. AQUI ONDE VAMOS ALTERAR OS PROPRIETÁRIOS PARA &quot;PROPRIETÁRIO, DEVEDOR, CREDOR E ETC&quot;, APOS ALTERAR TUDO, IREMOS CLICAR EM SALVAR LÁ EM CIMA.<figure id="1ee47cc5-7039-8065-a4ea-c068eb83a31b" class="image"><a href="image%2050.png"><img style="width:676.2109375px" src="image%2050.png"/></a></figure><ol type="1" id="1ec47cc5-7039-80e1-9886-c6ac83c5cfa4" class="numbered-list" start="1"><li>~ UMA OBSERVAÇÃO, NOS CAMPOS DE CADA PARTICIPANTE, ALGUNS IRÁ TRAZER A SUA DATA DE NASCIMENTO, NÓS VAMOS APAGAR SEMPRE ESSE CAMPO.</li></ol><figure id="1ee47cc5-7039-80ff-9056-ea812416d4b7" class="image"><a href="image%2051.png"><img style="width:646.25px" src="image%2051.png"/></a></figure></li></ol><ol type="1" id="1ec47cc5-7039-807f-8dad-f018ca36a27f" class="numbered-list" start="4"><li>APÓS SALVAR, PODE VOLTAR  PRA TELA &quot;PEDIDO DE CERTIDAO/BUSCA&quot; E EM SEGUIDA IREMOS CLICAR NO BOTÃO &quot;CERTIDAO EMITIDA&quot; E AO ABRIR UMA JANELA, VOCE IRÁ DIGITAR O SEU CODIGO OU PROCURAR NA LISTAGEM O SEU NOME E DEPOIS DA ENTER, PRA ALTERAR O BOTÃO PARA &quot;CERTIDAO CONFERIDA&quot;<figure id="1ee47cc5-7039-8012-9030-cf5a4b69de39" class="image"><a href="image%2052.png"><img style="width:676.23046875px" src="image%2052.png"/></a></figure><figure id="1ee47cc5-7039-80a9-868f-dcd18d750838" class="image"><a href="image%2053.png"><img style="width:494.98046875px" src="image%2053.png"/></a></figure></li></ol><ol type="1" id="1ec47cc5-7039-8042-aa4e-f37296e48bbe" class="numbered-list" start="5"><li>~DEPOIS VAMOS NO BOTÃO DE &quot;ICONE MARROM DE CARIMBO&quot;<figure id="1ee47cc5-7039-80ba-9b2f-dc5565658b16" class="image"><a href="image%2054.png"><img style="width:646.25px" src="image%2054.png"/></a></figure></li></ol><ol type="1" id="1ec47cc5-7039-80cc-9e0f-d278b5b08ee6" class="numbered-list" start="6"><li>AGORA NA JANELA DE CARIMBO, NOS SEMPRE VAMOS COLOCAR NA OPÇÃO &quot;CARIMBAR&quot; - DOCUMENTO DIGITALIZADO, NA OPÇÃO &quot;FORMULÁRIO DE IMPRESSÃO&quot; - MATRÍCULA ELETRÔNICA,  NO &quot;TIPO DE DOCUMENTO DIGITALIZADO&quot; - MATRÍCULA, NO &#x27;MODELO DO CARIMBO&quot; - ESCOLHER O MODELO QUE MAIS SE ADEQUA NO MOMENTO (MAT INTEIRO TEOR, MAT INTEIRO TEOR PRAIA SECA, MAT INTEIRO TEOR SEM CERTIFICAÇÃO), DEPOIS VAMOS DIGITAR NO &quot;QTD. IMAGENS&quot; A QUANTIDADE DE IMAGENS QUE POSSUI A MATRICULA.<br/>	~ A QUANTIDADE DE IMAGEM DA MATRÍCULA É BASICAMENTE, A QUANTIDADE DE COISAS QUE POSSUI NELA, UM EXEMPLO PRATICO SERIA ( EU TENHO UM FOLHA NA MAO, E APENAS A FRENTE ESTA COM ALGUM CONTEUDO E O VERSO ESTA VAZIO, LOGO TENHO 1 IMAGEM APENAS. EU TENHO UMA FOLHA E A FRENTE E O VERSO POSSUI CONTEUDO, LOGO TENHO 2 IMAGENS E ASSIM POR DIANTE).<br/></li></ol><figure id="1ee47cc5-7039-80f3-927a-de670c039ecf" class="image"><a href="image%2055.png"><img style="width:637.96875px" src="image%2055.png"/></a></figure><ol type="1" id="1ec47cc5-7039-8072-8c5a-febb2784a731" class="numbered-list" start="1"><li>E POR FIM MAS NAO MENOS IMPORTANTE, VAMOS COLOCAR A ETIQUETA NA NOSSA MATRÍCULA. A ETIQUETA DEVE ESTAR SEMPRE ALINHADA COM A MATRÍCULA E BEM FORMATADA.<ol type="a" id="1ec47cc5-7039-8018-8a0b-cc87ab9567fc" class="numbered-list" start="1"><li>~ AQUI NA ETIQUETA, QUE SE NECESSÁRIO IREMOS COLOCAR NOSSAS OBSERVAÇÕES, PROTOCOLOS e etc.</li></ol><figure id="1ee47cc5-7039-80e0-9776-ec0a3f952870" class="image"><a href="image%2056.png"><img style="width:515.9765625px" src="image%2056.png"/></a></figure><ol type="1" id="1ec47cc5-7039-8068-a5fd-ebe1fe248e58" class="numbered-list" start="1"><li>PRA FINALIZAR, SALVAREMOS O ARQUIVO EM PDF NA PASTA BALCAO OU ARIRJ COM O FORMATO &quot;PEDIDO M MATRICULA&quot;, EXEMPLO; 000123 M 12.345. E DENTRO DA PASTA SE FOR BALCAO (matrícula-12345), SE FOR ARIRJ (S2501246457954).</li></ol><figure id="1ee47cc5-7039-8001-94d1-dd4916618698" class="image"><a href="image%2057.png"><img style="width:646.2109375px" src="image%2057.png"/></a></figure><figure id="1ef47cc5-7039-8034-9d64-c31693a52b1f" class="image"><a href="image%2058.png"><img style="width:646.25px" src="image%2058.png"/></a><figcaption>Vamos manter a impressora em PDF</figcaption></figure><figure id="1ef47cc5-7039-804b-853f-c817ff5d96ad" class="image"><a href="image%2059.png"><img style="width:398.96484375px" src="image%2059.png"/></a><figcaption>Clicamos em OK</figcaption></figure><figure id="1ef47cc5-7039-806d-af41-f2d50ccc1d4d" class="image"><a href="image%2060.png"><img style="width:646.25px" src="image%2060.png"/></a><figcaption>Agora so procurar a pasta que deseja salvar. Crie uma pasta com o nome “001234 M 12345” e dentro da pasta se for de BALCÃO (matrícula-12345), se for ARIRJ (S250……)</figcaption></figure></li></ol><p id="1ec47cc5-7039-8009-bbd4-da4343864033" class="">
+</p><h3 id="1ec47cc5-7039-809e-bd2d-ca6b37871620" class=""><strong>CERTIDÃO FEITA =)</strong></h3><p id="1ec47cc5-7039-8038-a388-e8cfde4f5fb5" class="">
+</p><p id="1ec47cc5-7039-80b0-9abb-c907a714515b" class="">
+</p><p id="1ec47cc5-7039-80ff-b3c2-ddae5e488918" class="">
+</p><p id="1ec47cc5-7039-809c-a5d2-f13cc82660a8" class="">
+</p><p id="1ec47cc5-7039-8060-abe9-cc63287a21a3" class="">
+</p><p id="1ec47cc5-7039-8041-b67d-d3904e4c8717" class="">
+</p><p id="1ec47cc5-7039-80ce-97a7-f8f2752944a6" class="">
+</p><p id="1ec47cc5-7039-801f-865e-c1f91956f5a1" class="">
+</p><p id="1ec47cc5-7039-80f4-84dd-f55cccaead0b" class="">
+</p><p id="1ec47cc5-7039-809f-947c-caec7c9dc804" class="">
+</p><p id="1ec47cc5-7039-800b-9eae-ec1154ddec36" class="">
+</p><p id="1ec47cc5-7039-80c9-a80c-cd6971adafe0" class="">
+</p><p id="1ec47cc5-7039-80c6-a8e1-e58353dbc44f" class="">
+</p><p id="1ec47cc5-7039-80d0-9520-ce36a449b555" class=""><br/><br/><br/><br/></p><p id="1ec47cc5-7039-80af-8331-d41df6db0fa6" class="">
+</p><p id="1ec47cc5-7039-80a3-accf-c0d3060806bb" class=""><br/><br/></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ec47cc5-7039-80f8-b1e6-fa886d925c1a" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">
+</code></pre><p id="1ec47cc5-7039-80b2-83a6-f7f3c9c42060" class=""><br/><br/></p><p id="1ec47cc5-7039-8044-9592-f537184718fd" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
